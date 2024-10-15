@@ -22,7 +22,7 @@
                                 </ul>
                             </li>
                         </ol>
-                        <p class="mt-2 font-medium">Haideți să creăm o poveste magicaă împreună!</p>
+                        <p class="mt-2 font-medium">Haideți să creăm o poveste magică împreună!</p>
                     </div>
                         <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                             @foreach($availableGenres as $genre => $details)
