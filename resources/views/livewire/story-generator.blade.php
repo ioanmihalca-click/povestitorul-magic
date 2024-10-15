@@ -1,76 +1,90 @@
 <div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-         <div class="p-6 bg-white border-b rounded-lg border-gray-200">
-    <form wire:submit.prevent="generateStory">
-        <div class="space-y-6">
-            <div>
-                <label for="childAge" class="block text-sm font-medium text-gray-700">Vârsta copilului</label>
-                <input wire:model="childAge" type="number" id="childAge" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                @error('childAge') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-            </div>
+    <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div class="p-6 bg-white border-b border-gray-200 rounded-lg">
+            <form wire:submit.prevent="generateStory">
+                <div class="space-y-6">
+                    <div>
+                        <label for="childAge" class="block text-sm font-medium text-gray-700">Vârsta copilului</label>
+                        <input wire:model="childAge" type="number" id="childAge" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        @error('childAge') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
+                    </div>
 
-            <div>
-                <label for="storyGenre" class="block text-sm font-medium text-gray-700">Genul poveștii</label>
-                <select wire:model="storyGenre" id="storyGenre" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                    <option value="">Selectează genul</option>
-                    @foreach($availableGenres as $genre => $details)
-                        <option value="{{ $genre }}">{{ $details['name'] }}</option>
-                    @endforeach
-                </select>
-                @error('storyGenre') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-            </div>
+                    <div>
+                        <div class="p-4 mb-4 rounded-lg bg-blue-50">
+                        <h2 class="mb-2 text-lg font-semibold">Selectați genul și tema poveștii</h2>
+                        <ol class="space-y-2 list-decimal list-inside">
+                            <li>Selectați tipul de poveste care vă place (de exemplu, "Aventură" sau "Basm").</li>
+                            <li>Apoi, aveți două opțiuni pentru tema poveștii:
+                                <ul class="mt-1 ml-4 list-disc list-inside">
+                                    <li>Alegeți una din temele gata pregătite din listă</li>
+                                    <li>SAU</li>
+                                    <li>Scrieți propria voastră idee de temă în căsuța "Temă personalizată"</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <p class="mt-2 font-medium">Haideți să creăm o poveste magicaă împreună!</p>
+                    </div>
+                        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                            @foreach($availableGenres as $genre => $details)
+                                <div class="border rounded-lg p-4 {{ $selectedGenre === $genre ? 'border-blue-500' : 'border-gray-200' }}">
+                                    <h3 class="mb-2 text-lg font-semibold">
+                                        <button type="button" wire:click="$set('selectedGenre', '{{ $genre }}')" class="w-full text-left">
+                                            {{ $details['name'] }}
+                                        </button>
+                                    </h3>
+                                    @if($selectedGenre === $genre)
+                                        <ul class="space-y-2">
+                                            @foreach($details['themes'] as $theme)
+                                                <li>
+                                                    <button type="button" wire:click="selectTheme('{{ $theme }}')" class="w-full text-left px-2 py-1 rounded {{ $selectedTheme === $theme ? 'bg-blue-100' : 'hover:bg-gray-100' }}">
+                                                        {{ $theme }}
+                                                    </button>
+                                                </li>
+                                            @endforeach
+                                            <li>
+                                                <button type="button" wire:click="setCustomTheme" class="w-full font-bold text-blue-500 text-left px-2 py-1 rounded {{ $selectedTheme === 'custom' ? 'bg-blue-100' : 'hover:bg-gray-100' }}">
+                                                    Temă personalizată
+                                                </button>
+                                            </li>
+                                        </ul>
+                                        @if($selectedTheme === 'custom')
+                                            <input wire:model="customTheme" type="text" placeholder="Introduceți tema personalizată" class="w-full mt-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                        @endif
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                        @error('selectedGenre') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
+                        @error('selectedTheme') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
+                        @error('customTheme') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
+                    </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Alegere temă</label>
-                <div class="mt-2 space-x-4">
-                    <label class="inline-flex items-center">
-                        <input type="radio" wire:model="useCustomTheme" name="themeChoice" value="0" class="form-radio h-5 w-5 text-blue-600">
-                        <span class="ml-2 text-gray-700">Temă predefinită</span>
-                    </label>
-                    <label class="inline-flex items-center">
-                        <input type="radio" wire:model="useCustomTheme" name="themeChoice" value="1" class="form-radio h-5 w-5 text-blue-600">
-                        <span class="ml-2 text-gray-700">Temă personalizată</span>
-                    </label>
+                    <button type="submit" class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">
+                        Generează Poveste
+                    </button>
                 </div>
-            </div>
+            </form>
 
-            <div x-data="{ useCustomTheme: @entangle('useCustomTheme') }">
-                <div x-show="!useCustomTheme">
-                    <label for="storyTheme" class="block text-sm font-medium text-gray-700">Tema poveștii</label>
-                    <select wire:model="storyTheme" id="storyTheme" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" :disabled="useCustomTheme">
-                        <option value="">Selectează tema</option>
-                        @foreach($availableGenres as $genre => $details)
-                            <optgroup label="{{ $details['name'] }}">
-                                @foreach($details['themes'] as $theme)
-                                    <option value="{{ $theme }}">{{ $theme }}</option>
-                                @endforeach
-                            </optgroup>
-                        @endforeach
-                    </select>
-                    @error('storyTheme') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+            @if(session()->has('message'))
+                <div class="p-4 mt-4 text-green-700 bg-green-100 rounded">
+                    {{ session('message') }}
                 </div>
+            @endif
 
-                <div x-show="useCustomTheme">
-                    <label for="customTheme" class="block text-sm font-medium text-gray-700">Introduceți tema personalizată</label>
-                    <input wire:model="customTheme" type="text" id="customTheme" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" :disabled="!useCustomTheme">
-                    @error('customTheme') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+            @error('generation')
+                <div class="p-4 mt-4 text-red-700 bg-red-100 rounded">
+                    {{ $message }}
                 </div>
-            </div>
+            @enderror
 
-            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                Generează Poveste
-            </button>
+            @if($generatedStory)
+                <div class="mt-6">
+                    <h2 class="text-xl font-bold">{{ $storyTitle }}</h2>
+                    <div class="mt-2 prose">
+                        {!! nl2br(e($generatedStory)) !!}
+                    </div>
+                </div>
+            @endif
         </div>
-    </form>
-
-    @if($generatedStory)
-        <div class="mt-6">
-            <h2 class="text-xl font-bold">{{ $storyTitle }}</h2>
-            <div class="mt-2 prose">
-                {!! nl2br(e($generatedStory)) !!}
-            </div>
-        </div>
-    @endif
-</div>
     </div>
 </div>

@@ -4,7 +4,6 @@ namespace App\Livewire;
 
 use App\Models\Story;
 use Livewire\Component;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Anthropic\Laravel\Facades\Anthropic;
@@ -12,9 +11,8 @@ use Anthropic\Laravel\Facades\Anthropic;
 class StoryGenerator extends Component
 {
     public $childAge;
-    public $storyGenre;
-    public $storyTheme = '';
-    public $useCustomTheme = false;
+    public $selectedGenre = '';
+    public $selectedTheme = '';
     public $customTheme = '';
     public $generatedStory;
     public $storyTitle;
@@ -90,47 +88,53 @@ class StoryGenerator extends Component
                 'Legende cu haiduci (Iancu Jianu, Pintea Viteazul)'
             ]
         ],
+        'Povestiri din Biblie' => [
+            'name' => 'Povestiri din Biblie',
+            'themes' => [
+                'Arca lui Noe',
+                'David și Goliat',
+                'Iosif și frații săi',
+                'Nașterea lui Isus',
+                'Daniel în groapa cu lei'
+            ]
+        ],
     ];
 
     public function rules()
     {
         return [
             'childAge' => 'required|integer|min:1|max:18',
-            'storyGenre' => ['required', 'string', Rule::in(array_keys($this->availableGenres))],
-            'storyTheme' => 'required_if:useCustomTheme,false|string|max:255',
-            'customTheme' => 'required_if:useCustomTheme,true|string|max:255',
+            'selectedGenre' => 'required|string',
+            'selectedTheme' => 'required|string',
+            'customTheme' => 'required_if:selectedTheme,custom|string|max:255',
         ];
     }
 
-    public function updatedStoryGenre()
+    public function updatedSelectedGenre()
     {
-        $this->storyTheme = '';
+        $this->selectedTheme = '';
         $this->customTheme = '';
-        $this->useCustomTheme = false;
     }
 
-    public function updatedUseCustomTheme()
+    public function selectTheme($theme)
     {
-        if ($this->useCustomTheme) {
-            $this->storyTheme = '';
-        } else {
-            $this->customTheme = '';
-        }
+        $this->selectedTheme = $theme;
+        $this->customTheme = '';
+    }
+
+    public function setCustomTheme()
+    {
+        $this->selectedTheme = 'custom';
     }
 
     public function generateStory()
     {
-        $this->validate([
-            'childAge' => 'required|integer|min:1|max:18',
-            'storyGenre' => 'required|string|in:' . implode(',', array_keys($this->availableGenres)),
-            'storyTheme' => 'required_if:useCustomTheme,false',
-            'customTheme' => 'required_if:useCustomTheme,true',
-        ]);
+        $this->validate();
 
-        $theme = $this->useCustomTheme ? $this->customTheme : $this->storyTheme;
+        $theme = $this->selectedTheme === 'custom' ? $this->customTheme : $this->selectedTheme;
 
         $prompt = "Generează o poveste scurtă in limba romană pentru un copil de {$this->childAge} ani. 
-                   Genul poveștii: {$this->storyGenre}. 
+                   Genul poveștii: {$this->selectedGenre}. 
                    Tema poveștii: {$theme}.
                    Includeți și un titlu potrivit pentru poveste.";
 
@@ -154,7 +158,7 @@ class StoryGenerator extends Component
                 'title' => $this->storyTitle,
                 'content' => $this->generatedStory,
                 'age' => $this->childAge,
-                'genre' => $this->storyGenre,
+                'genre' => $this->selectedGenre,
                 'theme' => $theme,
             ]);
 

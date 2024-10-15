@@ -11,4 +11,5 @@ enum StoryGenre: string
     case Educativ = 'Educativ';
     case Fantezie = 'Fantezie';
     case LegendeRomanesti = 'Legende Romanesti';
+    case PovestiriDinBiblie = 'Povestiri din Biblie';
 }
