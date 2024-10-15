@@ -96,6 +96,10 @@ new class extends Component {
             <x-responsive-nav-link :href="route('biblioteca-magica')" :active="request()->routeIs('biblioteca-magica')" wire:navigate>
                 {{ __('Biblioteca-Magica') }}
             </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('povestitorulmagic')" :active="request()->routeIs('povestitorulmagic')">
+                        {{ __('Spune-mi o poveste') }}
+                    </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->

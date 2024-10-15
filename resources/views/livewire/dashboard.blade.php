@@ -8,6 +8,8 @@
                         @foreach($stories as $story)
                             <div class="bg-gray-100 p-4 rounded">
                                 <h3 class="text-xl font-semibold">{{ $story->title }}</h3>
+                                <p class="text-gray-600">Gen: {{ $story->genre->value }}</p>
+                                <p class="text-gray-600">Vârsta recomandată: {{ $story->age }} ani</p>
                                 <p class="text-gray-600">Generată la: {{ $story->created_at->format('d.m.Y H:i') }}</p>
                                 <a href="{{ route('story.show', $story) }}" class="text-blue-500 hover:underline">Citește povestea</a>
                             </div>
