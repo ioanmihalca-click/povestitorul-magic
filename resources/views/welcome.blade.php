@@ -27,11 +27,11 @@
             <div class="relative p-8 text-center">
 
                 <!-- Elemente decorative -->
-                <div class="absolute top-0 left-0 w-16 h-16 bg-yellow-300 rounded-full opacity-50 animate-pulse"></div>
-                <div class="absolute bottom-0 right-0 w-24 h-24 bg-blue-300 rounded-full opacity-50 animate-pulse">
+                <div class="absolute top-0 left-0 w-16 h-16 bg-yellow-300 rounded-full opacity-50 "></div>
+                <div class="absolute bottom-0 right-0 w-24 h-24 bg-blue-300 rounded-full opacity-50 ">
                 </div>
-                {{-- <div class="absolute w-12 h-12 bg-red-300 rounded-full opacity-50 top-1/4 right-1/4 animate-bounce">
-                </div> --}}
+                <div class="absolute w-12 h-12 bg-red-300 rounded-full opacity-50 top-1/4 right-1/4 ">
+                </div>
 
                 <!-- Conținut principal -->
                 <div class="relative z-10">
@@ -70,11 +70,10 @@
             </div>
         </div>
 
-        <!-- Footer -->
-        <div class="mt-8 text-sm text-center text-white">
-            <p>&copy; 2024 Povestitorul Magic. Toate drepturile rezervate.</p>
-        </div>
+
     </div>
+            <!-- Footer -->
+        <x-footer />
 </body>
 
 </html>

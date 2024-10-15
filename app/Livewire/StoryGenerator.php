@@ -52,7 +52,7 @@ class StoryGenerator extends Component
             'name' => 'Comic',
             'themes' => [
                 'Supereroii amuzanti',
-                'O zi nefericita dar amuzanta',
+                'O zi de vara amuzanta',
                 'Petrecerea animalelor din jungla',
                 'Inventiile trasnite ale profesorului Hababam',
                 'Concursul de farse'
