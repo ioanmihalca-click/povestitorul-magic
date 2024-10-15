@@ -110,6 +110,13 @@ class StoryGenerator extends Component
         ];
     }
 
+    public function messages()
+{
+    return [
+        'childAge.required' => 'Te rugăm să ne spui vârsta micuțului ascultător pentru a crea o poveste potrivită.',
+    ];
+}
+
     public function updatedSelectedGenre()
     {
         $this->selectedTheme = '';
