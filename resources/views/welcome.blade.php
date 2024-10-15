@@ -21,12 +21,9 @@
     <h1 class="text-4xl font-bold mb-4">Bun venit la Povestitorul Magic</h1>
     <p class="mb-8 text-xl">Generăm povești interactive personalizate pentru copilul tău.</p>
     <div class="space-x-4">
-        <a href="{{ route('login') }}" class="bg-emerald-500 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded">
-            Autentificare
-        </a>
-        <a href="{{ route('register') }}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
-            Înregistrare
-        </a>
+                            @if (Route::has('login'))
+                            <livewire:welcome.navigation />
+                        @endif
     </div>
 </div>
 

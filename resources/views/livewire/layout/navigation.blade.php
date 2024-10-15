@@ -23,7 +23,7 @@ new class extends Component {
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('biblioteca-magica') }}" wire:navigate>
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        <img src="{{ asset('assets/logo.jpg') }}" alt="Logo Povestitorul Magic" class="block h-16 w-auto fill-current text-gray-800" />
                     </a>
                 </div>
 

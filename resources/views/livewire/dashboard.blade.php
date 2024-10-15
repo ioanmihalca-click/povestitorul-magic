@@ -1,7 +1,7 @@
 <div class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6 bg-white border-b border-gray-200">
+       
+            <div class="p-6 bg-white border-b rounded-lg border-gray-200">
                 <h2 class="text-2xl font-bold mb-4">Poveștile tale</h2>
                 @if($stories->count() > 0)
                     <div class="space-y-4">
@@ -19,6 +19,6 @@
                     <p>Nu ai generat încă nicio poveste. Începe să creezi povești magice pentru copilul tău!</p>
                 @endif
             </div>
-        </div>
+        
     </div>
 </div>

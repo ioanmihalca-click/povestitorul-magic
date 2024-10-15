@@ -129,7 +129,7 @@ class StoryGenerator extends Component
 
         $theme = $this->useCustomTheme ? $this->customTheme : $this->storyTheme;
 
-        $prompt = "Generează o poveste scurtă pentru un copil de {$this->childAge} ani. 
+        $prompt = "Generează o poveste scurtă in limba romană pentru un copil de {$this->childAge} ani. 
                    Genul poveștii: {$this->storyGenre}. 
                    Tema poveștii: {$theme}.
                    Includeți și un titlu potrivit pentru poveste.";
