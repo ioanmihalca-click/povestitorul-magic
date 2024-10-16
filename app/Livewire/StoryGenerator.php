@@ -114,11 +114,11 @@ class StoryGenerator extends Component
     }
 
     public function messages()
-{
-    return [
-        'childAge.required' => 'Te rugăm să ne spui vârsta micuțului ascultător pentru a crea o poveste potrivită.',
-    ];
-}
+    {
+        return [
+            'childAge.required' => 'Te rugăm să ne spui vârsta micuțului ascultător pentru a crea o poveste potrivită.',
+        ];
+    }
 
     public function updatedSelectedGenre()
     {
@@ -166,50 +166,51 @@ class StoryGenerator extends Component
             $this->generatedStory = $matches[2] ?? $generatedContent;
 
             // Generarea imaginii cu mecanism de reîncercare
-        $imagePrompt = "O ilustrație pentru copii reprezentând o scenă dintr-o poveste de genul {$this->selectedGenre} cu tema: {$theme}. Stilul trebuie să fie potrivit pentru un copil de {$this->childAge} ani, folosind culori vii și personaje prietenoase.";
-        
-        $retries = 3;
-        $imageUrl = null;
-        while ($retries > 0 && $imageUrl === null) {
-            try {
-                $response = OpenAI::images()->create([
-                    'model' => 'dall-e-2',
-                    'prompt' => $imagePrompt,
-                    'n' => 1,
-                    'size' => '512x512',
-                    'response_format' => 'url',
-                ], ['timeout' => 120]);
-                $imageUrl = $response->data[0]->url;
-            } catch (\Exception $e) {
-                $retries--;
-                if ($retries === 0) {
-                    Log::error('Eroare la generarea imaginii după multiple încercări: ' . $e->getMessage());
+            $imagePrompt = "O ilustrație pentru copii reprezentând o scenă dintr-o poveste de genul {$this->selectedGenre} cu tema: {$theme}. Stilul trebuie să fie potrivit pentru un copil de {$this->childAge} ani, folosind culori vii și personaje prietenoase.";
+
+            $retries = 3;
+            $imageUrl = null;
+            while ($retries > 0 && $imageUrl === null) {
+                try {
+                    $response = OpenAI::images()->create([
+                        'model' => 'dall-e-3',
+                        'prompt' => $imagePrompt,
+                        'n' => 1,
+                        'size' => '1024x1024',
+                        'quality' => "standard",
+                        'response_format' => 'url',
+                    ], ['timeout' => 120]);
+                    $imageUrl = $response->data[0]->url;
+                } catch (\Exception $e) {
+                    $retries--;
+                    if ($retries === 0) {
+                        Log::error('Eroare la generarea imaginii după multiple încercări: ' . $e->getMessage());
+                    }
                 }
             }
-        }
 
-        // Verificare și salvare
-        if ($this->generatedStory && $imageUrl) {
-            $story = Story::create([
-                'user_id' => Auth::id(),
-                'title' => $this->storyTitle,
-                'content' => $this->generatedStory,
-                'age' => $this->childAge,
-                'genre' => $this->selectedGenre,
-                'theme' => $theme,
-                'image_url' => $imageUrl,
-            ]);
+            // Verificare și salvare
+            if ($this->generatedStory && $imageUrl) {
+                $story = Story::create([
+                    'user_id' => Auth::id(),
+                    'title' => $this->storyTitle,
+                    'content' => $this->generatedStory,
+                    'age' => $this->childAge,
+                    'genre' => $this->selectedGenre,
+                    'theme' => $theme,
+                    'image_url' => $imageUrl,
+                ]);
 
-            $this->emit('storyGenerated', $story->id);
-            session()->flash('message', 'Povestea și imaginea au fost generate și salvate cu succes!');
-        } else {
-            throw new \Exception('Nu s-a putut genera complet povestea sau imaginea.');
+                $this->emit('storyGenerated', $story->id);
+                session()->flash('message', 'Povestea și imaginea au fost generate și salvate cu succes!');
+            } else {
+                throw new \Exception('Nu s-a putut genera complet povestea sau imaginea.');
+            }
+        } catch (\Exception $e) {
+            Log::error('Eroare la generarea poveștii sau a imaginii: ' . $e->getMessage());
+            $this->addError('generation', 'A apărut o eroare la generarea poveștii sau a imaginii. Vă rugăm să încercați din nou.');
         }
-    } catch (\Exception $e) {
-        Log::error('Eroare la generarea poveștii sau a imaginii: ' . $e->getMessage());
-        $this->addError('generation', 'A apărut o eroare la generarea poveștii sau a imaginii. Vă rugăm să încercați din nou.');
     }
-}
 
     public function render()
     {

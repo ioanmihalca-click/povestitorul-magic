@@ -24,7 +24,7 @@ class StoryFactory extends Factory
             'age' => $this->faker->numberBetween(3, 12),
             'genre' => $this->faker->randomElement($genres),
             'theme' => $this->faker->randomElement($themes),
-            'image_url' => $this->faker->imageUrl(512, 512, 'fantasy', true),
+            'image_url' => $this->faker->imageUrl(1024, 1024, 'fantasy', true),
         ];
     }
 }
