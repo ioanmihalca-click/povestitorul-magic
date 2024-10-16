@@ -3,11 +3,13 @@
 namespace App\Livewire;
 
 use App\Models\Story;
+use Pest\Support\Str;
 use Livewire\Component;
 use Livewire\Attributes\Title;
 use OpenAI\Laravel\Facades\OpenAI;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Anthropic\Laravel\Facades\Anthropic;
 
 #[Title('Atelierul Povestitorului Magic')]
@@ -137,6 +139,30 @@ class StoryGenerator extends Component
         $this->selectedTheme = 'custom';
     }
 
+    private function saveImageLocally($imageUrl)
+{
+    try {
+        $imageContents = file_get_contents($imageUrl);
+        if ($imageContents === false) {
+            throw new \Exception('Nu s-a putut descărca imaginea de la URL-ul furnizat.');
+        }
+
+        $filename = 'story_' . Str::random(10) . '.png';
+        $path = 'public/images/stories/' . $filename;
+        
+        if (!Storage::put($path, $imageContents)) {
+            throw new \Exception('Nu s-a putut salva imaginea în storage.');
+        }
+        
+        return Storage::url($path);
+    } catch (\Exception $e) {
+        // Log eroarea
+        Log::error('Eroare la salvarea imaginii: ' . $e->getMessage());
+        // Returnează URL-ul original în caz de eroare
+        return $imageUrl;
+    }
+}
+
     public function generateStory()
     {
         $this->validate();
@@ -198,7 +224,7 @@ class StoryGenerator extends Component
                     'age' => $this->childAge,
                     'genre' => $this->selectedGenre,
                     'theme' => $theme,
-                    'image_url' => $imageUrl,
+                    'image_url' => $this->saveImageLocally($imageUrl),
                 ]);
 
                 $this->emit('storyGenerated', $story->id);

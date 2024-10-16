@@ -23,6 +23,6 @@ class SingleUserStoriesSeeder extends Seeder
             'user_id' => $user->id,
         ]);
 
-        $this->command->info('Au fost generate 10 povești pentru utilizatorul cu ID-ul ' . $user->id);
+        $this->command->info('Au fost generate 5 povești pentru utilizatorul cu ID-ul ' . $user->id);
     }
 }

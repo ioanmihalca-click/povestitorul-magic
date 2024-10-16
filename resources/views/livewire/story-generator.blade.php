@@ -45,7 +45,8 @@
                                         coșulețul cu idei</p>
                                     <p class="font-bold text-indigo-600"><i
                                             class="mr-2 text-purple-500 fas fa-star"></i>Sau inventează propria temă
-                                        (ex: numele copilului, un loc anume sau o intamplare, prietenie, curaj, familie, etc)</p>
+                                        (ex: numele copilului, un loc anume sau o intamplare, prietenie, curaj, familie,
+                                        etc)</p>
                                 </div>
                             </div>
                         </div>
@@ -148,7 +149,8 @@
                     <h2 class="mb-4 text-2xl font-bold text-indigo-700">{{ $storyTitle }}</h2>
                     @if ($story->image_url)
                         <img src="{{ $story->image_url }}" alt="Ilustrație pentru {{ $storyTitle }}"
-                            class="mb-4 rounded-lg shadow-lg">
+                            class="mb-4 rounded-lg shadow-lg"
+                            onerror="this.onerror=null; this.src='/images/placeholder.webp'; this.alt='Imaginea nu a putut fi încărcată';">
                     @endif
                     <div class="p-6 prose text-indigo-900 bg-white shadow-inner max-w-none rounded-2xl">
                         {!! nl2br(e($generatedStory)) !!}

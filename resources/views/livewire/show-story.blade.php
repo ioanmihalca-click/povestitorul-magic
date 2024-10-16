@@ -4,10 +4,12 @@
             <div class="p-8 bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100">
                 <h1 class="mb-4 text-3xl font-bold text-center text-indigo-700">{{ $story->title }}</h1>
                 <div class="flex justify-center mb-6">
-                    @if($story->image_url)
-                        <img src="{{ $story->image_url }}" alt="Ilustrație pentru {{ $story->title }}" class="h-auto max-w-full rounded-lg shadow-md" >
+                    @if ($story->image_url)
+                        <img src="{{ $story->image_url }}" alt="Ilustrație pentru {{ $story->title }}"
+                            class="h-auto max-w-full rounded-lg shadow-md"
+                            onerror="this.onerror=null; this.src='/images/placeholder.webp'; this.alt='Imaginea nu a putut fi încărcată';">
                     @else
-                        <div class="flex items-center justify-center w-full h-auto bg-gray-200 rounded-lg">
+                        <div class="flex items-center justify-center w-full h-64 bg-gray-200 rounded-lg">
                             <span class="text-gray-500">Fără imagine</span>
                         </div>
                     @endif
@@ -23,7 +25,8 @@
                     </div>
                 </div>
                 <div class="mt-6 text-center">
-                    <a href="{{ route('biblioteca-magica') }}" class="inline-block px-6 py-3 text-white transition duration-300 bg-indigo-500 rounded-full hover:bg-indigo-600">
+                    <a href="{{ route('biblioteca-magica') }}"
+                        class="inline-block px-6 py-3 text-white transition duration-300 bg-indigo-500 rounded-full hover:bg-indigo-600">
                         <i class="mr-2 fas fa-arrow-left"></i>Înapoi la Biblioteca Magică
                     </a>
                 </div>
