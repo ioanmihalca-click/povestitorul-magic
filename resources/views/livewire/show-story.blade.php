@@ -1,7 +1,7 @@
 <div class="py-12">
-    <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto ">
         <div class="overflow-hidden bg-white shadow-lg rounded-3xl">
-            <div class="p-8 bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100">
+            <div class="p-4 bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100">
                 <h1 class="mb-4 text-3xl font-bold text-center text-indigo-700">{{ $story->title }}</h1>
                 <div class="flex justify-center mb-6">
                     @if ($story->image_url)

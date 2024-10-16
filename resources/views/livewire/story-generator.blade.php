@@ -1,5 +1,5 @@
 <div class="py-8">
-    <div class="max-w-4xl px-2 mx-auto sm:px-6 lg:px-8">
+    <div class="max-w-4xl ">
         <div class="overflow-hidden bg-white shadow-lg rounded-3xl">
             <div class="p-4 bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100">
                 <h1 class="mb-6 text-3xl font-bold text-center text-indigo-600">Atelierul Povestitorului Magic</h1>
