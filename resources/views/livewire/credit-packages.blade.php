@@ -13,23 +13,26 @@
                 <h2 class="mb-6 text-2xl font-semibold text-center text-indigo-700">Pachete de Credite</h2>
 
                 <div class="mb-6 text-center">
-                    <p class="text-lg font-semibold text-indigo-600">Preț standard: {{ number_format($basePrice, 2) }} RON per credit</p>
+                    <p class="text-lg font-semibold text-indigo-600">Preț standard: {{ number_format($basePrice, 2) }}
+                        RON per credit</p>
                 </div>
 
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
-                    @foreach ($packages as $package)
+                    @foreach ($packages as $index => $package)
                         <div class="p-4 bg-indigo-100 rounded-lg shadow-sm">
                             <h3 class="mb-2 text-xl font-bold text-indigo-700">{{ $package['credits'] }} Credite</h3>
                             <p class="mb-2 text-indigo-600">Preț: {{ number_format($package['price'], 2) }} RON</p>
-                            <p class="mb-2 text-green-600">Economisiți: {{ $package['discount'] }}</p>
+                            <p class="mb-2 text-green-600">
+                                Economisiți:
+                                {{ number_format($this->getPackageSavings($package['credits'], $package['price']), 2) }}
+                                RON
+                            </p>
                             <p class="mb-4 text-sm text-indigo-500">
-                                {{ number_format($this->getCostPerCredit($package['credits'], $package['price']), 2) }} RON per credit
+                                {{ number_format($this->getCostPerCredit($package['credits'], $package['price']), 2) }}
+                                RON per credit
                             </p>
-                            <p class="mb-2 text-green-700">
-                                Economisiți {{ number_format($basePrice * $package['credits'] - $package['price'], 2) }} RON
-                            </p>
-                            <button wire:click="purchaseCredits({{ $package['credits'] }}, {{ $package['price'] }})"
-                                    class="w-full px-4 py-2 text-white bg-indigo-500 rounded hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
+                            <button wire:click="purchaseCredits({{ $index }})"
+                                class="w-full px-4 py-2 text-white bg-indigo-500 rounded hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
                                 Cumpără
                             </button>
                         </div>
@@ -37,8 +40,14 @@
                 </div>
 
                 @if (session()->has('message'))
-                    <div class="p-4 mt-4 text-green-700 bg-green-100 rounded-xl">
+                    <div class="p-4 mt-4 text-green-700 bg-green-100 rounded">
                         {{ session('message') }}
+                    </div>
+                @endif
+
+                @if (session()->has('error'))
+                    <div class="p-4 mt-4 text-red-700 bg-red-100 rounded">
+                        {{ session('error') }}
                     </div>
                 @endif
             </div>
