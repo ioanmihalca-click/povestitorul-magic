@@ -1,18 +1,43 @@
-<div class="py-8">
+<div x-data="{
+    userCredits: {{ $userCredits }},
+    requiredCredits: 1,
+    insufficientCredits() { return this.userCredits < this.requiredCredits; }
+}" 
+x-init="
+    Livewire.on('creditsUpdated', (newCredits) => {
+        userCredits = newCredits;
+    });
+">
     <div class="max-w-4xl mx-auto">
-
         <div class="overflow-hidden bg-white shadow-lg rounded-3xl">
             <div class="p-4 bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100">
                 <h1 class="mb-6 text-3xl font-bold text-center text-indigo-600">Atelierul Povestitorului Magic</h1>
 
-                <div class="mb-4 text-center">
-                    <p class="font-bold text-indigo-600">
-                        <i class="mr-2 fas fa-coins"></i>Credite disponibile: {{ $userCredits }}
-                    </p>
-                    <p class="mt-2 text-sm text-indigo-500">
-                        Valoare totală credite: {{ number_format($userCreditValue, 2) }} RON
-                    </p>
-                </div>
+                    <div class="mb-4 text-center">
+        <p class="font-bold" :class="{ 'text-green-600': !insufficientCredits(), 'text-indigo-600': insufficientCredits() }">
+            <i class="mr-2 fas" :class="{ 'fa-check-circle': !insufficientCredits(), 'fa-coins': insufficientCredits() }"></i>
+            Credite disponibile: <span x-text="userCredits"></span>
+        </p>
+        <p class="mt-2 text-sm text-indigo-500">
+            Valoare totală credite: {{ number_format($userCreditValue, 2) }} RON
+        </p>
+        {{-- <p class="mt-2 text-sm font-medium text-indigo-600">
+            O poveste cu text și ilustrație: 
+            <span x-text="requiredCredits"></span> credit<span x-show="requiredCredits !== 1">e</span> 
+            <span x-text="(requiredCredits * creditValue).toFixed(2)"></span>
+        </p> --}}
+    </div>
+
+                <template x-if="insufficientCredits()">
+                    <div class="p-4 mb-4 text-center text-yellow-700 bg-yellow-100 rounded-xl">
+                        <p><i class="mr-2 fas fa-exclamation-triangle"></i>Atenție: Nu aveți suficiente credite pentru a genera o poveste.</p>
+                        <p class="mt-2">
+                            <a href="{{ route('credits') }}" class="font-bold text-indigo-600 hover:text-indigo-800">
+                                Cumpărați credite acum
+                            </a>
+                        </p>
+                    </div>
+                </template>
 
                 <div
                     class="max-w-2xl p-4 mx-auto mb-6 border-2 border-yellow-300 shadow-md bg-gradient-to-br from-green-100 to-blue-100 rounded-2xl">
