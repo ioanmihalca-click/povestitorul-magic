@@ -5,7 +5,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Povestitorul Magic</title>
+    <title>Povestitorul Magic - Povești Interactive și Personalizate pentru Copii</title>
+
+     <meta name="description" content="Povestitorul Magic creează povești interactive și personalizate care încântă imaginația copiilor. Explorează o lume de aventuri, basme și lecții educative adaptate vârstei copilului tău.">
+    
+    <meta name="keywords" content="povești pentru copii, povești personalizate, povești interactive, basme, aventuri pentru copii, educație prin povești">
+    
+    <meta name="author" content="Povestitorul Magic">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url('/') }}">
+    <meta property="og:title" content="Povestitorul Magic - Povești Interactive pentru Copii">
+    <meta property="og:description" content="Descoperă lumea magică a poveștilor personalizate pentru copilul tău. Creăm aventuri unice adaptate vârstei fiecărui copil.">
+    <meta property="og:image" content="{{ asset('assets/og-image.jpg') }}">
 
     <link rel="icon" type="image/png" href="assets/favicon/favicon-48x48.png" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="assets/favicon/favicon.svg" />
@@ -116,7 +129,7 @@
                                 <div class="flex items-center justify-center flex-shrink-0 w-10 h-10 mr-4 text-lg font-bold text-white bg-indigo-500 rounded-full">2</div>
                                 <div>
                                     <h3 class="text-xl font-semibold text-indigo-700">Alege genul poveștii</h3>
-                                    <p class="text-gray-600">Selectează un gen magic (ex: "Aventură" sau "Basm")</p>
+                                    <p class="text-gray-600">Selectează un gen magic (Animale, Aventură, Basm, Comic, Educativ, Fantezie, Legende Românești, Povestiri din Biblie)</p>
                                 </div>
                             </div>
                             <div class="flex items-start">

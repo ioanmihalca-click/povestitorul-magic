@@ -23,19 +23,19 @@ new class extends Component {
             <div class="flex">
                 <!-- Logo -->
                 <div class="flex items-center shrink-0">
-                    <a href="{{ route('biblioteca-magica') }}" wire:navigate>
+                    <a href="/" wire:navigate>
                         <img src="{{ asset('assets/logo.jpg') }}" alt="Logo Povestitorul Magic" class="block w-auto h-16 text-gray-800 fill-current" />
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('biblioteca-magica')" :active="request()->routeIs('biblioteca-magica')" wire:navigate>
+                    <x-nav-link :href="route('biblioteca-magica')" wire:navigate :active="request()->routeIs('biblioteca-magica')" wire:navigate>
                         {{ __('Biblioteca Magica') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('povestitorulmagic')" :active="request()->routeIs('povestitorulmagic')">
-                        {{ __('Spune-mi o poveste') }}
+                    <x-nav-link :href="route('povestitorulmagic')" wire:navigate :active="request()->routeIs('povestitorulmagic')">
+                        {{ __('Crează o poveste') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -94,12 +94,12 @@ new class extends Component {
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('biblioteca-magica')" :active="request()->routeIs('biblioteca-magica')" wire:navigate>
+            <x-responsive-nav-link :href="route('biblioteca-magica')" wire:navigate :active="request()->routeIs('biblioteca-magica')" wire:navigate>
                 {{ __('Biblioteca-Magica') }}
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('povestitorulmagic')" :active="request()->routeIs('povestitorulmagic')">
-                        {{ __('Spune-mi o poveste') }}
+            <x-responsive-nav-link :href="route('povestitorulmagic')" wire:navigate :active="request()->routeIs('povestitorulmagic')">
+                        {{ __('Crează o poveste') }}
                     </x-responsive-nav-link>
         </div>
 
