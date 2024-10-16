@@ -296,11 +296,11 @@ private function saveStory($theme, $imageUrl)
     ]);
 }
 
-// private function handleGenerationError(\Exception $e)
-// {
-//     Log::error('Eroare la generarea poveștii sau a imaginii: ' . $e->getMessage());
-//     $this->addError('generation', 'A apărut o eroare la generarea poveștii sau a imaginii. Vă rugăm să încercați din nou.');
-// }
+private function handleGenerationError(\Exception $e)
+{
+    Log::error('Eroare la generarea poveștii sau a imaginii: ' . $e->getMessage());
+    $this->addError('generation', 'A apărut o eroare la generarea poveștii sau a imaginii. E posibil sa aveți suficiente credite. Vă rugăm să încercați din nou.');
+}
 
 public function mount()
 {
