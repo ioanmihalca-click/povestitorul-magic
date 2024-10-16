@@ -45,7 +45,7 @@
                                         coșulețul cu idei</p>
                                     <p class="font-bold text-indigo-600"><i
                                             class="mr-2 text-purple-500 fas fa-star"></i>Sau inventează propria temă
-                                        (ex: numele copilului, un loc anume sau o intamplare)</p>
+                                        (ex: numele copilului, un loc anume sau o intamplare, prietenie, curaj, familie, etc)</p>
                                 </div>
                             </div>
                         </div>
