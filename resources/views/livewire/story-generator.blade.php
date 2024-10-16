@@ -4,23 +4,23 @@
             <div class="p-4 bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100">
                 <h1 class="mb-6 text-3xl font-bold text-center text-indigo-600">Atelierul Povestitorului Magic</h1>
                 
-                <form wire:submit.prevent="generateStory" class="space-y-8">
-                    <div class="p-4 bg-yellow-100 shadow-inner rounded-2xl">
-                        <label for="childAge" class="block mb-2 text-lg font-medium text-indigo-700">
-                            <i class="mr-2 fas fa-birthday-cake"></i>Vârsta micului ascultător
-                        </label>
-                        <input wire:model="childAge" type="number" id="childAge" class="block w-full text-xl bg-white border-2 border-indigo-300 shadow-sm rounded-xl focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                        @error('childAge') <span class="mt-1 text-sm text-red-500">{{ $message }}</span> @enderror
-                    </div>
-
-                   <div class="max-w-2xl p-4 mx-auto border-2 border-yellow-300 shadow-md bg-gradient-to-br from-green-100 to-blue-100 rounded-2xl">
+         
+                  <div class="max-w-2xl p-4 mx-auto mb-6 border-2 border-yellow-300 shadow-md bg-gradient-to-br from-green-100 to-blue-100 rounded-2xl">
     <h2 class="mb-3 text-2xl font-bold text-center text-indigo-700">
         <i class="mr-2 fas fa-hat-wizard"></i>Ingredientele magice ale poveștii
     </h2>
-    
-    <div class="space-y-4">
+                    <div class="space-y-4">
+
         <div class="flex items-start">
             <div class="flex items-center justify-center flex-shrink-0 w-8 h-8 mt-1 mr-3 text-sm font-bold text-white bg-indigo-500 rounded-full">1</div>
+            <div>
+                <h3 class="text-lg font-semibold text-indigo-700">Alege varsta copilului</h3>
+                <p class="text-sm text-indigo-600">Alege vârsta micuțului ascultător pentru a crea o poveste potrivită.</p>
+            </div>
+        </div>
+
+        <div class="flex items-start">
+            <div class="flex items-center justify-center flex-shrink-0 w-8 h-8 mt-1 mr-3 text-sm font-bold text-white bg-indigo-500 rounded-full">2</div>
             <div>
                 <h3 class="text-lg font-semibold text-indigo-700">Alege genul poveștii</h3>
                 <p class="text-sm text-indigo-600">Selectează un gen magic (ex: "Aventură" sau "Basm")</p>
@@ -28,12 +28,12 @@
         </div>
 
         <div class="flex items-start">
-            <div class="flex items-center justify-center flex-shrink-0 w-8 h-8 mt-1 mr-3 text-sm font-bold text-white bg-indigo-500 rounded-full">2</div>
+            <div class="flex items-center justify-center flex-shrink-0 w-8 h-8 mt-1 mr-3 text-sm font-bold text-white bg-indigo-500 rounded-full">3</div>
             <div>
                 <h3 class="text-lg font-semibold text-indigo-700">Alege tema poveștii</h3>
                 <div class="space-y-2 text-sm">
                     <p class="text-indigo-600"><i class="mr-2 text-yellow-500 fas fa-star"></i>Alege din coșulețul cu idei</p>
-                    <p class="font-bold text-indigo-600"><i class="mr-2 text-purple-500 fas fa-star"></i>Sau inventează propria temă</p>
+                    <p class="font-bold text-indigo-600"><i class="mr-2 text-purple-500 fas fa-star"></i>Sau inventează propria temă (ex: numele copilului, un loc anume sau o intamplare)</p>
                 </div>
             </div>
         </div>
@@ -45,6 +45,17 @@
         </p>
     </div>
 </div>
+
+
+                <form wire:submit.prevent="generateStory" class="space-y-8">
+                    <div class="p-4 bg-yellow-100 shadow-inner rounded-2xl">
+                        <label for="childAge" class="block mb-2 text-lg font-medium text-indigo-700">
+                            <i class="mr-2 fas fa-birthday-cake"></i>Vârsta micului ascultător
+                        </label>
+                        <input wire:model="childAge" type="number" id="childAge" class="block w-full text-xl bg-white border-2 border-indigo-300 shadow-sm rounded-xl focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        @error('childAge') <span class="mt-1 text-sm text-red-500">{{ $message }}</span> @enderror
+                    </div>
+
 
                     <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
     @foreach($availableGenres as $genre => $details)
