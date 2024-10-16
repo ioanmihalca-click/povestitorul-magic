@@ -4,8 +4,13 @@ use App\Livewire\Dashboard;
 use App\Livewire\ShowStory;
 use App\Livewire\StoryGenerator;
 use Illuminate\Support\Facades\Route;
+use App\Models\Story;
 
-Route::view('/', 'welcome');
+
+Route::get('/', function () {
+    $randomStory = Story::inRandomOrder()->first();
+    return view('welcome', compact('randomStory'));
+});
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])
