@@ -7,6 +7,13 @@
 
     <title>Povestitorul Magic</title>
 
+    <link rel="icon" type="image/png" href="assets/favicon/favicon-48x48.png" sizes="48x48" />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="assets/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Povestitorul Magic" />
+    <link rel="manifest" href="assets/favicon/site.webmanifest" />
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
@@ -43,13 +50,14 @@
                     <p class="mb-8 text-xl text-gray-700">Creăm povești interactive și personalizate care vor încânta
                         imaginația copilului tău.</p>
 
-<div class="flex items-center justify-center w-full mt-8">
-    <div class="inline-flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
-        @if (Route::has('login'))
-            <livewire:welcome.navigation />
-        @endif
-    </div>
-</div>
+                    <div class="flex items-center justify-center w-full mt-8">
+                        <div
+                            class="inline-flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
+                            @if (Route::has('login'))
+                                <livewire:welcome.navigation />
+                            @endif
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Elemente suplimentare -->
@@ -72,8 +80,8 @@
 
 
     </div>
-            <!-- Footer -->
-        <x-footer />
+    <!-- Footer -->
+    <x-footer />
 </body>
 
 </html>
