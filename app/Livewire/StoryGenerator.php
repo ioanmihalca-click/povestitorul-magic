@@ -4,11 +4,13 @@ namespace App\Livewire;
 
 use App\Models\Story;
 use Livewire\Component;
+use Livewire\Attributes\Title;
 use OpenAI\Laravel\Facades\OpenAI;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Anthropic\Laravel\Facades\Anthropic;
 
+#[Title('Atelierul Povestitorului Magic')]
 class StoryGenerator extends Component
 {
     public $childAge;

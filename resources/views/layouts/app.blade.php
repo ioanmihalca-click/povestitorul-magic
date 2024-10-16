@@ -7,21 +7,22 @@
 
     <title>{{ $title ?? 'Povestitorul Magic' }}</title>
 
-    <link rel="icon" type="image/png" href="assets/favicon/favicon-48x48.png" sizes="48x48" />
-    <link rel="icon" type="image/svg+xml" href="assets/favicon/favicon.svg" />
-    <link rel="shortcut icon" href="assets/favicon/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" href="{{ asset('assets/favicon/favicon-48x48.png') }}" sizes="48x48" />
+    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/favicon/favicon.svg') }}" />
+    <link rel="shortcut icon" href="{{ asset('assets/favicon/favicon.ico') }}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/favicon/apple-touch-icon.png') }}" />
     <meta name="apple-mobile-web-app-title" content="Povestitorul Magic" />
-    <link rel="manifest" href="assets/favicon/site.webmanifest" />
+    <link rel="manifest" href="{{ asset('assets/favicon/site.webmanifest') }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
 </head>
 
 <body class="font-['Nunito'] antialiased">
@@ -43,6 +44,7 @@
         </main>
     </div>
     <x-footer />
+    @livewireScripts
 </body>
 
 </html>

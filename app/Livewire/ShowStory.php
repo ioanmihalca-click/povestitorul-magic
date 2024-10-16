@@ -5,7 +5,9 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Story;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.app')]
 class ShowStory extends Component
 {
     use AuthorizesRequests;
@@ -20,7 +22,7 @@ class ShowStory extends Component
 
     public function render()
     {
-        return view('livewire.show-story');
-           
+        return view('livewire.show-story')
+            ->title($this->story->title . ' - Povestitorul Magic');
     }
 }

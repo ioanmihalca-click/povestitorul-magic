@@ -2,10 +2,12 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
 use App\Models\Story;
+use Livewire\Component;
+use Livewire\Attributes\Title;
 use Illuminate\Support\Facades\Auth;
 
+#[Title('Biblioteca Magica | Povestitorul Magic')]
 class Dashboard extends Component
 {
     public function render()
