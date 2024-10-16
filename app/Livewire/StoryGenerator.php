@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Storage;
 use Anthropic\Laravel\Facades\Anthropic;
 use Spatie\LaravelImageOptimizer\Facades\ImageOptimizer;
 
+
+
 #[Title('Atelierul Povestitorului Magic')]
 class StoryGenerator extends Component
 {
@@ -23,6 +25,10 @@ class StoryGenerator extends Component
     public $customTheme = '';
     public $generatedStory;
     public $storyTitle;
+    public $userCredits;
+    public $userCreditValue;
+
+    protected $listeners = ['creditsUpdated' => 'refreshCredits'];
 
     public $availableGenres = [
         'Animale' => [
@@ -196,15 +202,29 @@ public function generateStory()
     try {
         $this->validate();
 
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $requiredCredits = 1;
+
+        if (!$user->hasSufficientCredits($requiredCredits)) {
+            throw new \Exception('Nu aveți suficiente credite pentru a genera o poveste. Vă rugăm să achiziționați mai multe credite.');
+        }
+
         $theme = $this->selectedTheme === 'custom' ? $this->customTheme : $this->selectedTheme;
 
         $this->generateStoryContent($theme);
         $imageUrl = $this->generateStoryImage($theme);
 
         if ($this->generatedStory && $imageUrl) {
+            // Deducem creditele doar dacă generarea a fost un succes
+            if (!$user->deductCredits($requiredCredits)) {
+                throw new \Exception('A apărut o eroare la deducerea creditelor. Vă rugăm să încercați din nou.');
+            }
+
             $story = $this->saveStory($theme, $imageUrl);
             $this->emit('storyGenerated', $story->id);
-            session()->flash('message', 'Povestea și imaginea au fost generate și salvate cu succes!');
+            $this->emit('creditsUpdated');
+            session()->flash('message', 'Povestea și imaginea au fost generate și salvate cu succes! S-a dedus 1 credit din contul dumneavoastră.');
         } else {
             throw new \Exception('Nu s-a putut genera complet povestea sau imaginea.');
         }
@@ -276,27 +296,27 @@ private function saveStory($theme, $imageUrl)
     ]);
 }
 
-private function handleGenerationError(\Exception $e)
+// private function handleGenerationError(\Exception $e)
+// {
+//     Log::error('Eroare la generarea poveștii sau a imaginii: ' . $e->getMessage());
+//     $this->addError('generation', 'A apărut o eroare la generarea poveștii sau a imaginii. Vă rugăm să încercați din nou.');
+// }
+
+public function mount()
 {
-    Log::error('Eroare la generarea poveștii sau a imaginii: ' . $e->getMessage());
-    $this->addError('generation', 'A apărut o eroare la generarea poveștii sau a imaginii. Vă rugăm să încercați din nou.');
+    $this->refreshCredits();
 }
 
-public function getUserCredits()
+public function refreshCredits()
 {
-    return Auth::user()->credits;
-}
-
-public function getUserCreditValue()
-{
-    return Auth::user()->remaining_credit_value;
+    $user = Auth::user();
+    $this->userCredits = $user->credits;
+    $this->userCreditValue = $user->remaining_credit_value;
 }
 
 public function render()
 {
-    return view('livewire.story-generator', [
-        'userCredits' => $this->getUserCredits(),
-        'userCreditValue' => $this->getUserCreditValue(),
-    ]);
+    return view('livewire.story-generator');
 }
+
 }
