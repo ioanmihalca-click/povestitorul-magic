@@ -1,0 +1,46 @@
+    <div class="py-12">
+        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="p-6 bg-white rounded-lg shadow-md">
+                <div class="mb-6 text-center">
+                    <p class="font-bold text-indigo-600">
+                        <i class="mr-2 fas fa-coins"></i>Credite disponibile: {{ $userCredits }}
+                    </p>
+                    <p class="mt-2 text-sm text-indigo-500">
+                        Valoare totală credite: {{ number_format($userCreditValue, 2) }} RON
+                    </p>
+                </div>
+
+                <h2 class="mb-6 text-2xl font-semibold text-center text-indigo-700">Pachete de Credite</h2>
+
+                <div class="mb-6 text-center">
+                    <p class="text-lg font-semibold text-indigo-600">Preț standard: {{ number_format($basePrice, 2) }} RON per credit</p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+                    @foreach ($packages as $package)
+                        <div class="p-4 bg-indigo-100 rounded-lg shadow-sm">
+                            <h3 class="mb-2 text-xl font-bold text-indigo-700">{{ $package['credits'] }} Credite</h3>
+                            <p class="mb-2 text-indigo-600">Preț: {{ number_format($package['price'], 2) }} RON</p>
+                            <p class="mb-2 text-green-600">Economisiți: {{ $package['discount'] }}</p>
+                            <p class="mb-4 text-sm text-indigo-500">
+                                {{ number_format($this->getCostPerCredit($package['credits'], $package['price']), 2) }} RON per credit
+                            </p>
+                            <p class="mb-2 text-green-700">
+                                Economisiți {{ number_format($basePrice * $package['credits'] - $package['price'], 2) }} RON
+                            </p>
+                            <button wire:click="purchaseCredits({{ $package['credits'] }}, {{ $package['price'] }})"
+                                    class="w-full px-4 py-2 text-white bg-indigo-500 rounded hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
+                                Cumpără
+                            </button>
+                        </div>
+                    @endforeach
+                </div>
+
+                @if (session()->has('message'))
+                    <div class="p-4 mt-4 text-green-700 bg-green-100 rounded-xl">
+                        {{ session('message') }}
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>

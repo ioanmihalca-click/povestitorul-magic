@@ -282,8 +282,21 @@ private function handleGenerationError(\Exception $e)
     $this->addError('generation', 'A apărut o eroare la generarea poveștii sau a imaginii. Vă rugăm să încercați din nou.');
 }
 
-    public function render()
-    {
-        return view('livewire.story-generator');
-    }
+public function getUserCredits()
+{
+    return Auth::user()->credits;
+}
+
+public function getUserCreditValue()
+{
+    return Auth::user()->remaining_credit_value;
+}
+
+public function render()
+{
+    return view('livewire.story-generator', [
+        'userCredits' => $this->getUserCredits(),
+        'userCreditValue' => $this->getUserCreditValue(),
+    ]);
+}
 }

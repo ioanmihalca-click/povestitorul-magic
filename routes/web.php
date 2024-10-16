@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\CreditPackages;
 use App\Livewire\Dashboard;
 use App\Livewire\ShowStory;
 use App\Livewire\StoryGenerator;
@@ -20,6 +21,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/biblioteca-magica', Dashboard::class)->name('biblioteca-magica');
     Route::get('/povestitorulmagic', StoryGenerator::class)->name('povestitorulmagic');
     Route::get('/povestea/{story}', ShowStory::class)->name('story.show');
+    Route::get('/credite', CreditPackages::class)->name('credits');
 });
 
 require __DIR__ . '/auth.php';

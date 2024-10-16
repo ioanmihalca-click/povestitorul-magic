@@ -24,7 +24,8 @@ new class extends Component {
                 <!-- Logo -->
                 <div class="flex items-center shrink-0">
                     <a href="/" wire:navigate>
-                        <img src="{{ asset('assets/logo.jpg') }}" alt="Logo Povestitorul Magic" class="block w-auto h-16 text-gray-800 fill-current" />
+                        <img src="{{ asset('assets/logo.jpg') }}" alt="Logo Povestitorul Magic"
+                            class="block w-auto h-16 text-gray-800 fill-current" />
                     </a>
                 </div>
 
@@ -36,6 +37,10 @@ new class extends Component {
 
                     <x-nav-link :href="route('povestitorulmagic')" wire:navigate :active="request()->routeIs('povestitorulmagic')">
                         {{ __('Crează o poveste') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('credits')" wire:navigate :active="request()->routeIs('credits')">
+                        {{ __('Credite') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -99,8 +104,12 @@ new class extends Component {
             </x-responsive-nav-link>
 
             <x-responsive-nav-link :href="route('povestitorulmagic')" wire:navigate :active="request()->routeIs('povestitorulmagic')">
-                        {{ __('Crează o poveste') }}
-                    </x-responsive-nav-link>
+                {{ __('Crează o poveste') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('credits')" wire:navigate :active="request()->routeIs('credits')">
+                {{ __('Credite') }}
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->

@@ -1,9 +1,18 @@
 <div class="py-8">
     <div class="max-w-4xl mx-auto">
+
         <div class="overflow-hidden bg-white shadow-lg rounded-3xl">
             <div class="p-4 bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100">
                 <h1 class="mb-6 text-3xl font-bold text-center text-indigo-600">Atelierul Povestitorului Magic</h1>
 
+                <div class="mb-4 text-center">
+                    <p class="font-bold text-indigo-600">
+                        <i class="mr-2 fas fa-coins"></i>Credite disponibile: {{ $userCredits }}
+                    </p>
+                    <p class="mt-2 text-sm text-indigo-500">
+                        Valoare totală credite: {{ number_format($userCreditValue, 2) }} RON
+                    </p>
+                </div>
 
                 <div
                     class="max-w-2xl p-4 mx-auto mb-6 border-2 border-yellow-300 shadow-md bg-gradient-to-br from-green-100 to-blue-100 rounded-2xl">
