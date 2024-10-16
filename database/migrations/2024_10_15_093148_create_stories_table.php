@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedTinyInteger('age');
             $table->enum('genre', array_column(StoryGenre::cases(), 'value'));
             $table->string('theme');
+            $table->string('image_url')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

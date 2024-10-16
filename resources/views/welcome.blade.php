@@ -72,7 +72,7 @@
                     </div>
                     <div class="text-center">
                         <i class="mb-2 text-3xl text-blue-500 fas fa-book-reader"></i>
-                        <p class="text-sm text-gray-600">Experiențe Interactive</p>
+                        <p class="text-sm text-gray-600">Ilustrații Interactive</p>
                     </div>
                 </div>
             </div>

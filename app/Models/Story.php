@@ -11,7 +11,7 @@ class Story extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['user_id', 'title', 'content', 'age', 'genre', 'theme'];
+    protected $fillable = ['user_id', 'title', 'content', 'age', 'genre', 'theme', 'image_url'];
 
     protected $casts = [
         'genre' => StoryGenre::class,
