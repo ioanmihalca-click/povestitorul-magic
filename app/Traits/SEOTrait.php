@@ -16,12 +16,12 @@ trait SEOTrait
 
     public function getCanonicalUrl()
     {
-        return url()->current();
+        return route('blog.show', $this->slug);
     }
 
     public function getOgType()
     {
-        return 'website';
+        return 'article';
     }
 
     public function getOgUrl()
