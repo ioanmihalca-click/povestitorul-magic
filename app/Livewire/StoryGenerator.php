@@ -3,8 +3,10 @@
 namespace App\Livewire;
 
 use App\Models\Story;
-use Pest\Support\Str;
+use GuzzleHttp\Client;
 use Livewire\Component;
+use Illuminate\Support\Str;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use OpenAI\Laravel\Facades\OpenAI;
 use Illuminate\Support\Facades\Log;
@@ -12,9 +14,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Anthropic\Laravel\Facades\Anthropic;
+use GuzzleHttp\Exception\RequestException;
 use Spatie\LaravelImageOptimizer\Facades\ImageOptimizer;
-
-
 
 #[Title('Atelierul Povestitorului Magic')]
 class StoryGenerator extends Component
@@ -27,8 +28,7 @@ class StoryGenerator extends Component
     public $storyTitle;
     public $userCredits;
     public $userCreditValue;
-
-    protected $listeners = ['creditsUpdated' => 'refreshCredits'];
+    public $story;
 
     public $availableGenres = [
         'Animale' => [
@@ -149,174 +149,194 @@ class StoryGenerator extends Component
 
 
 
-private function saveImageLocally($imageUrl)
-{
-    try {
-        $imageContents = file_get_contents($imageUrl);
-        if ($imageContents === false) {
-            throw new \Exception('Nu s-a putut descărca imaginea de la URL-ul furnizat.');
-        }
-
-        $filename = 'story_' . Str::random(10) . '.webp';
-        $tempPath = storage_path('app/temp/' . $filename);
-        $finalPath = 'public/images/stories/' . $filename;
-        $fullFinalPath = storage_path('app/' . $finalPath);
-
-        // Asigură-te că directoarele există
-        File::ensureDirectoryExists(dirname($tempPath));
-        File::ensureDirectoryExists(dirname($fullFinalPath));
-        
-        // Salvează imaginea temporar
-        if (!file_put_contents($tempPath, $imageContents)) {
-            throw new \Exception('Nu s-a putut salva imaginea temporară.');
-        }
-
-        // Optimizează imaginea
-        ImageOptimizer::optimize($tempPath, $fullFinalPath);
-
-        // Verifică dacă imaginea optimizată a fost creată cu succes și are conținut
-        if (!File::exists($fullFinalPath) || File::size($fullFinalPath) == 0) {
-            throw new \Exception('Nu s-a putut optimiza și salva imaginea sau fișierul rezultat este gol.');
-        }
-
-        // Șterge fișierul temporar
-        File::delete($tempPath);
-
-        return Storage::url($finalPath);
-    } catch (\Exception $e) {
-        Log::error('Eroare la salvarea/optimizarea imaginii WebP: ' . $e->getMessage());
-        
-        // Curăță fișierele în caz de eroare
-        if (File::exists($tempPath)) {
-            File::delete($tempPath);
-        }
-        if (File::exists($fullFinalPath)) {
-            File::delete($fullFinalPath);
-        }
-        
-        return $imageUrl; // Returnează URL-ul original în caz de eroare
-    }
-}
-public function generateStory()
-{
-    try {
-        $this->validate();
-
-        /** @var \App\Models\User $user */
-        $user = Auth::user();
-        $requiredCredits = 1;
-
-        if (!$user->hasSufficientCredits($requiredCredits)) {
-            throw new \Exception('Nu aveți suficiente credite pentru a genera o poveste. Vă rugăm să achiziționați mai multe credite.');
-        }
-
-        $theme = $this->selectedTheme === 'custom' ? $this->customTheme : $this->selectedTheme;
-
-        $this->generateStoryContent($theme);
-        $imageUrl = $this->generateStoryImage($theme);
-
-        if ($this->generatedStory && $imageUrl) {
-            // Deducem creditele doar dacă generarea a fost un succes
-            if (!$user->deductCredits($requiredCredits)) {
-                throw new \Exception('A apărut o eroare la deducerea creditelor. Vă rugăm să încercați din nou.');
+    private function saveImageLocally($imageUrl, $retries = 3)
+    {
+        $client = new Client(['timeout' => 120]); // Timeout de 120 secunde
+        $tempPath = null;
+        $fullFinalPath = null;
+    
+        while ($retries > 0) {
+            try {
+                $response = $client->get($imageUrl);
+                
+                if ($response->getStatusCode() !== 200) {
+                    throw new \Exception('Răspuns neașteptat de la server: ' . $response->getStatusCode());
+                }
+    
+                $contentType = $response->getHeaderLine('Content-Type');
+                if (!str_starts_with($contentType, 'image/')) {
+                    throw new \Exception('Conținutul descărcat nu este o imagine: ' . $contentType);
+                }
+    
+                $imageContents = $response->getBody()->getContents();
+                $hash = md5($imageContents);
+                $filename = 'story_' . $hash . '.webp';
+                
+                $tempPath = storage_path('app/temp/' . $filename);
+                $finalPath = 'public/images/stories/' . $filename;
+                $fullFinalPath = storage_path('app/' . $finalPath);
+    
+                File::ensureDirectoryExists(dirname($tempPath));
+                File::ensureDirectoryExists(dirname($fullFinalPath));
+                
+                File::put($tempPath, $imageContents);
+    
+                ImageOptimizer::optimize($tempPath, $fullFinalPath);
+    
+                if (!File::exists($fullFinalPath) || File::size($fullFinalPath) == 0) {
+                    throw new \Exception('Nu s-a putut optimiza și salva imaginea sau fișierul rezultat este gol.');
+                }
+    
+                File::delete($tempPath);
+    
+                return Storage::url($finalPath);
+            } catch (RequestException $e) {
+                $retries--;
+                if ($retries === 0) {
+                    Log::error('Eroare la descărcarea imaginii după multiple încercări: ' . $e->getMessage());
+                    return $imageUrl; // Returnăm URL-ul original după epuizarea încercărilor
+                }
+                sleep(2); // Așteptăm 2 secunde înainte de a reîncerca
+            } catch (\Exception $e) {
+                Log::error('Eroare la salvarea/optimizarea imaginii WebP: ' . $e->getMessage());
+                
+                // Curățăm fișierele temporare
+                if ($tempPath && File::exists($tempPath)) {
+                    File::delete($tempPath);
+                }
+                if ($fullFinalPath && File::exists($fullFinalPath)) {
+                    File::delete($fullFinalPath);
+                }
+                
+                return $imageUrl; // Returnăm URL-ul original în caz de eroare
             }
-
-            $story = $this->saveStory($theme, $imageUrl);
-            $this->emit('storyGenerated', $story->id);
-            $this->emit('creditsUpdated');
-            session()->flash('message', 'Povestea și imaginea au fost generate și salvate cu succes! S-a dedus 1 credit din contul dumneavoastră.');
-        } else {
-            throw new \Exception('Nu s-a putut genera complet povestea sau imaginea.');
         }
-    } catch (\Exception $e) {
-        $this->handleGenerationError($e);
+    
+        return $imageUrl; // Returnăm URL-ul original dacă toate încercările au eșuat
     }
-}
 
-private function generateStoryContent($theme)
-{
-    $prompt = "Generează o poveste scurtă in limba romană pentru un copil de {$this->childAge} ani. 
-               Genul poveștii: {$this->selectedGenre}. 
-               Tema poveștii: {$theme}.
-               Includeți și un titlu potrivit pentru poveste.";
-
-    $response = Anthropic::messages()->create([
-        'model' => 'claude-3-5-sonnet-20240620',
-        'max_tokens' => 1000,
-        'messages' => [
-            ['role' => 'user', 'content' => $prompt]
-        ],
-    ]);
-
-    $generatedContent = $response->content[0]->text;
-
-    preg_match('/Titlu: (.+)\n\n(.+)/s', $generatedContent, $matches);
-    $this->storyTitle = $matches[1] ?? 'Poveste fără titlu';
-    $this->generatedStory = $matches[2] ?? $generatedContent;
-}
-
-private function generateStoryImage($theme)
-{
-    $imagePrompt = "O ilustrație pentru copii reprezentând o scenă dintr-o poveste de genul {$this->selectedGenre} cu tema: {$theme}. Stilul trebuie să fie potrivit pentru un copil de {$this->childAge} ani, folosind culori vii și personaje prietenoase.";
-
-    $retries = 3;
-    $imageUrl = null;
-    while ($retries > 0 && $imageUrl === null) {
+    public function generateStory()
+    {
         try {
-            $response = OpenAI::images()->create([
-                'model' => 'dall-e-3',
-                'prompt' => $imagePrompt,
-                'n' => 1,
-                'size' => '1024x1024',
-                'quality' => "standard",
-                'response_format' => 'url',
-            ], ['timeout' => 120]);
-            $imageUrl = $response->data[0]->url;
-        } catch (\Exception $e) {
-            $retries--;
-            if ($retries === 0) {
-                Log::error('Eroare la generarea imaginii după multiple încercări: ' . $e->getMessage());
-                throw $e;
+            $this->validate();
+
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+            $requiredCredits = 1;
+
+            if (!$user->hasSufficientCredits($requiredCredits)) {
+                throw new \Exception('Nu aveți suficiente credite pentru a genera o poveste. Vă rugăm să achiziționați mai multe credite.');
             }
+
+            $theme = $this->selectedTheme === 'custom' ? $this->customTheme : $this->selectedTheme;
+
+            $this->generateStoryContent($theme);
+            $imageUrl = $this->generateStoryImage($theme);
+
+            if ($this->generatedStory && $imageUrl) {
+                if (!$user->deductCredits($requiredCredits)) {
+                    throw new \Exception('A apărut o eroare la deducerea creditelor. Vă rugăm să încercați din nou.');
+                }
+
+                $story = $this->saveStory($theme, $imageUrl);
+                $this->dispatch('storyGenerated', storyId: $story->id);
+                $this->dispatch('creditsUpdated');
+                session()->flash('message', 'Povestea și imaginea au fost generate și salvate cu succes! S-a dedus 1 credit din contul dumneavoastră.');
+            } else {
+                throw new \Exception('Nu s-a putut genera complet povestea sau imaginea.');
+            }
+        } catch (\Exception $e) {
+            $this->handleGenerationError($e);
         }
     }
-    return $imageUrl;
-}
 
-private function saveStory($theme, $imageUrl)
-{
-    return Story::create([
-        'user_id' => Auth::id(),
-        'title' => $this->storyTitle,
-        'content' => $this->generatedStory,
-        'age' => $this->childAge,
-        'genre' => $this->selectedGenre,
-        'theme' => $theme,
-        'image_url' => $this->saveImageLocally($imageUrl),
-    ]);
-}
+    private function generateStoryContent($theme)
+    {
+        $prompt = "Generează o poveste in limba romană pentru un copil de {$this->childAge} ani. 
+                   Genul poveștii: {$this->selectedGenre}. 
+                   Tema poveștii: {$theme}.
+                   Includeți și un titlu potrivit pentru poveste.";
 
-private function handleGenerationError(\Exception $e)
-{
-    Log::error('Eroare la generarea poveștii sau a imaginii: ' . $e->getMessage());
-    $this->addError('generation', 'A apărut o eroare la generarea poveștii sau a imaginii. E posibil sa aveți suficiente credite. Vă rugăm să încercați din nou.');
-}
+        $response = Anthropic::messages()->create([
+            'model' => 'claude-3-5-sonnet-20240620',
+            'max_tokens' => 1000,
+            'messages' => [
+                ['role' => 'user', 'content' => $prompt]
+            ],
+        ]);
 
-public function mount()
-{
-    $this->refreshCredits();
-}
+        $generatedContent = $response->content[0]->text;
 
-public function refreshCredits()
-{
-    $user = Auth::user();
-    $this->userCredits = $user->credits;
-    $this->userCreditValue = $user->remaining_credit_value;
-}
+        preg_match('/Titlu: (.+)\n\n(.+)/s', $generatedContent, $matches);
+        $this->storyTitle = $matches[1] ?? 'Poveste fără titlu';
+        $this->generatedStory = $matches[2] ?? $generatedContent;
 
-public function render()
-{
-    return view('livewire.story-generator');
-}
+    }
 
+    private function generateStoryImage($theme)
+    {
+        $imagePrompt = "O ilustrație pentru copii reprezentând o scenă dintr-o poveste de genul {$this->selectedGenre} cu tema: {$theme}. Stilul trebuie să fie potrivit pentru un copil de {$this->childAge} ani, folosind culori vii și personaje prietenoase.";
+
+        $retries = 3;
+        $imageUrl = null;
+        while ($retries > 0 && $imageUrl === null) {
+            try {
+                $response = OpenAI::images()->create([
+                    'model' => 'dall-e-3',
+                    'prompt' => $imagePrompt,
+                    'n' => 1,
+                    'size' => '1024x1024',
+                    'quality' => "standard",
+                    'response_format' => 'url',
+                ], ['timeout' => 120]);
+                $imageUrl = $response->data[0]->url;
+            } catch (\Exception $e) {
+                $retries--;
+                if ($retries === 0) {
+                    Log::error('Eroare la generarea imaginii după multiple încercări: ' . $e->getMessage());
+                    throw $e;
+                }
+            }
+        }
+        return $imageUrl;
+    }
+
+    private function saveStory($theme, $imageUrl)
+    {
+
+        $this->story = Story::create([
+            'user_id' => Auth::id(),
+            'title' => $this->storyTitle,
+            'content' => $this->generatedStory,
+            'age' => $this->childAge,
+            'genre' => $this->selectedGenre,
+            'theme' => $theme,
+            'image_url' => $this->saveImageLocally($imageUrl),
+        ]);
+        return $this->story;
+    }
+
+    private function handleGenerationError(\Exception $e)
+    {
+        Log::error('Eroare la generarea poveștii sau a imaginii: ' . $e->getMessage());
+        $this->addError('generation', 'A apărut o eroare la generarea poveștii sau a imaginii. E posibil sa nu aveți suficiente credite. Vă rugăm să încercați din nou.');
+    }
+
+    public function mount()
+    {
+        $this->refreshCredits();
+    }
+
+    #[On('creditsUpdated')]
+    public function refreshCredits()
+    {
+        $user = Auth::user();
+        $this->userCredits = $user->credits;
+        $this->userCreditValue = $user->remaining_credit_value;
+    }
+
+    public function render()
+    {
+        return view('livewire.story-generator');
+    }
 }
