@@ -7,6 +7,7 @@ ini_set('max_execution_time', 120);
 use App\Models\Story;
 use Livewire\Component;
 
+use Illuminate\Support\Str;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use OpenAI\Laravel\Facades\OpenAI;
@@ -233,34 +234,46 @@ class StoryGenerator extends Component
 
     }
 
-    private function generateStoryImage($theme)
-    {
-        $imagePrompt = "O ilustrație pentru copii reprezentând o scenă dintr-o poveste de genul {$this->selectedGenre} cu tema: {$theme}. Stilul trebuie să fie potrivit pentru un copil de {$this->childAge} ani, folosind culori vii și personaje prietenoase.";
-    
-        $retries = 3;
-        while ($retries > 0) {
-            try {
-                $response = OpenAI::images()->create([
-                    'model' => 'dall-e-3',
-                    'prompt' => $imagePrompt,
-                    'n' => 1,
-                    'size' => '1024x1024',
-                    'quality' => "standard",
-                ], ['timeout' => 120]);
-    
-                $imageUrl = $response->data[0]->url;
-                Log::info('URL imagine generat cu succes: ' . $imageUrl);
-                return $imageUrl;
-            } catch (\Exception $e) {
-                $retries--;
-                Log::error('Eroare la generarea imaginii (Încercarea ' . (3 - $retries) . '/3): ' . $e->getMessage());
-                if ($retries === 0) {
-                    throw new \Exception('Nu s-a putut genera imaginea după multiple încercări: ' . $e->getMessage());
-                }
-                sleep(2); // Așteptăm puțin înainte de a reîncerca
+
+
+private function generateStoryImage($theme)
+{
+    $imagePrompt = "O ilustrație pentru copii reprezentând o scenă dintr-o poveste de genul {$this->selectedGenre} cu tema: {$theme}. Stilul trebuie să fie potrivit pentru un copil de {$this->childAge} ani, folosind culori vii și personaje prietenoase.";
+
+    $retries = 3;
+    while ($retries > 0) {
+        try {
+            $response = OpenAI::images()->create([
+                'model' => 'dall-e-3',
+                'prompt' => $imagePrompt,
+                'n' => 1,
+                'size' => '1024x1024',
+                'quality' => "standard",
+            ], ['timeout' => 120]);
+
+            $tempImageUrl = $response->data[0]->url;
+            Log::info('URL imagine generat cu succes: ' . $tempImageUrl);
+
+            // Încărcăm imaginea în Cloudinary
+            $uploadedImage = Cloudinary::upload($tempImageUrl, [
+                'folder' => 'story_images',
+                'public_id' => 'story_' . time() . '_' . Str::random(10),
+            ]);
+
+            $cloudinaryUrl = $uploadedImage->getSecurePath();
+            Log::info('Imagine încărcată în Cloudinary: ' . $cloudinaryUrl);
+
+            return $cloudinaryUrl;
+        } catch (\Exception $e) {
+            $retries--;
+            Log::error('Eroare la generarea sau încărcarea imaginii (Încercarea ' . (3 - $retries) . '/3): ' . $e->getMessage());
+            if ($retries === 0) {
+                throw new \Exception('Nu s-a putut genera sau încărca imaginea după multiple încercări: ' . $e->getMessage());
             }
+            sleep(2);
         }
     }
+}
 
     private function saveStory($title, $content, $age, $genre, $theme, $imageUrl)
 {
