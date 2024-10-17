@@ -256,7 +256,7 @@ private function generateStoryImage($theme)
 
             // Încărcăm imaginea în Cloudinary
             $uploadedImage = Cloudinary::upload($tempImageUrl, [
-                'folder' => 'story_images',
+                'folder' => 'povestitorul_magic',
                 'public_id' => 'story_' . time() . '_' . Str::random(10),
             ]);
 
