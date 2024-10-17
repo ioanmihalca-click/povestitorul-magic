@@ -9,8 +9,10 @@
                 <h1 class="mb-6 text-3xl font-bold text-center text-indigo-600">Atelierul Povestitorului Magic</h1>
 
                 <div class="mb-4 text-center">
-                    <p class="font-bold" :class="{ 'text-green-600': !insufficientCredits(), 'text-indigo-600': insufficientCredits() }">
-                        <i class="mr-2 fas" :class="{ 'fa-check-circle': !insufficientCredits(), 'fa-coins': insufficientCredits() }"></i>
+                    <p class="font-bold"
+                        :class="{ 'text-green-600': !insufficientCredits(), 'text-indigo-600': insufficientCredits() }">
+                        <i class="mr-2 fas"
+                            :class="{ 'fa-check-circle': !insufficientCredits(), 'fa-coins': insufficientCredits() }"></i>
                         Credite disponibile: <span x-text="userCredits"></span>
                     </p>
                     <p class="mt-2 text-sm text-indigo-500">
@@ -20,7 +22,8 @@
 
                 <template x-if="insufficientCredits()">
                     <div class="p-4 mb-4 text-center text-yellow-700 bg-yellow-100 rounded-xl">
-                        <p><i class="mr-2 fas fa-exclamation-triangle"></i>Atenție: Nu aveți suficiente credite pentru a genera o poveste.</p>
+                        <p><i class="mr-2 fas fa-exclamation-triangle"></i>Atenție: Nu aveți suficiente credite pentru a
+                            genera o poveste.</p>
                         <p class="mt-2">
                             <a href="{{ route('credits') }}" class="font-bold text-indigo-600 hover:text-indigo-800">
                                 Cumpărați credite acum
@@ -29,7 +32,8 @@
                     </div>
                 </template>
 
-                <div class="max-w-2xl p-4 mx-auto mb-6 border-2 border-yellow-300 shadow-md bg-gradient-to-br from-green-100 to-blue-100 rounded-2xl">
+                <div
+                    class="max-w-2xl p-4 mx-auto mb-6 border-2 border-yellow-300 shadow-md bg-gradient-to-br from-green-100 to-blue-100 rounded-2xl">
                     <h2 class="mb-3 text-2xl font-bold text-center text-indigo-700">
                         <i class="mr-2 fas fa-hat-wizard"></i>Ingredientele magice ale poveștii
                     </h2>
@@ -83,13 +87,13 @@
                 </div>
 
 
-               <form wire:submit.prevent="generateStory" class="space-y-8">
+                <form wire:submit.prevent="generateStory" class="space-y-8">
                     <div class="p-4 bg-yellow-100 shadow-inner rounded-2xl">
                         <label for="childAge" class="block mb-2 text-lg font-medium text-indigo-700">
                             <i class="mr-2 fas fa-birthday-cake"></i>Vârsta micului ascultător
                         </label>
                         <input wire:model.defer="childAge" type="number" id="childAge"
-                               class="block w-full text-xl bg-white border-2 border-indigo-300 shadow-sm rounded-xl focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                            class="block w-full text-xl bg-white border-2 border-indigo-300 shadow-sm rounded-xl focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                         @error('childAge')
                             <span class="mt-1 text-sm text-red-500">{{ $message }}</span>
                         @enderror
@@ -98,7 +102,7 @@
                     <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                         @foreach ($availableGenres as $genre => $details)
                             <div x-data="{ open: @entangle('selectedGenre').defer === '{{ $genre }}' }"
-                                 class="bg-white rounded-2xl shadow-md overflow-hidden transform transition duration-300 hover:scale-105 {{ $selectedGenre === $genre ? 'ring-4 ring-indigo-400' : '' }}">
+                                class="bg-white rounded-2xl shadow-md overflow-hidden transform transition duration-300 hover:scale-105 {{ $selectedGenre === $genre ? 'ring-4 ring-indigo-400' : '' }}">
                                 <button type="button"
                                     @click="open = !open; $wire.set('selectedGenre', open ? '{{ $genre }}' : '')"
                                     class="flex items-center justify-between w-full px-4 py-3 text-left bg-indigo-500">
@@ -116,12 +120,6 @@
                                     x-transition:leave="transition ease-in duration-200"
                                     x-transition:leave-start="opacity-100 transform scale-100"
                                     x-transition:leave-end="opacity-0 transform scale-95" class="p-4 space-y-2">
-                                    @foreach ($details['themes'] as $theme)
-                                        <button type="button" wire:click="selectTheme('{{ $theme }}')"
-                                            class="w-full text-left px-3 py-2 rounded-xl text-indigo-700 {{ $selectedTheme === $theme ? 'bg-indigo-100 font-bold' : 'hover:bg-indigo-50' }}">
-                                            {{ $theme }}
-                                        </button>
-                                    @endforeach
                                     <button type="button" wire:click="setCustomTheme"
                                         class="w-full text-left px-3 py-2 rounded-xl font-bold text-pink-600 {{ $selectedTheme === 'custom' ? 'bg-pink-100' : 'hover:bg-pink-50' }}">
                                         <i class="mr-2 fas fa-star"></i>Temă personalizată
@@ -131,9 +129,15 @@
                                             placeholder="Scrie-ți propria aventură aici"
                                             class="w-full mt-2 border-2 border-pink-300 shadow-sm rounded-xl focus:border-pink-500 focus:ring focus:ring-pink-200 focus:ring-opacity-50">
                                     @endif
+                                    @foreach ($details['themes'] as $theme)
+                                        <button type="button" wire:click="selectTheme('{{ $theme }}')"
+                                            class="w-full text-left px-3 py-2 rounded-xl text-indigo-700 {{ $selectedTheme === $theme ? 'bg-indigo-100 font-bold' : 'hover:bg-indigo-50' }}">
+                                            {{ $theme }}
+                                        </button>
+                                    @endforeach
                                 </div>
                             </div>
-                         @endforeach
+                        @endforeach
                     </div>
                     @error('selectedGenre')
                         <span class="text-sm text-red-500">{{ $message }}</span>
@@ -147,11 +151,26 @@
 
                     <div class="text-center">
                         <button type="submit"
-                                class="px-8 py-3 text-xl font-bold text-white transition duration-300 transform rounded-full shadow-lg bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 hover:scale-105">
-                            <i class="mr-2 fas fa-book-open"></i>Creează Povestea Magică
+                            class="px-8 py-3 text-xl font-bold text-white transition duration-300 transform rounded-full shadow-lg bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                            wire:loading.attr="disabled" wire:target="generateStory">
+                            <span wire:loading.remove wire:target="generateStory">
+                                <i class="mr-2 fas fa-book-open"></i>Creează Povestea Magică
+                            </span>
+                            <span wire:loading wire:target="generateStory">
+                                <i class="mr-2 fas fa-spinner fa-spin"></i>Povestitorul Magic pregătește povestea...
+                            </span>
                         </button>
                     </div>
                 </form>
+
+                <div wire:loading wire:target="generateStory" class="mx-auto mt-4 text-center text-indigo-600">
+                    <p class="text-lg font-semibold">
+                        <i class="mr-2 fas fa-magic fa-spin"></i>Povestitorul Magic își folosește puterile pentru a crea
+                        o poveste uimitoare...
+                    </p>
+                    <p class="mt-2 text-sm">Acest proces poate dura până la un minut. Vă rugăm să așteptați.</p>
+                </div>
+
             </div>
 
             @if (session()->has('message'))
@@ -171,8 +190,8 @@
                     <h2 class="mb-4 text-2xl font-bold text-indigo-700">{{ $storyTitle }}</h2>
                     @if ($story->image_url)
                         <img src="{{ $story->image_url }}" alt="Ilustrație pentru {{ $storyTitle }}"
-                             class="mb-4 rounded-lg shadow-lg"
-                             onerror="this.onerror=null; this.src='/images/placeholder.webp'; this.alt='Imaginea nu a putut fi încărcată';">
+                            class="mb-4 rounded-lg shadow-lg"
+                            onerror="this.onerror=null; this.src='/images/placeholder.webp'; this.alt='Imaginea nu a putut fi încărcată';">
                     @endif
                     <div class="p-6 prose text-indigo-900 bg-white shadow-inner max-w-none rounded-2xl">
                         {!! nl2br(e($generatedStory)) !!}
