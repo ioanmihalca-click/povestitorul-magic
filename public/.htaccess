@@ -1,9 +1,3 @@
-<IfModule mod_php.c>
-  
-    php_value max_execution_time 180
-
-</IfModule>
-
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
@@ -11,18 +5,17 @@
 
     RewriteEngine On
 
-    # Handle Authorization Header
-    RewriteCond %{HTTP:Authorization} .
-    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+    # Redirect from http:// and https://www to https://povestitorulmagic.ro (non-www)
+    RewriteCond %{HTTP_HOST} ^(www\.)?povestitorulmagic\.ro [NC,OR]
+    RewriteCond %{HTTP_HOST} ^povestitorulmagic\.ro [NC]
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://povestitorulmagic.ro/$1 [L,R=301]
 
-    # Redirect Trailing Slashes If Not A Folder...
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} (.+)/$
-    RewriteRule ^ %1 [L,R=301]
+    RewriteCond %{HTTP_HOST} ^www\.povestitorulmagic\.ro [NC]
+    RewriteRule ^(.*)$ https://povestitorulmagic.ro/$1 [L,R=301]
 
     # Send Requests To Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
-
 </IfModule>
