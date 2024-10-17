@@ -7,6 +7,8 @@ use Filament\Resources\Pages\ViewRecord;
 use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\ImageEntry;
+use Filament\Notifications\Notification;
+use Filament\Actions;
 
 class ViewStory extends ViewRecord
 {
@@ -39,12 +41,23 @@ class ViewStory extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            \Filament\Actions\Action::make('publishToBlog')
+            Actions\Action::make('publishToBlog')
                 ->label('Publica pe Blog')
                 ->icon('heroicon-o-globe-alt')
                 ->action(function () {
-                    $this->record->update(['is_published' => true]);
-                    $this->notify('success', 'Story published to blog successfully');
+                    if ($this->record->publishToBlog()) {
+                        Notification::make()
+                            ->success()
+                            ->title('Succes')
+                            ->body('Povestea a fost publicată cu succes pe blog.')
+                            ->send();
+                    } else {
+                        Notification::make()
+                            ->danger()
+                            ->title('Eroare')
+                            ->body('Povestea este deja publicată sau nu a putut fi publicată.')
+                            ->send();
+                    }
                 })
                 ->requiresConfirmation()
                 ->hidden(fn () => $this->record->is_published),

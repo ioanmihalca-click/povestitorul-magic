@@ -10,8 +10,8 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\StoryResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -54,21 +54,54 @@ class StoryResource extends Resource
                     ->placeholder('All Stories'),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()
-                    ->visible(fn (Story $record) => true), // Forțează vizibilitatea
-                Tables\Actions\Action::make('publish')
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\Action::make('publishToBlog')
                     ->label('Publish to Blog')
                     ->icon('heroicon-o-globe-alt')
-                    ->action(fn (Story $record) => $record->update(['is_published' => true]))
+                    ->action(function (Story $record, Tables\Actions\Action $action) {
+                        if ($record->publishToBlog()) {
+                            Notification::make()
+                                ->success()
+                                ->title('Story Published')
+                                ->body('The story has been successfully published to the blog.')
+                                ->send();
+
+                            $action->success();
+                        } else {
+                            Notification::make()
+                                ->danger()
+                                ->title('Publication Failed')
+                                ->body('The story is already published or could not be published.')
+                                ->send();
+
+                            $action->failure();
+                        }
+                    })
                     ->requiresConfirmation()
                     ->hidden(fn (Story $record) => $record->is_published),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\BulkAction::make('publishMultiple')
+                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\BulkAction::make('publishMultipleToBlog')
                         ->label('Publish Selected to Blog')
                         ->icon('heroicon-o-globe-alt')
-                        ->action(fn (Collection $records) => $records->each->update(['is_published' => true]))
+                        ->action(function ($records, Tables\Actions\BulkAction $action) {
+                            $publishedCount = 0;
+                            foreach ($records as $record) {
+                                if ($record->publishToBlog()) {
+                                    $publishedCount++;
+                                }
+                            }
+                            
+                            Notification::make()
+                                ->success()
+                                ->title('Stories Published')
+                                ->body("{$publishedCount} stories have been published to the blog.")
+                                ->send();
+
+                            $action->success();
+                        })
                         ->requiresConfirmation(),
                 ]),
             ]);

@@ -1,11 +1,13 @@
 <?php
 
-use App\Livewire\CreditPackages;
+use App\Models\Story;
+use App\Livewire\BlogIndex;
 use App\Livewire\Dashboard;
 use App\Livewire\ShowStory;
+use App\Livewire\ShowBlogPost;
+use App\Livewire\CreditPackages;
 use App\Livewire\StoryGenerator;
 use Illuminate\Support\Facades\Route;
-use App\Models\Story;
 
 
 Route::get('/', function () {
@@ -23,5 +25,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/povestea/{story}', ShowStory::class)->name('story.show');
     Route::get('/credite', CreditPackages::class)->name('credits');
 });
+
+Route::get('/blog', BlogIndex::class)->name('blog.index');
+Route::get('/blog/{slug}', ShowBlogPost::class)->name('blog.show');
 
 require __DIR__ . '/auth.php';
