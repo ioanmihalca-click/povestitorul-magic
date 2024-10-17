@@ -187,7 +187,7 @@
                 @enderror
 
                 @if ($generatedStory && $story)
-                    <div class="p-8 bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100">
+                    <div class="p-4 bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100">
                         <h2 class="mb-4 text-2xl font-bold text-center text-indigo-700">{{ $storyTitle }}</h2>
                         @if ($story->image_url)
                             <img src="{{ $story->image_url }}" alt="Ilustrație pentru {{ $storyTitle }}"
