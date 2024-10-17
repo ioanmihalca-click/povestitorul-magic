@@ -1,25 +1,29 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $metaTitle ?? 'Povestitorul Magic' }}</title>
-    <meta name="description" content="{{ $metaDescription ?? 'Descoperă lumea magică a poveștilor personalizate pentru copilul tău. Creăm aventuri unice adaptate vârstei fiecărui copil.' }}">
-    
-    @if(isset($canonicalUrl))
-    <link rel="canonical" href="{{ $canonicalUrl }}">
+    <title>{{ $seo['metaTitle'] ?? 'Povestitorul Magic' }}</title>
+    <meta name="description"
+        content="{{ $seo['metaDescription'] ?? 'Descoperă lumea magică a poveștilor personalizate pentru copilul tău. Creăm aventuri unice adaptate vârstei fiecărui copil.' }}">
+
+    @if (isset($seo['canonicalUrl']))
+        <link rel="canonical" href="{{ $seo['canonicalUrl'] }}">
     @endif
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="{{ $ogType ?? 'website' }}">
-    <meta property="og:url" content="{{ $ogUrl ?? url('/') }}">
-    <meta property="og:title" content="{{ $ogTitle ?? 'Povestitorul Magic - Povești Interactive pentru Copii' }}">
-    <meta property="og:description" content="{{ $ogDescription ?? 'Descoperă lumea magică a poveștilor personalizate pentru copilul tău. Creăm aventuri unice adaptate vârstei fiecărui copil.' }}">
-    <meta property="og:image" content="{{ $ogImage ?? asset('assets/og-image.jpg') }}">
+    <meta property="og:type" content="{{ $seo['ogType'] ?? 'website' }}">
+    <meta property="og:url" content="{{ $seo['ogUrl'] ?? url('/') }}">
+    <meta property="og:title"
+        content="{{ $seo['ogTitle'] ?? 'Povestitorul Magic - Povești Interactive pentru Copii' }}">
+    <meta property="og:description"
+        content="{{ $seo['ogDescription'] ?? 'Descoperă lumea magică a poveștilor personalizate pentru copilul tău. Creăm aventuri unice adaptate vârstei fiecărui copil.' }}">
+    <meta property="og:image" content="{{ $seo['ogImage'] ?? asset('assets/og-image.jpg') }}">
 
-    @if(isset($schemaMarkup))
-    <script type="application/ld+json">
-        {!! json_encode($schemaMarkup) !!}
+    @if (isset($seo['schemaMarkup']))
+        <script type="application/ld+json">
+        {!! json_encode($seo['schemaMarkup']) !!}
     </script>
     @endif
 
@@ -35,6 +39,20 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EXFN904JQL"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-EXFN904JQL');
+    </script>
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])

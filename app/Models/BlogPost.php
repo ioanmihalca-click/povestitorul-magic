@@ -1,14 +1,14 @@
 <?php
 
 namespace App\Models;
-use App\Traits\SEOTrait;
+
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class BlogPost extends Model
 {
-    use HasFactory, SEOTrait;
+    use HasFactory;
 
     protected $fillable = [
         'title',

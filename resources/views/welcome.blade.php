@@ -7,17 +7,20 @@
 
     <title>Povestitorul Magic - Povești Interactive și Personalizate pentru Copii</title>
 
-     <meta name="description" content="Povestitorul Magic creează povești interactive și personalizate care încântă imaginația copiilor. Explorează o lume de aventuri, basme și lecții educative adaptate vârstei copilului tău.">
-    
-    <meta name="keywords" content="povești pentru copii, povești personalizate, povești interactive, basme, aventuri pentru copii, educație prin povești">
-    
+    <meta name="description"
+        content="Povestitorul Magic creează povești interactive și personalizate care încântă imaginația copiilor. Explorează o lume de aventuri, basme și lecții educative adaptate vârstei copilului tău.">
+
+    <meta name="keywords"
+        content="povești pentru copii, povești personalizate, povești interactive, basme, aventuri pentru copii, educație prin povești">
+
     <meta name="author" content="Povestitorul Magic">
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url('/') }}">
     <meta property="og:title" content="Povestitorul Magic - Povești Interactive pentru Copii">
-    <meta property="og:description" content="Descoperă lumea magică a poveștilor personalizate pentru copilul tău. Creăm aventuri unice adaptate vârstei fiecărui copil.">
+    <meta property="og:description"
+        content="Descoperă lumea magică a poveștilor personalizate pentru copilul tău. Creăm aventuri unice adaptate vârstei fiecărui copil.">
     <meta property="og:image" content="{{ asset('assets/og-image.jpg') }}">
 
     <link rel="icon" type="image/png" href="assets/favicon/favicon-48x48.png" sizes="48x48" />
@@ -32,6 +35,18 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EXFN904JQL"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-EXFN904JQL');
+    </script>
 
     <!-- Styles -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -57,9 +72,11 @@
                 <div class="relative z-10">
                     <img class="object-cover w-48 h-48 mx-auto mb-6 transition-transform duration-300 transform border-4 border-yellow-400 rounded-full shadow-lg hover:scale-105"
                         src="{{ asset('assets/fat-frumos.webp') }}" alt="Povestitorul Magic">
-                    <h1 class="mb-4 text-2xl font-bold leading-tight text-indigo-800 md:text-4xl">Bun venit în lumea <span
+                    <h1 class="mb-4 text-2xl font-bold leading-tight text-indigo-800 md:text-4xl">Bun venit în lumea
+                        <span
                             class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">Povestitorului
-                            Magic</span></h1>
+                            Magic</span>
+                    </h1>
                     <p class="mb-8 text-xl text-gray-700">Creăm povești interactive și personalizate care vor încânta
                         imaginația copilului tău.</p>
 
@@ -72,6 +89,8 @@
                         </div>
                     </div>
                 </div>
+
+                
 
                 <!-- Elemente suplimentare -->
                 <div class="flex justify-center mt-12 space-x-8">
@@ -90,87 +109,104 @@
                 </div>
             </div>
 
-      <!-- Secțiunea cu povestea aleatorie -->
-            @if($randomStory)
-            <div class="p-4 mt-8 rounded-3xl">
-                <h2 class="mb-6 text-2xl font-bold text-center text-indigo-800 md:text-3xl">O poveste aleatorie din Bibioteca Magică</h2>
-                <div class="max-w-xl mx-auto overflow-hidden bg-white rounded-lg shadow-lg">
-                    @if($randomStory->image_url)
-                        <img src="{{ $randomStory->image_url }}" alt="{{ $randomStory->title }}" class="object-cover w-full h-auto shadow-md ">
-                    @endif
-                    <div class="p-4">
-                        <h3 class="mb-2 text-2xl font-bold text-center text-indigo-700">{{ $randomStory->title }}</h3>
-                        <div class="flex items-center mb-4 text-sm text-gray-600">
-                            <span class="mr-4"><i class="mr-2 fas fa-book"></i>{{ $randomStory->genre->value }}</span>
-                            <span><i class="mr-2 fas fa-child"></i>Pentru {{ $randomStory->age }} ani</span>
-                        </div>
-                        <div class="prose max-w-none">
-                            {!! nl2br(e($randomStory->content)) !!}
-                        </div>
-                    </div>
+            <div class="mt-4 text-center">
+                <a href="{{ route('blog.index') }}" class="text-sm text-gray-700 underline hover:text-gray-900">
+                   Viziteaza Blogul cu Povești 
+                </a>
                 </div>
 
-                 <div class="mt-12 space-y-8">
-                    <p class="text-xl text-center text-gray-700">Îți place această poveste? Înregistrează-te pentru a crea și citi mai multe!</p>
-                    
-                    <div
-                    class="max-w-2xl p-4 mx-auto mb-6 border-2 border-yellow-300 shadow-md bg-gradient-to-br from-green-100 to-blue-100 rounded-2xl">
-                    <h2 class="mb-3 text-2xl font-bold text-center text-indigo-700">
-                        <i class="mr-2 fas fa-hat-wizard"></i>Ingredientele magice ale poveștii
-                    </h2>
-                    <div class="space-y-4">
-
-                        <div class="flex items-start">
-                            <div
-                                class="flex items-center justify-center flex-shrink-0 w-8 h-8 mt-1 mr-3 text-sm font-bold text-white bg-indigo-500 rounded-full">
-                                1</div>
-                            <div>
-                                <h3 class="text-lg font-semibold text-indigo-700">Alege varsta copilului</h3>
-                                <p class="text-sm text-indigo-600">Alege vârsta micuțului ascultător pentru a crea o
-                                    poveste potrivită.</p>
+            <!-- Secțiunea cu povestea aleatorie -->
+            @if ($randomStory)
+                <div class="p-4 mt-8 rounded-3xl">
+                    <h2 class="mb-6 text-2xl font-bold text-center text-indigo-800 md:text-3xl">O poveste aleatorie din
+                        Bibioteca Magică</h2>
+                    <div class="max-w-xl mx-auto overflow-hidden bg-white rounded-lg shadow-lg">
+                        @if ($randomStory->image_url)
+                            <img src="{{ $randomStory->image_url }}" alt="{{ $randomStory->title }}"
+                                class="object-cover w-full h-auto shadow-md ">
+                        @endif
+                        <div class="p-4">
+                            <h3 class="mb-2 text-2xl font-bold text-center text-indigo-700">{{ $randomStory->title }}
+                            </h3>
+                            <div class="flex items-center mb-4 text-sm text-gray-600">
+                                <span class="mr-4"><i
+                                        class="mr-2 fas fa-book"></i>{{ $randomStory->genre->value }}</span>
+                                <span><i class="mr-2 fas fa-child"></i>Pentru {{ $randomStory->age }} ani</span>
+                            </div>
+                            <div class="prose max-w-none">
+                                {!! nl2br(e($randomStory->content)) !!}
                             </div>
                         </div>
+                    </div>
 
-                        <div class="flex items-start">
-                            <div
-                                class="flex items-center justify-center flex-shrink-0 w-8 h-8 mt-1 mr-3 text-sm font-bold text-white bg-indigo-500 rounded-full">
-                                2</div>
-                            <div>
-                                <h3 class="text-lg font-semibold text-indigo-700">Alege genul poveștii</h3>
-                                <p class="text-sm text-indigo-600">Selectează un gen magic (ex: "Aventură" sau "Basm")
-                                </p>
-                            </div>
-                        </div>
+                    <div class="mt-12 space-y-8">
+                        <p class="text-xl text-center text-gray-700">Îți place această poveste? Înregistrează-te pentru
+                            a crea și citi mai multe!</p>
 
-                        <div class="flex items-start">
-                            <div
-                                class="flex items-center justify-center flex-shrink-0 w-8 h-8 mt-1 mr-3 text-sm font-bold text-white bg-indigo-500 rounded-full">
-                                3</div>
-                            <div>
-                                <h3 class="text-lg font-semibold text-indigo-700">Alege tema poveștii</h3>
-                                <div class="space-y-2 text-sm">
-                                    <p class="text-indigo-600"><i class="mr-2 text-yellow-500 fas fa-star"></i>Alege din
-                                        coșulețul cu idei</p>
-                                    <p class="font-bold text-indigo-600"><i
-                                            class="mr-2 text-purple-500 fas fa-star"></i>Sau inventează propria temă
-                                        (ex: numele copilului, un loc anume sau o intamplare, prietenie, curaj, familie,
-                                        etc)</p>
+                        <div
+                            class="max-w-2xl p-4 mx-auto mb-6 border-2 border-yellow-300 shadow-md bg-gradient-to-br from-green-100 to-blue-100 rounded-2xl">
+                            <h2 class="mb-3 text-2xl font-bold text-center text-indigo-700">
+                                <i class="mr-2 fas fa-hat-wizard"></i>Ingredientele magice ale poveștii
+                            </h2>
+                            <div class="space-y-4">
+
+                                <div class="flex items-start">
+                                    <div
+                                        class="flex items-center justify-center flex-shrink-0 w-8 h-8 mt-1 mr-3 text-sm font-bold text-white bg-indigo-500 rounded-full">
+                                        1</div>
+                                    <div>
+                                        <h3 class="text-lg font-semibold text-indigo-700">Alege varsta copilului</h3>
+                                        <p class="text-sm text-indigo-600">Alege vârsta micuțului ascultător pentru a
+                                            crea o
+                                            poveste potrivită.</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start">
+                                    <div
+                                        class="flex items-center justify-center flex-shrink-0 w-8 h-8 mt-1 mr-3 text-sm font-bold text-white bg-indigo-500 rounded-full">
+                                        2</div>
+                                    <div>
+                                        <h3 class="text-lg font-semibold text-indigo-700">Alege genul poveștii</h3>
+                                        <p class="text-sm text-indigo-600">Selectează un gen magic (ex: "Aventură" sau
+                                            "Basm")
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start">
+                                    <div
+                                        class="flex items-center justify-center flex-shrink-0 w-8 h-8 mt-1 mr-3 text-sm font-bold text-white bg-indigo-500 rounded-full">
+                                        3</div>
+                                    <div>
+                                        <h3 class="text-lg font-semibold text-indigo-700">Alege tema poveștii</h3>
+                                        <div class="space-y-2 text-sm">
+                                            <p class="text-indigo-600"><i
+                                                    class="mr-2 text-yellow-500 fas fa-star"></i>Alege din
+                                                coșulețul cu idei</p>
+                                            <p class="font-bold text-indigo-600"><i
+                                                    class="mr-2 text-purple-500 fas fa-star"></i>Sau inventează propria
+                                                temă
+                                                (ex: numele copilului, un loc anume sau o intamplare, prietenie, curaj,
+                                                familie,
+                                                etc)</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
+                            <div class="mt-4 text-center ">
+                                <a href="{{ route('register') }}"
+                                    class="inline-block px-8 py-4 text-xl font-bold text-white transition-all duration-300 transform bg-indigo-600 rounded-full shadow-lg hover:bg-indigo-700 hover:shadow-xl hover:-translate-y-1">
+                                    Înregistrează-te și începe aventura!
+                                </a>
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="mt-4 text-center ">
-                        <a href="{{ route('register') }}" class="inline-block px-8 py-4 text-xl font-bold text-white transition-all duration-300 transform bg-indigo-600 rounded-full shadow-lg hover:bg-indigo-700 hover:shadow-xl hover:-translate-y-1">
-                            Înregistrează-te și începe aventura!
-                        </a>
-                    </div>
-                </div>
-            </div>
             @endif
         </div>
     </div>
-    
+
     <!-- Footer -->
     <x-footer />
 </body>

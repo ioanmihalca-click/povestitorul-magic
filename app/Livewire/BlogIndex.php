@@ -6,15 +6,20 @@ use App\Models\BlogPost;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Layout;
-use App\Traits\SEOTrait;
 
 #[Layout('components.layouts.bloglayout')]
 class BlogIndex extends Component
 {
-    use WithPagination, SEOTrait;
+    use WithPagination;
 
     public $search = '';
+    public $seo;
     protected $queryString = ['search'];
+
+    public function mount()
+    {
+        $this->seo = $this->getSEOData();
+    }
 
     public function updatingSearch()
     {
@@ -27,39 +32,33 @@ class BlogIndex extends Component
                          ->orderBy('published_at', 'desc')
                          ->paginate(10);
 
-        return view('livewire.blog-index', [
-            'posts' => $posts,
-            'metaTitle' => $this->getMetaTitle(),
-            'metaDescription' => $this->getMetaDescription(),
-            'canonicalUrl' => $this->getCanonicalUrl(),
+        return view('livewire.blog-index', ['posts' => $posts])
+            ->layout('components.layouts.bloglayout', ['seo' => $this->seo]);
+    }
+
+    protected function getSEOData()
+    {
+        return [
+            'metaTitle' => 'Blog | Povestitorul Magic',
+            'metaDescription' => 'Descoperă cele mai recente povești și articole despre lumea magică a poveștilor pentru copii pe blogul Povestitorul Magic.',
+            'canonicalUrl' => route('blog.index'),
+            'ogType' => 'website',
+            'ogUrl' => route('blog.index'),
+            'ogTitle' => 'Blog | Povestitorul Magic',
+            'ogDescription' => 'Descoperă cele mai recente povești și articole despre lumea magică a poveștilor pentru copii pe blogul Povestitorul Magic.',
+            'ogImage' => asset('assets/blog-og-image.jpg'),
             'schemaMarkup' => $this->getSchemaMarkup(),
-            'ogType' => $this->getOgType(),
-            'ogUrl' => $this->getOgUrl(),
-            'ogTitle' => $this->getOgTitle(),
-            'ogDescription' => $this->getOgDescription(),
-            'ogImage' => $this->getOgImage(),
-        ]);
+        ];
     }
 
-    // Suprascriem metodele SEO specifice pentru pagina de index a blogului
-    public function getMetaTitle()
-    {
-        return 'Blog | Povestitorul Magic';
-    }
-
-    public function getMetaDescription()
-    {
-        return 'Descoperă cele mai recente povești și articole despre lumea magică a poveștilor pentru copii pe blogul Povestitorul Magic.';
-    }
-
-    public function getSchemaMarkup()
+    protected function getSchemaMarkup()
     {
         return [
             '@context' => 'https://schema.org',
             '@type' => 'Blog',
-            'name' => $this->getMetaTitle(),
-            'description' => $this->getMetaDescription(),
-            'url' => $this->getCanonicalUrl(),
+            'name' => 'Blog | Povestitorul Magic',
+            'description' => 'Descoperă cele mai recente povești și articole despre lumea magică a poveștilor pentru copii pe blogul Povestitorul Magic.',
+            'url' => route('blog.index'),
             'publisher' => [
                 '@type' => 'Organization',
                 'name' => 'Povestitorul Magic',
