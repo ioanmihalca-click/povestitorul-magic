@@ -6,16 +6,14 @@ ini_set('max_execution_time', 120);
 
 use App\Models\Story;
 use Livewire\Component;
-use Illuminate\Support\Str;
+
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use OpenAI\Laravel\Facades\OpenAI;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 use Anthropic\Laravel\Facades\Anthropic;
-use Spatie\LaravelImageOptimizer\Facades\ImageOptimizer;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 #[Title('Atelierul Povestitorului Magic')]
 class StoryGenerator extends Component
