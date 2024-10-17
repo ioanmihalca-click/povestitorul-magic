@@ -2,12 +2,13 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
 use Livewire\Component;
 use Stripe\StripeClient;
+use Livewire\Attributes\On;
 use Laravel\Cashier\Cashier;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Cashier\Exceptions\IncompletePayment;
-use App\Models\User;
 
 class CreditPackages extends Component
 {
@@ -15,17 +16,17 @@ class CreditPackages extends Component
         [
             'credits' => 10,
             'price' => 4.50,
-            'stripe_price_id' => 'price_1QAds2BBirsJlR3v7hLHCdso', 
+            'stripe_price_id' => 'price_1QAds2BBirsJlR3v7hLHCdso',
         ],
         [
             'credits' => 50,
             'price' => 20.00,
-            'stripe_price_id' => 'price_1QAds2BBirsJlR3vNw4wMNAA', 
+            'stripe_price_id' => 'price_1QAds2BBirsJlR3vNw4wMNAA',
         ],
         [
             'credits' => 100,
             'price' => 35.00,
-            'stripe_price_id' => 'price_1QAds2BBirsJlR3vEDyoWiMY', 
+            'stripe_price_id' => 'price_1QAds2BBirsJlR3vEDyoWiMY',
         ],
     ];
 
@@ -35,12 +36,20 @@ class CreditPackages extends Component
     protected $queryString = ['sessionId'];
 
     public function mount()
-{
-    if (request()->has('session_id')) {
-        $this->handleCheckoutSuccess(request()->get('session_id'));
-        $this->dispatch('refreshComponent');
+    {
+        if (request()->has('session_id')) {
+            $this->handleCheckoutSuccess(request()->get('session_id'));
+            $this->dispatch('refreshComponent');
+        }
     }
-}
+
+    #[On('refreshComponent')]
+    public function refreshComponent()
+    {
+        // Această metodă va fi apelată pentru a reîmprospăta datele componentei
+        $this->getUserCredits();
+        $this->getUserCreditValue();
+    }
 
     public function getUserCredits()
     {
@@ -56,10 +65,10 @@ class CreditPackages extends Component
     {
         $package = $this->packages[$packageIndex];
         $user = Auth::user();
-    
+
         try {
             $stripe = new \Stripe\StripeClient(config('cashier.secret'));
-    
+
             $checkout_session = $stripe->checkout->sessions->create([
                 'payment_method_types' => ['card'],
                 'line_items' => [[
@@ -76,7 +85,7 @@ class CreditPackages extends Component
                     'package_index' => $packageIndex,
                 ],
             ]);
-    
+
             return redirect($checkout_session->url);
         } catch (\Exception $e) {
             $this->addError('checkout', 'A apărut o eroare la inițierea plății: ' . $e->getMessage());
@@ -84,29 +93,29 @@ class CreditPackages extends Component
     }
 
     public function handleCheckoutSuccess($sessionId)
-{
-    try {
-        $stripe = new \Stripe\StripeClient(config('cashier.secret'));
-        $session = $stripe->checkout->sessions->retrieve($sessionId);
+    {
+        try {
+            $stripe = new \Stripe\StripeClient(config('cashier.secret'));
+            $session = $stripe->checkout->sessions->retrieve($sessionId);
 
-        if ($session->payment_status === 'paid') {
-            $credits = $session->metadata['credits'];
-            $user = User::find(Auth::id());
-            
-            if ($user) {
-                $user->addCredits($credits);
-                session()->flash('message', "Ați achiziționat cu succes {$credits} credite!");
-                $this->dispatch('creditsUpdated'); 
+            if ($session->payment_status === 'paid') {
+                $credits = $session->metadata['credits'];
+                $user = User::find(Auth::id());
+
+                if ($user) {
+                    $user->addCredits($credits);
+                    session()->flash('message', "Ați achiziționat cu succes {$credits} credite!");
+                    $this->dispatch('creditsUpdated');
+                } else {
+                    session()->flash('error', 'Nu s-a putut găsi utilizatorul.');
+                }
             } else {
-                session()->flash('error', 'Nu s-a putut găsi utilizatorul.');
+                session()->flash('error', 'A apărut o eroare la procesarea plății. Vă rugăm să contactați suportul.');
             }
-        } else {
-            session()->flash('error', 'A apărut o eroare la procesarea plății. Vă rugăm să contactați suportul.');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Nu s-a putut verifica starea plății: ' . $e->getMessage());
         }
-    } catch (\Exception $e) {
-        session()->flash('error', 'Nu s-a putut verifica starea plății: ' . $e->getMessage());
     }
-}
 
     public function getCostPerCredit($credits, $price)
     {

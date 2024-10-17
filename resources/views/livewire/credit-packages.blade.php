@@ -31,12 +31,28 @@
                                 {{ number_format($this->getCostPerCredit($package['credits'], $package['price']), 2) }}
                                 RON per credit
                             </p>
-                            <button wire:click="purchaseCredits({{ $index }})"
-                                class="w-full px-4 py-2 text-white bg-indigo-500 rounded hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50">
-                                Cumpără
+                            <button wire:click="purchaseCredits({{ $index }})" wire:loading.attr="disabled"
+                                wire:target="purchaseCredits({{ $index }})"
+                                class="w-full px-4 py-2 text-white bg-indigo-500 rounded hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                                <span wire:loading.remove wire:target="purchaseCredits({{ $index }})">
+                                    Cumpără
+                                </span>
+                                <span wire:loading wire:target="purchaseCredits({{ $index }})">
+                                    <i class="mr-2 fas fa-spinner fa-spin"></i>Se procesează...
+                                </span>
                             </button>
                         </div>
                     @endforeach
+                </div>
+
+                <div wire:loading wire:target="purchaseCredits"
+                    class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
+                    <div class="p-6 text-center bg-white rounded-lg shadow-xl">
+                        <i class="mb-4 text-4xl text-indigo-500 fas fa-spinner fa-spin"></i>
+                        <p class="text-lg font-semibold text-indigo-700">Se inițiază procesul de plată...</p>
+                        <p class="mt-2 text-sm text-indigo-600">Vă rugăm să așteptați. Veți fi redirecționat în curând.
+                        </p>
+                    </div>
                 </div>
 
                 @if (session()->has('message'))
@@ -52,4 +68,11 @@
                 @endif
             </div>
         </div>
+        <script>
+        document.addEventListener('livewire:initialized', () => {
+            if (new URLSearchParams(window.location.search).has('session_id')) {
+                Livewire.dispatch('refreshComponent');
+            }
+        });
+    </script>
     </div>
