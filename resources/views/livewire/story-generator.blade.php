@@ -163,41 +163,42 @@
                     </div>
                 </form>
 
-                <div wire:loading wire:target="generateStory" class="mx-auto mt-4 text-center text-indigo-600">
-                    <p class="text-lg font-semibold">
-                        <i class="mr-2 fas fa-magic fa-spin"></i>Povestitorul Magic își folosește puterile pentru a crea
-                        o poveste uimitoare...
-                    </p>
-                    <p class="mt-2 text-sm">Acest proces poate dura până la un minut. Vă rugăm să așteptați.</p>
-                </div>
-
-            </div>
-
-            @if (session()->has('message'))
-                <div class="p-4 text-green-700 bg-green-100 rounded-b-3xl">
-                    <i class="mr-2 fas fa-check-circle"></i>{{ session('message') }}
-                </div>
-            @endif
-
-            @error('generation')
-                <div class="p-4 text-red-700 bg-red-100 rounded-b-3xl">
-                    <i class="mr-2 fas fa-exclamation-circle"></i>{{ $message }}
-                </div>
-            @enderror
-
-            @if ($generatedStory && $story)
-                <div class="p-8 bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100">
-                    <h2 class="mb-4 text-2xl font-bold text-indigo-700">{{ $storyTitle }}</h2>
-                    @if ($story->image_url)
-                        <img src="{{ $story->image_url }}" alt="Ilustrație pentru {{ $storyTitle }}"
-                            class="mb-4 rounded-lg shadow-lg"
-                            onerror="this.onerror=null; this.src='/images/placeholder.webp'; this.alt='Imaginea nu a putut fi încărcată';">
-                    @endif
-                    <div class="p-6 prose text-indigo-900 bg-white shadow-inner max-w-none rounded-2xl">
-                        {!! nl2br(e($generatedStory)) !!}
+                <div class="flex items-center justify-center">
+                    <div wire:loading wire:target="generateStory"
+                        class="mx-auto mt-4 text-center text-indigo-600">
+                        <p class="text-lg font-semibold">
+                            <i class="mr-2 fas fa-magic fa-spin"></i>Povestitorul Magic își folosește puterile pentru a
+                            crea o poveste uimitoare...
+                        </p>
+                        <p class="mt-2 text-sm">Acest proces poate dura până la un minut. Vă rugăm să așteptați.</p>
                     </div>
                 </div>
-            @endif
+
+                @if (session()->has('message'))
+                    <div class="p-4 text-green-700 bg-green-100 rounded-b-3xl">
+                        <i class="mr-2 fas fa-check-circle"></i>{{ session('message') }}
+                    </div>
+                @endif
+
+                @error('generation')
+                    <div class="p-4 text-red-700 bg-red-100 rounded-b-3xl">
+                        <i class="mr-2 fas fa-exclamation-circle"></i>{{ $message }}
+                    </div>
+                @enderror
+
+                @if ($generatedStory && $story)
+                    <div class="p-8 bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100">
+                        <h2 class="mb-4 text-2xl font-bold text-center text-indigo-700">{{ $storyTitle }}</h2>
+                        @if ($story->image_url)
+                            <img src="{{ $story->image_url }}" alt="Ilustrație pentru {{ $storyTitle }}"
+                                class="mb-4 rounded-lg shadow-lg"
+                                onerror="this.onerror=null; this.src='/images/placeholder.webp'; this.alt='Imaginea nu a putut fi încărcată';">
+                        @endif
+                        <div class="p-6 prose text-indigo-900 bg-white shadow-inner max-w-none rounded-2xl">
+                            {!! nl2br(e($generatedStory)) !!}
+                        </div>
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
-</div>
