@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use App\Models\Story;
-use GuzzleHttp\Client;
 use Livewire\Component;
 use Illuminate\Support\Str;
 use Livewire\Attributes\On;
@@ -14,7 +13,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Anthropic\Laravel\Facades\Anthropic;
-use GuzzleHttp\Exception\RequestException;
 use Spatie\LaravelImageOptimizer\Facades\ImageOptimizer;
 
 #[Title('Atelierul Povestitorului Magic')]
@@ -149,70 +147,33 @@ class StoryGenerator extends Component
 
 
 
-    private function saveImageLocally($imageUrl, $retries = 3)
+    private function saveImageLocally($imageUrl)
     {
-        $client = new Client(['timeout' => 120]); // Timeout de 120 secunde
-        $tempPath = null;
-        $fullFinalPath = null;
+        try {
+            // Setăm un timeout pentru file_get_contents
+            $context = stream_context_create([
+                'http' => [
+                    'timeout' => 30 // 30 secunde timeout
+                ]
+            ]);
     
-        while ($retries > 0) {
-            try {
-                $response = $client->get($imageUrl);
-                
-                if ($response->getStatusCode() !== 200) {
-                    throw new \Exception('Răspuns neașteptat de la server: ' . $response->getStatusCode());
-                }
-    
-                $contentType = $response->getHeaderLine('Content-Type');
-                if (!str_starts_with($contentType, 'image/')) {
-                    throw new \Exception('Conținutul descărcat nu este o imagine: ' . $contentType);
-                }
-    
-                $imageContents = $response->getBody()->getContents();
-                $hash = md5($imageContents);
-                $filename = 'story_' . $hash . '.webp';
-                
-                $tempPath = storage_path('app/temp/' . $filename);
-                $finalPath = 'public/images/stories/' . $filename;
-                $fullFinalPath = storage_path('app/' . $finalPath);
-    
-                File::ensureDirectoryExists(dirname($tempPath));
-                File::ensureDirectoryExists(dirname($fullFinalPath));
-                
-                File::put($tempPath, $imageContents);
-    
-                ImageOptimizer::optimize($tempPath, $fullFinalPath);
-    
-                if (!File::exists($fullFinalPath) || File::size($fullFinalPath) == 0) {
-                    throw new \Exception('Nu s-a putut optimiza și salva imaginea sau fișierul rezultat este gol.');
-                }
-    
-                File::delete($tempPath);
-    
-                return Storage::url($finalPath);
-            } catch (RequestException $e) {
-                $retries--;
-                if ($retries === 0) {
-                    Log::error('Eroare la descărcarea imaginii după multiple încercări: ' . $e->getMessage());
-                    return $imageUrl; // Returnăm URL-ul original după epuizarea încercărilor
-                }
-                sleep(2); // Așteptăm 2 secunde înainte de a reîncerca
-            } catch (\Exception $e) {
-                Log::error('Eroare la salvarea/optimizarea imaginii WebP: ' . $e->getMessage());
-                
-                // Curățăm fișierele temporare
-                if ($tempPath && File::exists($tempPath)) {
-                    File::delete($tempPath);
-                }
-                if ($fullFinalPath && File::exists($fullFinalPath)) {
-                    File::delete($fullFinalPath);
-                }
-                
-                return $imageUrl; // Returnăm URL-ul original în caz de eroare
+            $imageContents = file_get_contents($imageUrl, false, $context);
+            if ($imageContents === false) {
+                throw new \Exception('Nu s-a putut descărca imaginea de la URL-ul furnizat.');
             }
-        }
     
-        return $imageUrl; // Returnăm URL-ul original dacă toate încercările au eșuat
+            $filename = 'story_' . md5($imageContents) . '.webp';
+            $path = 'public/images/stories/' . $filename;
+    
+            if (Storage::put($path, $imageContents)) {
+                return Storage::url($path);
+            } else {
+                throw new \Exception('Nu s-a putut salva imaginea.');
+            }
+        } catch (\Exception $e) {
+            Log::error('Eroare la salvarea imaginii: ' . $e->getMessage());
+            return $imageUrl; // Returnăm URL-ul original în caz de eroare
+        }
     }
 
     public function generateStory()
