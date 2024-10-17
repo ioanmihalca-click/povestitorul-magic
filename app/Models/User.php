@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use Filament\Panel;
 use App\Models\Story;
+use Filament\Models\Contracts\FilamentUser;
+use Laravel\Cashier\Billable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laravel\Cashier\Billable;
 
-    class User extends Authenticatable
+    class User extends Authenticatable implements FilamentUser
     {
         use HasFactory, Notifiable, Billable;
     
@@ -62,5 +64,10 @@ use Laravel\Cashier\Billable;
     public function stories()
     {
         return $this->hasMany(Story::class);
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return str_ends_with($this->email, 'contact@povestitorulmagic.ro');
     }
 }
