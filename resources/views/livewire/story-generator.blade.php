@@ -18,6 +18,11 @@
                     <p class="mt-2 text-sm text-indigo-500">
                         Valoare totală credite: {{ number_format($userCreditValue, 2) }} RON
                     </p>
+
+                    {{-- <p class="mt-2 text-sm text-indigo-500">
+                        Costul unei povești este de 1 credit.
+                    </p> --}}
+
                 </div>
 
                 <template x-if="insufficientCredits()">
@@ -164,8 +169,7 @@
                 </form>
 
                 <div class="flex items-center justify-center">
-                    <div wire:loading wire:target="generateStory"
-                        class="mx-auto mt-4 text-center text-indigo-600">
+                    <div wire:loading wire:target="generateStory" class="mx-auto mt-4 text-center text-indigo-600">
                         <p class="text-lg font-semibold">
                             <i class="mr-2 fas fa-magic fa-spin"></i>Povestitorul Magic își folosește puterile pentru a
                             crea o poveste uimitoare...
