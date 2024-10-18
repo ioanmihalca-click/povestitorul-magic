@@ -205,9 +205,9 @@
                     </div>
             @endif
         </div>
+        <x-footer />
     </div>
 
-   
+  
 </body>
-
 </html>
