@@ -61,7 +61,7 @@
 
 <body class="font-['Nunito'] antialiased">
     <div class="min-h-screen bg-gradient-to-br from-red-500 via-blue-300 to-yellow-200">
-        {{-- <livewire:layout.navigation /> --}}
+        
 
         <!-- Page Heading -->
         @if (isset($header))
