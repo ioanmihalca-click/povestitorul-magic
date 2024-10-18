@@ -4,10 +4,14 @@ use App\Models\Story;
 use App\Livewire\BlogIndex;
 use App\Livewire\Dashboard;
 use App\Livewire\ShowStory;
+use App\Livewire\Pages\About;
 use App\Livewire\ShowBlogPost;
+use App\Livewire\Pages\Contact;
 use App\Livewire\CreditPackages;
 use App\Livewire\StoryGenerator;
+use App\Livewire\Pages\PrivacyPolicy;
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Pages\TermsAndConditions;
 
 
 Route::get('/', function () {
@@ -28,5 +32,10 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/blog', BlogIndex::class)->name('blog.index');
 Route::get('/blog/{slug}', ShowBlogPost::class)->name('blog.show');
+
+Route::get('/despre-noi', About::class)->name('about');
+Route::get('/contact', Contact::class)->name('contact');
+Route::get('/politica-de-confidentialitate', PrivacyPolicy::class)->name('privacy-policy');
+Route::get('/termeni-si-conditii', TermsAndConditions::class)->name('terms-and-conditions');
 
 require __DIR__ . '/auth.php';

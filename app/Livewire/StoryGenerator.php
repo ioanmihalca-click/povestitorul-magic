@@ -209,10 +209,38 @@ class StoryGenerator extends Component
 
     private function generateStoryContent($theme)
     {
-        $prompt = "Generează o poveste in limba romană pentru un copil de {$this->childAge} ani. 
-                   Genul poveștii: {$this->selectedGenre}. 
-                   Tema poveștii: {$theme}.
-                   Includeți și un titlu potrivit pentru poveste.";
+        $prompt = "Generează o poveste originală în limba română pentru un copil de {$this->childAge} ani, respectând următoarele criterii:
+
+1. Titlu: Creează un titlu captivant și relevant pentru poveste.
+
+2. Structură:
+   - Introducere: Prezintă personajul principal și contextul inițial.
+   - Dezvoltare: Descrie provocarea sau aventura principală.
+   - Climax: Momentul de maximă tensiune sau descoperire.
+   - Rezoluție: Cum se rezolvă situația și ce învață personajul.
+   - Concluzie: Un final satisfăcător cu o notă pozitivă.
+
+3. Caracteristici:
+   - Genul poveștii: {$this->selectedGenre}
+   - Tema principală: {$theme}
+
+4. Elemente educative:
+   - Încorporează subtil o lecție de viață sau o valoare morală adecvată vârstei.
+   - Adaugă un element educativ legat de știință, istorie, sau cultură, potrivit pentru vârsta {$this->childAge} ani.
+
+5. Stimularea creativității:
+   - Include descrieri vii și imaginative ale mediului și personajelor.
+   - Încurajează gândirea creativă prin situații care necesită rezolvare de probleme.
+
+6. Personaje:
+   - Creează personaje memorabile cu trăsături de caracter bine definite.
+   - Asigură-te că personajele sunt diverse și incluzive.
+
+7. Limbaj și ton:
+   - Folosește un vocabular adecvat pentru un copil de {$this->childAge} ani.
+   - Menține un ton pozitiv și încurajator pe parcursul poveștii.
+
+Prezintă povestea într-un format clar, cu paragrafe bine structurate și dialog acolo unde este cazul.";
 
         $response = Anthropic::messages()->create([
             'model' => 'claude-3-5-sonnet-20240620',
@@ -238,7 +266,29 @@ class StoryGenerator extends Component
 
 private function generateStoryImage($theme)
 {
-    $imagePrompt = "O ilustrație vibrantă și prietenoasă pentru copii, reprezentând o scenă dintr-o poveste de genul {$this->selectedGenre} cu tema: {$theme}. Ilustrația ar trebui să includă un peisaj detaliat, personaje prietenoase cu expresii vesele și detalii clare, îmbrăcate în costume specifice genului. Stilul artistic trebuie să fie luminos, plin de culori vii și potrivit pentru un copil de {$this->childAge} ani, cu forme rotunjite și detalii amuzante. Atmosfera ar trebui să fie caldă și primitoare, iar fundalul să reflecte tema poveștii, completând armonios scena principală.";
+    $imagePrompt = "Creează o ilustrație digitală vibrantă și prietenoasă pentru copii, reprezentând o scenă cheie dintr-o poveste de genul {$this->selectedGenre} cu tema: {$theme}. Ilustrația trebuie să fie potrivită pentru un copil de {$this->childAge} ani.
+
+Elemente cheie:
+1. Personaje: Include 1-3 personaje principale în prim-plan, cu expresii faciale vesele și prietenoase. Personajele trebuie să fie diverse și incluzive.
+2. Acțiune: Personajele să fie angajate într-o acțiune relevantă pentru tema poveștii.
+3. Costume: Personajele să poarte costume sau haine specifice genului poveștii și temei.
+4. Peisaj: Un fundal detaliat care reflectă tema și genul poveștii, completând armonios scena principală.
+5. Obiecte: Adaugă 2-3 obiecte sau elemente relevante pentru poveste în scenă.
+
+Stil artistic:
+- Folosește culori vii și luminoase, predominant tonuri calde și prietenoase.
+- Folosește un stil de desen animat modern, cu contururi clare și forme usor rotunjite.
+- Adaugă detalii amuzante și elemente surpriză care să stimuleze imaginația copiilor.
+
+Compoziție:
+- Asigură-te că scena are un punct focal clar, de obicei personajul principal sau acțiunea principală.
+- Utilizează regula treimilor pentru o compoziție echilibrată.
+- Adaugă adâncime scenei prin utilizarea planurilor multiple (prim-plan, plan median, fundal).
+
+Atmosferă:
+- Creează o atmosferă caldă, primitoare și plină de energie pozitivă.
+
+Asigură-te că imaginea este potrivită pentru un copil de {$this->childAge} ani, fără elemente înfricoșătoare sau nepotrivite. Imaginea trebuie să fie clară, detaliată și să invite la explorare vizuală.";
 
 
     $retries = 3;

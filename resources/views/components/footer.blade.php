@@ -13,6 +13,14 @@
                 @endfor
             </div>
 
+            <!-- Linkuri informative -->
+            <div class="flex flex-wrap justify-center mb-4 space-x-4 ">
+                <a href="{{ route('about') }}" class="text-white transition duration-300 hover:text-yellow-300">Despre Noi</a>
+                <a href="{{ route('contact') }}" class="text-white transition duration-300 hover:text-yellow-300">Contact</a>
+                <a href="{{ route('privacy-policy') }}" class="text-white transition duration-300 hover:text-yellow-300">Politica de Confidențialitate</a>
+                <a href="{{ route('terms-and-conditions') }}" class="text-white transition duration-300 hover:text-yellow-300">Termeni și Condiții</a>
+            </div>
+
             <!-- Text copyright -->
             <p class="mb-2 text-sm text-center text-white">
                 &copy; {{ date('Y') }} Povestitorul Magic. Toate drepturile rezervate.
@@ -21,8 +29,8 @@
             <!-- Linie decorativă -->
             <div class="w-24 h-1 mb-4 bg-yellow-300 rounded-full"></div>
 
-            <!-- Link-uri social media (exemple) -->
-            <div class="flex space-x-4">
+            <!-- Link-uri social media -->
+            <div class="flex mb-4 space-x-4">
                 <a href="#" class="text-white transition duration-300 hover:text-yellow-300">
                     <i class="fab fa-facebook-f"></i>
                 </a>
@@ -33,7 +41,11 @@
                     <i class="fab fa-twitter"></i>
                 </a>
             </div>
+
+            <!-- Informații despre dezvoltator -->
+            <p class="text-sm text-center text-white">
+                Dezvoltat și întreținut de <a href="https://clickstudios-digital.com" target="_blank" class="underline transition duration-300 hover:text-yellow-300">Click Studios Digital</a>
+            </p>
         </div>
     </div>
 </footer>
-

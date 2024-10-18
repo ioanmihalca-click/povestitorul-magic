@@ -1,23 +1,32 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<title>Povestitorul Magic - Povești Interactive și Personalizate pentru Copii</title>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="description"
+        content="Povestitorul Magic creează povești interactive și personalizate care încântă imaginația copiilor. Explorează o lume de aventuri, basme și lecții educative adaptate vârstei copilului tău.">
 
-    <title>{{ config('app.name', 'Povestitorul Magic') }}</title>
+    <meta name="keywords"
+        content="povești pentru copii, povești personalizate, povești interactive, basme, aventuri pentru copii, educație prin povești">
 
-    <link rel="icon" type="image/png" href="{{ asset('assets/favicon/favicon-48x48.png') }}" sizes="48x48" />
-    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/favicon/favicon.svg') }}" />
-    <link rel="shortcut icon" href="{{ asset('assets/favicon/favicon.ico') }}" />
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/favicon/apple-touch-icon.png') }}" />
+    <meta name="author" content="Povestitorul Magic">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url('/') }}">
+    <meta property="og:title" content="Povestitorul Magic - Povești Interactive pentru Copii">
+    <meta property="og:description"
+        content="Descoperă lumea magică a poveștilor personalizate pentru copilul tău. Creăm aventuri unice adaptate vârstei fiecărui copil.">
+    <meta property="og:image" content="{{ asset('assets/og-image.jpg') }}">
+
+    <link rel="icon" type="image/png" href="assets/favicon/favicon-48x48.png" sizes="48x48" />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="assets/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Povestitorul Magic" />
-    <link rel="manifest" href="{{ asset('assets/favicon/site.webmanifest') }}" />
+    <link rel="manifest" href="assets/favicon/site.webmanifest" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-EXFN904JQL"></script>
@@ -32,8 +41,11 @@
         gtag('config', 'G-EXFN904JQL');
     </script>
 
-    <!-- Scripts -->
+    <!-- Styles -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 
 <body class="font-sans antialiased text-gray-900">
