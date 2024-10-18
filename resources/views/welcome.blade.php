@@ -116,7 +116,7 @@
             </div>
 
             <div class="mt-4 text-center">
-                <a href="{{ route('about') }}" class="text-lg text-gray-700 underline hover:text-gray-900">
+                <a href="{{ route('about') }}" class="text-lg text-gray-600 underline hover:text-gray-900">
                     Despre noi
                 </a>
             </div>
