@@ -31,6 +31,6 @@ class Contact extends Component
     public function render()
     {
         return view('livewire.pages.contact')
-            ->layout('layouts.app', ['title' => 'Contact']);
+            ->layout('layouts.guest', ['title' => 'Contact']);
     }
 }

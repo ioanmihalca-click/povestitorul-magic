@@ -1,4 +1,4 @@
-// resources/views/livewire/pages/contact.blade.php
+
 <div class="container px-4 py-8 mx-auto">
     <h1 class="mb-6 text-3xl font-bold">Contactează-ne</h1>
     <form wire:submit.prevent="submitForm" class="max-w-lg">

@@ -9,6 +9,6 @@ class PrivacyPolicy extends Component
     public function render()
     {
         return view('livewire.pages.privacy-policy')
-            ->layout('layouts.app', ['title' => 'Politica de Confidențialitate']);
+            ->layout('layouts.guest', ['title' => 'Politica de Confidențialitate']);
     }
 }
