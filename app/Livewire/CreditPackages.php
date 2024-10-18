@@ -16,17 +16,17 @@ class CreditPackages extends Component
         [
             'credits' => 10,
             'price' => 4.50,
-            'stripe_price_id' => 'price_1QAds2BBirsJlR3v7hLHCdso',
+            'stripe_price_id' => 'price_1QBFDgBBirsJlR3vwYfr3uuT',
         ],
         [
             'credits' => 50,
             'price' => 20.00,
-            'stripe_price_id' => 'price_1QAds2BBirsJlR3vNw4wMNAA',
+            'stripe_price_id' => 'price_1QBFDgBBirsJlR3vzOOtMfGJ',
         ],
         [
             'credits' => 100,
             'price' => 35.00,
-            'stripe_price_id' => 'price_1QAds2BBirsJlR3vEDyoWiMY',
+            'stripe_price_id' => 'price_1QBFDgBBirsJlR3vqr1rHpnW',
         ],
     ];
 

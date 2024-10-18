@@ -48,7 +48,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 
-<body class="font-sans antialiased text-gray-900">
+<body class="font-['Nunito'] antialiased">
     <div class="flex flex-col items-center min-h-screen pt-6 bg-white sm:justify-center sm:pt-0">
         <div class="flex items-center shrink-0">
             <a href="/" wire:navigate>
@@ -57,7 +57,7 @@
             </a>
         </div>
 
-        <div class="w-full px-6 py-4 mt-6 overflow-hidden bg-white shadow-md sm:max-w-md sm:rounded-lg">
+        <div class="w-full px-6 py-4 mt-6 overflow-hidden bg-white rounded-lg shadow-md md:max-w-xl">
             {{ $slot }}
         </div>
     </div>

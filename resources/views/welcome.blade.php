@@ -90,7 +90,7 @@
                     </div>
                 </div>
 
-                
+
 
                 <!-- Elemente suplimentare -->
                 <div class="flex justify-center mt-12 space-x-8">
@@ -111,9 +111,15 @@
 
             <div class="mt-4 text-center">
                 <a href="{{ route('blog.index') }}" class="text-lg text-gray-700 underline hover:text-gray-900">
-                   Viziteaza Blogul cu Povești 
+                    Viziteaza Blogul cu Povești
                 </a>
-                </div>
+            </div>
+
+            <div class="mt-4 text-center">
+                <a href="{{ route('about') }}" class="text-lg text-gray-700 underline hover:text-gray-900">
+                    Despre noi
+                </a>
+            </div>
 
             <!-- Secțiunea cu povestea aleatorie -->
             @if ($randomStory)
@@ -129,9 +135,9 @@
                             <h3 class="mb-2 text-2xl font-bold text-center text-indigo-700">{{ $randomStory->title }}
                             </h3>
                             <div class="flex items-center justify-center mb-4 text-sm text-gray-600">
-                                <span class="mr-4"><i
-                                        class="mr-2 fas fa-book"></i>Genul: {{ $randomStory->genre->value }}</span>
-                                <span><i class="mr-2 fas fa-child"></i>Varsta recomandata: {{ $randomStory->age }} ani</span>
+                                <span class="mr-4"><i class="mr-2 fas fa-book"></i>{{ $randomStory->genre->value }}</span>
+                                <span><i class="mr-2 fas fa-child"></i>{{ $randomStory->age }}
+                                    ani</span>
                             </div>
                             <div class="prose max-w-none">
                                 {!! nl2br(e($randomStory->content)) !!}
@@ -140,7 +146,8 @@
                     </div>
 
                     <div class="max-w-xl mx-auto mt-12 space-y-8">
-                        <p class="text-xl text-center text-gray-700">Îți place această poveste? <br> Înregistrează-te pentru
+                        <p class="text-xl text-center text-gray-700">Îți place această poveste? <br> Înregistrează-te
+                            pentru
                             a crea și citi mai multe!</p>
 
                         <div
@@ -208,6 +215,7 @@
         <x-footer />
     </div>
 
-  
+
 </body>
+
 </html>
