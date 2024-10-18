@@ -240,9 +240,7 @@ class StoryGenerator extends Component
 
     private function generateStoryImage($theme)
     {
-        $imagePrompt = "O ilustrație pentru o poveste pentru copii, în stilul modern de animație 3D, reprezentând o scenă dintr-o poveste din genul {$this->selectedGenre}, cu tema {$theme}. Ilustrația ar trebui să includă un peisaj bogat în detalii, cum ar fi o pădure fermecată, un câmp înverzit sau un sat magic, cu texturi realiste și culori vibrante. Peisajul trebuie să fie luminos și atrăgător, având o iluminare naturală dinamică. În scenă ar trebui să apară 1-3 personaje prietenoase, cu trăsături expresive și naturale, având expresii faciale vesele și jucăușe. Personajele vor fi îmbrăcate în costume detaliate, specifice genului, cum ar fi haine medievale, fantezie sau de aventură. Stilul artistic trebuie să reflecte animația 3D modernă, cu un nivel înalt de detalii, culori vii și o atmosferă caldă, pozitivă și primitoare. Imaginea trebuie să fie clară și bine detaliată, concepută pentru a capta atenția unui copil de {$this->childAge} ani, fără elemente înfricoșătoare sau nepotrivite.";
-
-
+        $imagePrompt = "O ilustrație pentru copii reprezentând o scenă dintr-o poveste de genul {$this->selectedGenre} cu tema: {$theme}. Stilul trebuie să fie modern de animație 3D, potrivit pentru un copil de {$this->childAge} ani, folosind culori vii și personaje prietenoase.";
 
         $retries = 3;
         while ($retries > 0) {
