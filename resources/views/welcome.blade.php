@@ -110,7 +110,7 @@
             </div>
 
             <div class="mt-4 text-center">
-                <a href="{{ route('blog.index') }}" class="text-sm text-gray-700 underline hover:text-gray-900">
+                <a href="{{ route('blog.index') }}" class="text-lg text-gray-700 underline hover:text-gray-900">
                    Viziteaza Blogul cu Povești 
                 </a>
                 </div>

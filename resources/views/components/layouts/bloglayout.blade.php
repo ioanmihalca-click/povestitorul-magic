@@ -19,7 +19,7 @@
         content="{{ $seo['ogTitle'] ?? 'Povestitorul Magic - Povești Interactive pentru Copii' }}">
     <meta property="og:description"
         content="{{ $seo['ogDescription'] ?? 'Descoperă lumea magică a poveștilor personalizate pentru copilul tău. Creăm aventuri unice adaptate vârstei fiecărui copil.' }}">
-    <meta property="og:image" content="{{ $seo['ogImage'] ?? asset('assets/og-image.jpg') }}">
+    <meta property="og:image" content="{{ asset('assets/og-image.jpg') }}">
 
     @if (isset($seo['schemaMarkup']))
         <script type="application/ld+json">
@@ -61,16 +61,28 @@
 
 <body class="font-['Nunito'] antialiased">
     <div class="min-h-screen bg-gradient-to-br from-red-500 via-blue-300 to-yellow-200">
-        
-
-        <!-- Page Heading -->
-        @if (isset($header))
-            <header class="bg-white shadow">
-                <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    {{ $header }}
+        <nav class="bg-white shadow-lg">
+            <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <div class="flex">
+                         <!-- Logo -->
+                <div class="flex items-center shrink-0">
+                    <a href="/" wire:navigate>
+                        <img src="{{ asset('assets/logo.jpg') }}" alt="Logo Povestitorul Magic"
+                            class="block w-auto h-16 text-gray-800 fill-current" />
+                    </a>
                 </div>
-            </header>
-        @endif
+                    </div>
+                    <div class="flex items-center">
+                        <a href="{{ route('povestitorulmagic') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Creează o Poveste Magică
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+   
 
         <!-- Page Content -->
         <main class="p-2">
