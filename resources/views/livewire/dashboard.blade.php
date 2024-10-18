@@ -25,7 +25,7 @@
                 @else
                 
  <p class="text-center text-gray-600">
-        Nu ai generat încă nicio poveste. 
+        Nu ai generat încă nicio poveste. <br />
         <a href="{{ route('povestitorulmagic') }}" class="text-indigo-600 underline hover:text-indigo-800">
             Hai să creăm una împreună!
         </a>
