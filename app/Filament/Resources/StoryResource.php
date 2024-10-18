@@ -55,15 +55,6 @@ class StoryResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\DeleteAction::make()
-                    ->requiresConfirmation()
-                    ->after(function (Story $record) {
-                        Notification::make()
-                            ->title('Story Deleted')
-                            ->body('The story has been successfully deleted.')
-                            ->success()
-                            ->send();
-                    }),
                 Tables\Actions\Action::make('publishToBlog')
                     ->label('Publish to Blog')
                     ->icon('heroicon-o-globe-alt')
@@ -87,7 +78,7 @@ class StoryResource extends Resource
                         }
                     })
                     ->requiresConfirmation()
-                    ->hidden(fn(Story $record) => $record->is_published),
+                    ->hidden(fn (Story $record) => $record->is_published),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -102,7 +93,7 @@ class StoryResource extends Resource
                                     $publishedCount++;
                                 }
                             }
-
+                            
                             Notification::make()
                                 ->success()
                                 ->title('Stories Published')
@@ -152,9 +143,9 @@ class StoryResource extends Resource
     }
 
     public static function canView(Model $record): bool
-    {
-        return true;
-    }
+{
+    return true;
+}
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
