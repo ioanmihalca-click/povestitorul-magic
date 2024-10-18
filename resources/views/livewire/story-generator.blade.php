@@ -174,7 +174,7 @@
                             <i class="mr-2 fas fa-magic fa-spin"></i>Povestitorul Magic își folosește puterile pentru a
                             crea o poveste uimitoare...
                         </p>
-                        <p class="mt-2 text-sm">Acest proces poate dura până la un minut. Vă rugăm să așteptați.</p>
+                        <p class="mt-2 text-sm">Acest proces poate dura 1-2 minute. Vă rugăm să așteptați.</p>
                     </div>
                 </div>
 
