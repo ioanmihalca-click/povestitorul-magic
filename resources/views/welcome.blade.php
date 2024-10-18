@@ -128,10 +128,10 @@
                         <div class="p-4">
                             <h3 class="mb-2 text-2xl font-bold text-center text-indigo-700">{{ $randomStory->title }}
                             </h3>
-                            <div class="flex items-center mb-4 text-sm text-gray-600">
+                            <div class="flex items-center justify-center mb-4 text-sm text-gray-600">
                                 <span class="mr-4"><i
-                                        class="mr-2 fas fa-book"></i>{{ $randomStory->genre->value }}</span>
-                                <span><i class="mr-2 fas fa-child"></i>Pentru {{ $randomStory->age }} ani</span>
+                                        class="mr-2 fas fa-book"></i>Genul: {{ $randomStory->genre->value }}</span>
+                                <span><i class="mr-2 fas fa-child"></i>Varsta recomandata: {{ $randomStory->age }} ani</span>
                             </div>
                             <div class="prose max-w-none">
                                 {!! nl2br(e($randomStory->content)) !!}
@@ -139,8 +139,8 @@
                         </div>
                     </div>
 
-                    <div class="mt-12 space-y-8">
-                        <p class="text-xl text-center text-gray-700">Îți place această poveste? Înregistrează-te pentru
+                    <div class="max-w-xl mx-auto mt-12 space-y-8">
+                        <p class="text-xl text-center text-gray-700">Îți place această poveste? <br> Înregistrează-te pentru
                             a crea și citi mai multe!</p>
 
                         <div
