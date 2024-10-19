@@ -53,7 +53,7 @@
     
     <section>
         <h2 class="mb-4 text-2xl font-semibold text-indigo-600">Contactați-ne</h2>
-        <p class="mb-4">Suntem întotdeauna bucuroși să auzim de la utilizatorii noștri. Dacă aveți întrebări, sugestii sau pur și simplu doriți să ne salutați, nu ezitați să ne contactați la <a href="mailto:contact@povestitorulmagic.ro" class="text-blue-600 hover:underline">contact@povestitorul-magic.ro</a>.</p>
+        <p class="mb-4">Suntem întotdeauna bucuroși să auzim de la utilizatorii noștri. Dacă aveți întrebări, sugestii sau pur și simplu doriți să ne salutați, nu ezitați să ne contactați la <a href="mailto:contact@povestitorulmagic.ro" class="text-blue-600 hover:underline">contact@povestitorulmagic.ro</a>.</p>
         <p>Alăturați-vă nouă în această aventură magică a poveștilor și să inspirăm împreună următoarea generație de cititori!</p>
     </section>
 </div>
