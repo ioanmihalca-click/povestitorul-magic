@@ -35,9 +35,8 @@
         <h2 class="mb-4 text-2xl font-semibold text-indigo-600">Echipa noastră</h2>
         <p class="mb-4">În spatele Povestitorului Magic se află o echipă de profesioniști pasionați, inclusiv:</p>
         <ul class="mb-4 ml-6 list-disc">
-            <li>Dezvoltatori de software și specialiști în inteligență artificială</li>
-            <li>Experți în educație și dezvoltare infantilă</li>
-            <li>Specialiști în experiența utilizatorului și design</li>
+            <li>Dezvoltatori de aplicatii web și specialiști în inteligență artificială</li>
+            <li>Oameni cu experiență în educație și dezvoltare infantilă</li>
         </ul>
         <p class="mb-4">Împreună, lucrăm pentru a aduce magia poveștilor în era digitală și pentru a inspira următoarea generație de cititori și visători.</p>
     </section>

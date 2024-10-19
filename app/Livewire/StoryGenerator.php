@@ -215,6 +215,7 @@ class StoryGenerator extends Component
         Limbaj și ton:
         - Vocabular adecvat pentru {$this->childAge} ani
         - Ton pozitiv și încurajator
+        - Evita utilizarea excesiva a timpului verbal perfect simplu.
         Includeți și un titlu potrivit pentru poveste. Asigura-te ca povestea este completa";
 
         $response = Anthropic::messages()->create([
@@ -240,7 +241,7 @@ class StoryGenerator extends Component
 
     private function generateStoryImage($theme)
     {
-        $imagePrompt = "O ilustrație pentru copii reprezentând o scenă dintr-o poveste de genul {$this->selectedGenre} cu tema: {$theme}. Stilul trebuie să fie modern de animație 3D, fara text, potrivit pentru un copil de {$this->childAge} ani, folosind culori vii și personaje prietenoase.";
+        $imagePrompt = "O ilustrație digitală modernă pentru copii, reprezentând o scenă dintr-o poveste de tip {$this->selectedGenre} cu tema: {$theme}. Imaginea este realizată în stil de animație 3D, fără text. Este potrivită pentru un copil de {$this->childAge} ani și folosește culori vii și personaje prietenoase.";
 
         $retries = 3;
         while ($retries > 0) {
