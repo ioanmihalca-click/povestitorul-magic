@@ -6,12 +6,11 @@ use App\StoryGenre;
 use App\Models\BlogPost;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Story extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $fillable = ['user_id', 'title', 'content', 'age', 'genre', 'theme', 'image_url', 'is_published'];
 
