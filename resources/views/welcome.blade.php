@@ -115,12 +115,12 @@
                 </a>
             </div>
 
-            <div class="my-4 text-center">
+            {{-- <div class="my-4 text-center">
                 <a href="{{ route('about') }}"
                     class="px-4 py-2 text-sm font-medium text-white transition duration-300 bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     Despre Povestitorul Magic
                 </a>
-            </div>
+            </div> --}}
 
             <!-- Secțiunea cu povestea aleatorie -->
             @if ($randomStory)
