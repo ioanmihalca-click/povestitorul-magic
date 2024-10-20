@@ -3,6 +3,11 @@
         <div class="overflow-hidden shadow-lg bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 rounded-3xl">
             <div class="p-6">
                 <h2 class="mb-6 text-3xl font-bold text-center text-indigo-600">Biblioteca ta Magică</h2>
+                @if (session()->has('message'))
+                    <div class="p-4 mb-4 text-green-700 bg-green-100 rounded-lg">
+                        {{ session('message') }}
+                    </div>
+                @endif
                 @if($stories->count() > 0)
                     <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                         @foreach($stories as $story)
@@ -18,18 +23,20 @@
                                 <p class="text-gray-600"><i class="mr-2 fas fa-book"></i>{{ $story->genre->value }}</p>
                                 <p class="text-gray-600"><i class="mr-2 fas fa-child"></i>{{ $story->age }} ani</p>
                                 <p class="text-gray-600"><i class="mr-2 far fa-calendar-alt"></i>{{ $story->created_at->format('d.m.Y H:i') }}</p>
-                                <a href="{{ route('story.show', $story) }}" class="inline-block px-4 py-2 mt-4 text-white transition duration-300 bg-indigo-500 rounded-lg hover:bg-indigo-600">Citește povestea</a>
+                                <div class="flex justify-between mt-4">
+                                    <a href="{{ route('story.show', $story) }}" class="inline-block px-4 py-2 text-white transition duration-300 bg-indigo-500 rounded-lg hover:bg-indigo-600">Citește povestea</a>
+                                    <button wire:click="deleteStory({{ $story->id }})" class="inline-block px-4 py-2 text-white transition duration-300 bg-red-500 rounded-lg hover:bg-red-600" onclick="return confirm('Ești sigur că vrei să ștergi această poveste?')">Șterge</button>
+                                </div>
                             </div>
                         @endforeach
                     </div>
                 @else
-                
- <p class="text-center text-gray-600">
-        Nu ai generat încă nicio poveste. <br />
-        <a href="{{ route('povestitorulmagic') }}" class="text-indigo-600 underline hover:text-indigo-800">
-            Hai să creăm una împreună!
-        </a>
-    </p>
+                    <p class="text-center text-gray-600">
+                        Nu ai generat încă nicio poveste. <br />
+                        <a href="{{ route('povestitorulmagic') }}" class="text-indigo-600 underline hover:text-indigo-800">
+                            Hai să creăm una împreună!
+                        </a>
+                    </p>
                 @endif
             </div>
         </div>

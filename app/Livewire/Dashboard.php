@@ -19,6 +19,17 @@ class Dashboard extends Component
         }
 
         return view('livewire.dashboard', compact('stories'));
-            
+    }
+
+    public function deleteStory($storyId)
+    {
+        $story = Story::where('id', $storyId)
+                      ->where('user_id', Auth::id())
+                      ->first();
+
+        if ($story) {
+            $story->delete();
+            session()->flash('message', 'Povestea a fost ștearsă cu succes.');
+        }
     }
 }
