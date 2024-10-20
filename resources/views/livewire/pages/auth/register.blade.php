@@ -36,7 +36,7 @@ new #[Layout('layouts.guest')] class extends Component
     }
 }; ?>
 
-<div>
+<div class="max-w-sm mx-auto">
     <form wire:submit="register">
         <!-- Name -->
         <div>
