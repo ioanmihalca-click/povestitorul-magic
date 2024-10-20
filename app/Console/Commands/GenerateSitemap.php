@@ -15,43 +15,55 @@ class GenerateSitemap extends Command
 
     public function handle()
     {
+        $this->info('Începerea generării sitemap-ului...');
+
         $sitemap = Sitemap::create();
 
         // Pagina principală
         $sitemap->add(Url::create('/')
-            ->setLastModificationDate(Carbon::now())
-            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
-            ->setPriority(1.0));
+            ->setLastModificationDate(Carbon::now()));
+
+        $this->info('Adăugată pagina principală.');
 
         // Pagina de blog
         $sitemap->add(Url::create('/blog')
-            ->setLastModificationDate(Carbon::now())
-            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
-            ->setPriority(0.9));
+            ->setLastModificationDate(Carbon::now()));
+
+        $this->info('Adăugată pagina de blog.');
 
         // Articole de blog
-        BlogPost::all()->each(function (BlogPost $post) use ($sitemap) {
+        $blogPostCount = 0;
+        BlogPost::all()->each(function (BlogPost $post) use ($sitemap, &$blogPostCount) {
             $sitemap->add(Url::create("/blog/{$post->slug}")
-                ->setLastModificationDate($post->updated_at)
-                ->setPriority(0.8));
+                ->setLastModificationDate($post->updated_at));
+            $blogPostCount++;
         });
+
+        $this->info("Adăugate $blogPostCount articole de blog.");
 
         // Pagini statice
         $staticPages = [
-            '/despre-noi' => 0.7,
-            '/contact' => 0.5,
-            '/politica-de-confidentialitate' => 0.5,
-            '/termeni-si-conditii' => 0.5,
+            '/despre-noi',
+            '/contact',
+            '/politica-de-confidentialitate',
+            '/termeni-si-conditii',
         ];
 
-        foreach ($staticPages as $page => $priority) {
+        foreach ($staticPages as $page) {
             $sitemap->add(Url::create($page)
-                ->setLastModificationDate(Carbon::now())
-                ->setPriority($priority));
+                ->setLastModificationDate(Carbon::now()));
         }
 
-        $sitemap->writeToFile(public_path('sitemap.xml'));
+        $this->info('Adăugate pagini statice.');
 
-        $this->info('Sitemap generat cu succes.');
+        $path = public_path('sitemap.xml');
+        $sitemap->writeToFile($path);
+
+        if (file_exists($path)) {
+            $this->info("Sitemap generat cu succes la: $path");
+            $this->info("Dimensiune fișier: " . number_format(filesize($path) / 1024, 2) . " KB");
+        } else {
+            $this->error("Eroare la generarea sitemap-ului.");
+        }
     }
 }

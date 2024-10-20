@@ -1,65 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+    <url>
+        <loc>https://povestitorulmagic.test</loc>
+        <lastmod>2024-10-20T14:12:31+00:00</lastmod>
 
-  <url>
-    <loc>https://povestitorulmagic.ro/</loc>
-    <lastmod>2024-10-18T08:25:29+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.00</priority>
-  </url>
+            </url>
+    <url>
+        <loc>https://povestitorulmagic.test/blog</loc>
+        <lastmod>2024-10-20T14:12:31+00:00</lastmod>
 
-  <url>
-    <loc>https://povestitorulmagic.ro/blog</loc>
-    <lastmod>2024-10-18T08:25:29+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
-  </url>
+            </url>
+    <url>
+        <loc>https://povestitorulmagic.test/despre-noi</loc>
+        <lastmod>2024-10-20T14:12:31+00:00</lastmod>
 
-  <url>
-<loc>https://povestitorulmagic.ro/blog/supereroul-soseta-si-misiunea-pierduta</loc>
-<lastmod>2024-10-18T10:37:49+00:00</lastmod>
-<priority>0.80</priority>
-</url>
+            </url>
+    <url>
+        <loc>https://povestitorulmagic.test/contact</loc>
+        <lastmod>2024-10-20T14:12:31+00:00</lastmod>
 
-<url>
-<loc>https://povestitorulmagic.ro/blog/curajul-lui-iancu-si-comoara-padurii</loc>
-<lastmod>2024-10-18T10:37:49+00:00</lastmod>
-<priority>0.80</priority>
-</url>
+            </url>
+    <url>
+        <loc>https://povestitorulmagic.test/politica-de-confidentialitate</loc>
+        <lastmod>2024-10-20T14:12:31+00:00</lastmod>
 
-  <url>
-    <loc>https://povestitorulmagic.ro/blog/mitzi-pisoiul-cel-dragalas-si-impiedicat</loc>
-    <lastmod>2024-10-18T08:25:29+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
+            </url>
+    <url>
+        <loc>https://povestitorulmagic.test/termeni-si-conditii</loc>
+        <lastmod>2024-10-20T14:12:31+00:00</lastmod>
 
-  <!-- Adăugați aici alte pagini relevante -->
-
-<url>
-<loc>https://povestitorulmagic.ro/despre-noi</loc>
-<lastmod>2024-10-18T09:33:58+00:00</lastmod>
-<priority>0.70</priority>
-</url>
-
-<url>
-<loc>https://povestitorulmagic.ro/contact</loc>
-<lastmod>2024-10-18T09:33:58+00:00</lastmod>
-<priority>0.50</priority>
-</url>
-
-<url>
-<loc>https://povestitorulmagic.ro/politica-de-confidentialitate</loc>
-<lastmod>2024-10-18T09:33:58+00:00</lastmod>
-<priority>0.50</priority>
-</url>
-
-<url>
-<loc>https://povestitorulmagic.ro/termeni-si-conditii</loc>
-<lastmod>2024-10-18T09:33:58+00:00</lastmod>
-<priority>0.50</priority>
-</url>
-
+            </url>
 </urlset>
