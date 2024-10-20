@@ -55,6 +55,16 @@ class StoryResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->requiresConfirmation()
+                    ->after(function () {
+                        Notification::make()
+                            ->success()
+                            ->title('Story Deleted')
+                            ->body('The story has been successfully deleted.')
+                            ->send();
+                    }),
                 Tables\Actions\Action::make('publishToBlog')
                     ->label('Publish to Blog')
                     ->icon('heroicon-o-globe-alt')
@@ -82,7 +92,15 @@ class StoryResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->requiresConfirmation()
+                        ->after(function () {
+                            Notification::make()
+                                ->success()
+                                ->title('Stories Deleted')
+                                ->body('The selected stories have been successfully deleted.')
+                                ->send();
+                        }),
                     Tables\Actions\BulkAction::make('publishMultipleToBlog')
                         ->label('Publish Selected to Blog')
                         ->icon('heroicon-o-globe-alt')
