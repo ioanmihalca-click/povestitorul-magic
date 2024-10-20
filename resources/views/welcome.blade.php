@@ -115,11 +115,12 @@
                 </a>
             </div>
 
-            {{-- <div class="mt-4 text-center">
-                <a href="{{ route('about') }}" class="text-lg text-gray-700 underline hover:text-gray-900">
-                    Despre noi
+            <div class="my-4 text-center">
+                <a href="{{ route('about') }}"
+                    class="px-4 py-2 text-sm font-medium text-white transition duration-300 bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Despre Povestitorul Magic
                 </a>
-            </div> --}}
+            </div>
 
             <!-- Secțiunea cu povestea aleatorie -->
             @if ($randomStory)
@@ -135,7 +136,8 @@
                             <h3 class="mb-2 text-2xl font-bold text-center text-indigo-700">{{ $randomStory->title }}
                             </h3>
                             <div class="flex items-center justify-center mb-4 text-sm text-gray-600">
-                                <span class="mr-4"><i class="mr-2 fas fa-book"></i>{{ $randomStory->genre->value }}</span>
+                                <span class="mr-4"><i
+                                        class="mr-2 fas fa-book"></i>{{ $randomStory->genre->value }}</span>
                                 <span><i class="mr-2 fas fa-child"></i>{{ $randomStory->age }}
                                     ani</span>
                             </div>
