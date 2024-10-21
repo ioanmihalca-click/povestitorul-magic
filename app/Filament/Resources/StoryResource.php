@@ -65,16 +65,16 @@ class StoryResource extends Resource
                         if ($record->publishToBlog()) {
                             Notification::make()
                                 ->success()
-                                ->title('Story Published')
-                                ->body('The story has been successfully published to the blog.')
+                                ->title('Poveste publicata')
+                                ->body('Povestea a fost publicata cu succes')
                                 ->send();
 
                             $action->success();
                         } else {
                             Notification::make()
                                 ->danger()
-                                ->title('Publication Failed')
-                                ->body('The story is already published or could not be published.')
+                                ->title('Publiccarea nu a reusit')
+                                ->body('Povestea e deja publicata sau nu se poate publica')
                                 ->send();
 
                             $action->failure();
@@ -90,8 +90,8 @@ class StoryResource extends Resource
                         ->after(function () {
                             Notification::make()
                                 ->success()
-                                ->title('Stories Deleted')
-                                ->body('The selected stories have been successfully deleted.')
+                                ->title('Povestile au fost sterse')
+                                ->body('Povestile selectate au fost sterse cu succes')
                                 ->send();
                         }),
                         Tables\Actions\BulkAction::make('publishMultipleToBlog')
@@ -107,8 +107,8 @@ class StoryResource extends Resource
 
                             Notification::make()
                                 ->success()
-                                ->title('Stories Published')
-                                ->body("{$publishedCount} stories have been published to the blog.")
+                                ->title('Povestile au fost publicate')
+                                ->body("{$publishedCount} povesti au fost publicate pe blog.")
                                 ->send();
 
                             $action->success();
