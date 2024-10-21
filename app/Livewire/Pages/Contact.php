@@ -20,6 +20,15 @@ class Contact extends Component
         'message' => 'required|min:10',
     ];
 
+    protected $messages = [
+        'name.required' => 'Vă rugăm să introduceți numele dumneavoastră.',
+        'name.min' => 'Numele trebuie să aibă cel puțin 2 caractere.',
+        'email.required' => 'Adresa de email este necesară.',
+        'email.email' => 'Vă rugăm să introduceți o adresă de email validă.',
+        'message.required' => 'Vă rugăm să introduceți un mesaj.',
+        'message.min' => 'Mesajul trebuie să aibă cel puțin 10 caractere.',
+    ];
+
     public function submitForm()
     {
         $this->isLoading = true;

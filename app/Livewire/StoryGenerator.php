@@ -128,6 +128,13 @@ class StoryGenerator extends Component
     {
         return [
             'childAge.required' => 'Te rugăm să ne spui vârsta micuțului ascultător pentru a crea o poveste potrivită.',
+            'childAge.integer' => 'Vârsta trebuie să fie un număr întreg.',
+            'childAge.min' => 'Vârsta minimă acceptată este de 1 an.',
+            'childAge.max' => 'Vârsta maximă acceptată este de 18 ani.',
+            'selectedGenre.required' => 'Te rugăm să alegi un gen pentru povestea ta.',
+            'selectedTheme.required' => 'Te rugăm să alegi o temă pentru povestea ta.',
+            'customTheme.required_if' => 'Când alegi o temă personalizată, te rugăm să o descrii.',
+            'customTheme.max' => 'Tema personalizată nu poate depăși 255 de caractere.',
         ];
     }
 
