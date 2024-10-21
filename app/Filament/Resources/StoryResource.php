@@ -58,11 +58,30 @@ class StoryResource extends Resource
                 Tables\Actions\DeleteAction::make()
                     ->requiresConfirmation(),
                    
-                Tables\Actions\Action::make('publishToBlog')
+                    Tables\Actions\Action::make('publishToBlog')
                     ->label('Publish to Blog')
                     ->icon('heroicon-o-globe-alt')
+                    ->action(function (Story $record, Tables\Actions\Action $action) {
+                        if ($record->publishToBlog()) {
+                            Notification::make()
+                                ->success()
+                                ->title('Story Published')
+                                ->body('The story has been successfully published to the blog.')
+                                ->send();
+
+                            $action->success();
+                        } else {
+                            Notification::make()
+                                ->danger()
+                                ->title('Publication Failed')
+                                ->body('The story is already published or could not be published.')
+                                ->send();
+
+                            $action->failure();
+                        }
+                    })
                     ->requiresConfirmation()
-                    ->hidden(fn (Story $record) => $record->is_published),
+                    ->hidden(fn(Story $record) => $record->is_published),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -75,9 +94,25 @@ class StoryResource extends Resource
                                 ->body('The selected stories have been successfully deleted.')
                                 ->send();
                         }),
-                    Tables\Actions\BulkAction::make('publishMultipleToBlog')
+                        Tables\Actions\BulkAction::make('publishMultipleToBlog')
                         ->label('Publish Selected to Blog')
                         ->icon('heroicon-o-globe-alt')
+                        ->action(function ($records, Tables\Actions\BulkAction $action) {
+                            $publishedCount = 0;
+                            foreach ($records as $record) {
+                                if ($record->publishToBlog()) {
+                                    $publishedCount++;
+                                }
+                            }
+
+                            Notification::make()
+                                ->success()
+                                ->title('Stories Published')
+                                ->body("{$publishedCount} stories have been published to the blog.")
+                                ->send();
+
+                            $action->success();
+                        })
                         ->requiresConfirmation(),
                 ]),
             ]);
