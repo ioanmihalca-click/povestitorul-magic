@@ -3,12 +3,16 @@
 namespace App\Livewire\Pages;
 
 use Livewire\Component;
+use App\Mail\ContactFormMail;
+use Illuminate\Support\Facades\Mail;
 
 class Contact extends Component
 {
     public $name;
     public $email;
     public $message;
+
+    public $isLoading = false;
 
     protected $rules = [
         'name' => 'required|min:2',
@@ -18,14 +22,18 @@ class Contact extends Component
 
     public function submitForm()
     {
+        $this->isLoading = true;
+
         $this->validate();
 
-        // Aici puteți adăuga logica pentru trimiterea emailului sau salvarea în baza de date
-        // Pentru acest exemplu, doar vom afișa un mesaj de succes
+        // Trimite email
+    Mail::to('contact@povestitorulmagic.ro')->send(new ContactFormMail($this->name, $this->email, $this->message));
 
         session()->flash('message', 'Mesajul dumneavoastră a fost trimis cu succes!');
 
         $this->reset(['name', 'email', 'message']);
+
+        $this->isLoading = false;
     }
 
     public function render()

@@ -77,8 +77,11 @@
                             class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">Povestitorului
                             Magic</span>
                     </h1>
-                    <p class="mb-8 text-xl text-gray-700">Creăm povești interactive și personalizate care vor încânta
-                        imaginația copilului tău.</p>
+                    <p class="mb-8 text-xl text-gray-700">Descoperă povești interactive și personalizate care vor
+                        încânta
+                        imaginația copilului tău. Platforma noastră este în continuă îmbunătățire, asa că asteptăm
+                        sugestiile voastre!</p>
+
 
                     <div class="flex items-center justify-center w-full mt-8">
                         <div
@@ -110,17 +113,24 @@
             </div>
 
             <div class="mt-4 text-center">
-                <a href="{{ route('blog.index') }}" class="text-lg text-gray-700 underline hover:text-gray-900">
+                <a href="{{ route('blog.index') }}" class="text-lg text-gray-700 underline hover:text-indigo-700">
                     Viziteaza Blogul cu Povești
                 </a>
             </div>
 
-            {{-- <div class="my-4 text-center">
+            <div class="my-4 text-center">
+                <a href="{{ route('about') }}"
+                    class="px-4 py-2 text-base font-medium text-gray-700 hover:text-indigo-700">
+                    Află mai multe despre noi
+                </a>
+            </div>
+
+            {{--             
                 <a href="{{ route('about') }}"
                     class="px-4 py-2 text-sm font-medium text-white transition duration-300 bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     Despre Povestitorul Magic
                 </a>
-            </div> --}}
+             --}}
 
             <!-- Secțiunea cu povestea aleatorie -->
             @if ($randomStory)

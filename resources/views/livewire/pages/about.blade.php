@@ -4,7 +4,7 @@
     <section class="mb-12">
         <h2 class="mb-4 text-2xl font-semibold text-indigo-600">Cine suntem</h2>
         <p class="mb-4">Povestitorul Magic este o platformă inovatoare care folosește inteligența artificială pentru a crea povești personalizate cu ilustrații captivante pentru copii. Suntem o echipă pasionată de tehnologie, educație și creativitate, dedicată să aducă magia poveștilor în era digitală.</p>
-        <p class="mb-4">Fondată în 2024, compania noastră a crescut de la o idee ambițioasă la o platformă care încântă mii de copii și părinți din Romania.</p>
+        {{-- <p class="mb-4">Fondată în 2024, compania noastră a crescut de la o idee ambițioasă la o platformă care încântă mii de copii și părinți din Romania.</p> --}}
     </section>
     
     <section class="mb-12">
