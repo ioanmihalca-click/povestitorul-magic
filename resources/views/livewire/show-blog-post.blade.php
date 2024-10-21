@@ -17,7 +17,7 @@
                         <p><i class="mr-2 fas fa-book"></i>{{ $post->story->genre->value }}</p>
                         <p><i class="mr-2 fas fa-child"></i>{{ $post->story->age }} ani</p>
                     </div>
-                    <div class="prose text-indigo-900 max-w-none">
+                    <div class="prose text-indigo-900 max-w-none no-select">
                         {!! nl2br(e($post->content)) !!}
                     </div>
                 </div>
@@ -79,4 +79,7 @@
             </div>
         </div>
     </div>
+    <script>
+document.addEventListener('contextmenu', (e) => e.preventDefault());
+</script>
 </div>

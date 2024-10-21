@@ -10,3 +10,10 @@
 .animate-twinkle {
     animation: twinkle 3s infinite;
 }
+
+.no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
