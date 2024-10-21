@@ -29,6 +29,7 @@ class StoryGenerator extends Component
     public $userCreditValue;
     public $story;
     public $isGenerating = false;
+    public $storySummary;
 
     public $availableGenres = [
         'Animale' => [
@@ -209,14 +210,14 @@ class StoryGenerator extends Component
 
     private function generateStoryContent($theme)
     {
-        $prompt = "Generează o poveste in limba romană pentru un copil de {$this->childAge} ani. Povestea trebuie sa aiba o lecție de viață sau valoare morală subtil încorporată si sa inspire creativitatea copilului.     
+        $prompt = "Generează o poveste în limba română pentru un copil de {$this->childAge} ani. Povestea trebuie să aibă o lecție de viață sau valoare morală subtil încorporată și să inspire creativitatea copilului.     
         Genul poveștii: {$this->selectedGenre}.
         Tema poveștii: {$theme}.
         Limbaj și ton:
         - Vocabular adecvat pentru {$this->childAge} ani
         - Ton pozitiv și încurajator
-        - Evita utilizarea excesiva a timpului verbal perfect simplu.
-        Includeți și un titlu potrivit pentru poveste. Asigura-te ca povestea este completa";
+        - IMPORTANT: Evită utilizarea timpului verbal perfect simplu. În loc de perfect simplu, folosește imperfect, perfect compus sau prezent istoric pentru a da un ton mai modern și accesibil poveștii.
+        Includeți și un titlu potrivit pentru poveste. Asigură-te că povestea este completă.";
 
         $response = Anthropic::messages()->create([
             'model' => 'claude-3-5-sonnet-20240620',
@@ -235,14 +236,39 @@ class StoryGenerator extends Component
             $this->storyTitle = 'Poveste fără titlu';
             $this->generatedStory = trim($generatedContent);
         }
+
+                //Adăugăm generarea rezumatului aici
+                $this->storySummary = $this->generateStorySummary();
     }
 
+    private function generateStorySummary()
+{
+    $prompt = "Analizează următoarea poveste și creează un rezumat scurt si concis focalizat exclusiv pe elementele vizuale cheie pentru o ilustrație. Acest rezumat va fi folosit pentru a genera o imagine cu DALL-E 3.
+
+    Instrucțiuni:
+    1. Identifică 3-5 elemente vizuale esențiale (personaje, obiecte, locații).
+    2. Descrie succint aceste elemente, concentrându-te pe aspectul lor vizual.
+    3. Evită detaliile abstracte, emoționale sau care nu pot fi ilustrate.
+    4. Prezintă informațiile într-un format de listă scurtă, cu descrieri simple.
+
+    Povestea:
+    {$this->generatedStory}";
+
+    $response = Anthropic::messages()->create([
+        'model' => 'claude-3-5-sonnet-20240620',
+        'max_tokens' => 100,
+        'messages' => [
+            ['role' => 'user', 'content' => $prompt]
+        ],
+    ]);
+
+    return trim($response->content[0]->text);
+}
 
 
     private function generateStoryImage($theme)
     {
-        $imagePrompt = "O ilustrație pentru copii, reprezentând o scenă dintr-o poveste de genul {$this->selectedGenre}, cu tema {$theme}. Stilul vizual este modern de animație 3D, fără text, potrivit pentru un copil de {$this->childAge} ani, folosind culori vii și personaje prietenoase.";
-
+        $imagePrompt = "O ilustrație pentru copii, reprezentând o scenă dintr-o poveste de genul {$this->selectedGenre}, cu tema {$theme}. Elemente cheie: {$this->storySummary}. Stilul vizual este modern de animație 3D, fără NICIUN text sau cuvinte vizibile în imagine, potrivit pentru un copil de {$this->childAge} ani, folosind culori vii și personaje prietenoase.";
         $retries = 3;
         while ($retries > 0) {
             try {
