@@ -42,6 +42,10 @@ new class extends Component {
                     <x-nav-link :href="route('credits')" wire:navigate :active="request()->routeIs('credits')">
                         {{ __('Credite') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('blog.index')" wire:navigate :active="request()->routeIs('blog.index')">
+                        {{ __('Blogul cu Povesti') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -109,6 +113,10 @@ new class extends Component {
 
             <x-responsive-nav-link :href="route('credits')" wire:navigate :active="request()->routeIs('credits')">
                 {{ __('Credite') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('blog.index')" wire:navigate :active="request()->routeIs('blog.index')">
+                {{ __('Blogul cu Povesti') }}
             </x-responsive-nav-link>
         </div>
 
