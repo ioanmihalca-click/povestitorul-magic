@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\Story;
+use App\Models\BlogPost;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 
@@ -119,25 +121,89 @@ class FacebookService
 
     protected function prepareContent(Story $story): string
     {
-        $content = "{$story->title}\n\n";
-        $content .= "O poveste magică pentru copii de {$story->age} ani ";
-        $content .= "în genul " . ($story->genre instanceof \App\StoryGenre ? $story->genre->value : $story->genre);
-        
-        if ($story->theme) {
-            $content .= ", cu tema: {$story->theme}";
+        $genreString = $story->genre instanceof \App\StoryGenre ? $story->genre->value : 'nedefinit';
+        $excerpt = Str::limit(strip_tags($story->content), 300);
+
+        // Găsim blog post-ul asociat
+        $blogPost = BlogPost::where('story_id', $story->id)->first();
+        if (!$blogPost) {
+            throw new \Exception('Blog post not found for story');
         }
-        
-        $content .= "\n\n";
-        $content .= $this->truncateContent($story->content, 2000);
-        $content .= "\n\nCitește mai multe povești magice pe site-ul nostru: " . config('app.url');
-        
-        return $content;
+
+        // Construim array-ul de hashtag-uri
+        $hashtags = [
+            '#PovestiturulMagic',
+            '#PovesterePentruCopii',
+            "#{$genreString}",
+            '#Copii',
+            '#Povești',
+            '#CărțiPentruCopii',
+            '#CitestePovesti',
+            '#EducațieCopii'
+        ];
+
+        // Adăugăm hashtag pentru vârstă
+        if ($story->age <= 3) {
+            $hashtags[] = '#CopiiMici';
+        } elseif ($story->age <= 6) {
+            $hashtags[] = '#Preșcolari';
+        } elseif ($story->age <= 12) {
+            $hashtags[] = '#Școlari';
+        }
+
+        // Adăugăm emoji-uri tematice bazate pe gen
+        $genreEmoji = match($genreString) {
+            'Animale' => '🦁',
+            'Aventură' => '🗺️',
+            'Basm' => '🏰',
+            'Comic' => '😄',
+            'Educativ' => '📚',
+            'Fantezie' => '🧙‍♂️',
+            'LegendeRomanesti' => '🇷🇴',
+            'PovestiridinBiblie' => '✝️',
+            default => '📖'
+        };
+
+        // Construim conținutul postării
+        $content = [
+            // Titlu și emoji tematic
+            "✨ {$story->title} {$genreEmoji}",
+            
+            // Excerpt
+            "\n{$excerpt}",
+            
+            // Call to action și link - mutat imediat după content
+            "\n🪄 Citește întreaga poveste magică pe site-ul nostru!",
+            "🔗 " . route('blog.show', $blogPost->slug),
+            
+            // Detalii despre poveste
+            "\n📖 Detalii despre poveste:",
+            "🎭 Gen: {$genreString}",
+            "👶 Vârsta recomandată: {$story->age} ani",
+            "🎨 Temă: " . ($story->theme ?? 'diversă'),
+            
+            // Mesaj motivațional
+            "\n💫 Fiecare poveste este o nouă aventură în imaginație!",
+            
+            // Hashtag-uri
+            "\n" . implode(' ', array_unique($hashtags))
+        ];
+
+        return implode("\n", $content);
     }
 
     protected function truncateContent(string $content, int $limit = 2000): string
     {
         if (mb_strlen($content) <= $limit) {
             return $content;
+        }
+
+        // Găsim ultima propoziție completă înainte de limită
+        $truncated = mb_substr($content, 0, $limit);
+        $lastPeriod = mb_strrpos($truncated, '.');
+        
+        if ($lastPeriod !== false) {
+            return mb_substr($content, 0, $lastPeriod + 1);
         }
 
         return mb_substr($content, 0, $limit - 3) . '...';
