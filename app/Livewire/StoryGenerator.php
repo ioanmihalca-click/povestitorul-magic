@@ -29,7 +29,7 @@ class StoryGenerator extends Component
     public $userCreditValue;
     public $story;
     public $isGenerating = false;
-    // public $storySummary;
+
 
     public $availableGenres = [
         'Animale' => [
