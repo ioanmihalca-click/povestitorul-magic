@@ -47,15 +47,15 @@
 
             <!-- Link-uri social media -->
             <div class="flex mb-4 space-x-4">
-                <a href="#" class="text-white transition duration-300 hover:text-yellow-300">
+                <a href="https://www.facebook.com/profile.php?id=61567348593870" class="text-white transition duration-300 hover:text-yellow-300">
                     <i class="fab fa-facebook-f"></i>
                 </a>
-                <a href="#" class="text-white transition duration-300 hover:text-yellow-300">
+                <a href="https://www.instagram.com/povestitorulmagic" class="text-white transition duration-300 hover:text-yellow-300">
                     <i class="fab fa-instagram"></i>
                 </a>
-                <a href="#" class="text-white transition duration-300 hover:text-yellow-300">
+                {{-- <a href="#" class="text-white transition duration-300 hover:text-yellow-300">
                     <i class="fab fa-twitter"></i>
-                </a>
+                </a> --}}
             </div>
 
             <!-- Informații despre dezvoltator -->

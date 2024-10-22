@@ -132,8 +132,8 @@ class FacebookService
 
         // Construim array-ul de hashtag-uri
         $hashtags = [
-            '#PovestiturulMagic',
-            '#PovesterePentruCopii',
+            '#PovestitorulMagic',
+            '#PovestirePentruCopii',
             "#{$genreString}",
             '#Copii',
             '#Povești',
