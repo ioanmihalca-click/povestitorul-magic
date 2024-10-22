@@ -7,6 +7,7 @@
     "require": {
         "php": "^8.2",
         "cloudinary-labs/cloudinary-laravel": "^2.2",
+        "facebook/php-business-sdk": "^21.0",
         "filament/filament": "^3.2",
         "laravel/cashier": "^15.4",
         "laravel/framework": "^11.9",

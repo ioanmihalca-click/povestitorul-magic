@@ -5,19 +5,58 @@ namespace App\Models;
 use App\StoryGenre;
 use App\Models\BlogPost;
 use Illuminate\Support\Str;
+use App\Services\FacebookService;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Story extends Model
 {
-    use HasFactory;
-
-    protected $fillable = ['user_id', 'title', 'content', 'age', 'genre', 'theme', 'image_url', 'is_published'];
+    protected $fillable = [
+        'user_id',
+        'title',
+        'content',
+        'age',
+        'genre',
+        'theme',
+        'image_url',
+        'is_published',
+        'facebook_post_id',
+        'is_published_to_facebook',
+        'facebook_published_at'
+    ];
 
     protected $casts = [
         'genre' => StoryGenre::class,
         'age' => 'integer',
+        'is_published' => 'boolean',
+        'is_published_to_facebook' => 'boolean',
+        'facebook_published_at' => 'datetime',
     ];
+
+    public function publishToFacebook(): bool
+    {
+        if ($this->is_published_to_facebook) {
+            return false;
+        }
+
+        try {
+            $facebookService = app(FacebookService::class);
+            
+            if ($facebookService->publishStoryToFacebook($this)) {
+                $this->is_published_to_facebook = true;
+                $this->save();
+                return true;
+            }
+            
+            return false;
+        } catch (\Exception $e) {
+            Log::error('Error publishing to Facebook: ' . $e->getMessage(), [
+                'story_id' => $this->id
+            ]);
+            return false;
+        }
+    }
 
     public function user()
     {

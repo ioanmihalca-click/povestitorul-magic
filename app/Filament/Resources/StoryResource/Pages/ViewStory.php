@@ -2,13 +2,16 @@
 
 namespace App\Filament\Resources\StoryResource\Pages;
 
-use App\Filament\Resources\StoryResource;
-use Filament\Resources\Pages\ViewRecord;
+use Filament\Actions;
 use Filament\Infolists\Infolist;
+use App\Services\FacebookService;
+use Illuminate\Support\Facades\Log;
+use Filament\Notifications\Notification;
+use Filament\Resources\Pages\ViewRecord;
+use App\Filament\Resources\StoryResource;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\ImageEntry;
-use Filament\Notifications\Notification;
-use Filament\Actions;
+
 
 class ViewStory extends ViewRecord
 {
@@ -41,6 +44,7 @@ class ViewStory extends ViewRecord
     {
         return [
             Actions\EditAction::make(),
+            
             Actions\DeleteAction::make()
                 ->requiresConfirmation()
                 ->after(function () {
@@ -50,8 +54,10 @@ class ViewStory extends ViewRecord
                         ->body('Povestea a fost ștearsă cu succes.')
                         ->send();
                 }),
+
+            // Acțiunea pentru publicare pe blog
             Actions\Action::make('publishToBlog')
-                ->label('Publica pe Blog')
+                ->label('Publică pe Blog')
                 ->icon('heroicon-o-globe-alt')
                 ->action(function () {
                     if ($this->record->publishToBlog()) {
@@ -70,6 +76,84 @@ class ViewStory extends ViewRecord
                 })
                 ->requiresConfirmation()
                 ->hidden(fn () => $this->record->is_published),
+
+            // Test conexiune Facebook
+            Actions\Action::make('testFacebookConnection')
+                ->label('Test Facebook')
+                ->icon('heroicon-o-bug-ant')
+                ->action(function () {
+                    try {
+                        $facebookService = app(FacebookService::class);
+                        $response = $facebookService->testConnection();
+
+                        Log::info('Facebook test successful', [
+                            'story_id' => $this->record->id,
+                            'response' => $response
+                        ]);
+
+                        Notification::make()
+                            ->success()
+                            ->title('Conexiune Facebook Reușită')
+                            ->body('Conectat la pagina: ' . ($response['name'] ?? 'Necunoscut'))
+                            ->send();
+                    } catch (\Exception $e) {
+                        Log::error('Facebook test failed', [
+                            'story_id' => $this->record->id,
+                            'error' => $e->getMessage()
+                        ]);
+
+                        Notification::make()
+                            ->danger()
+                            ->title('Eroare Test Facebook')
+                            ->body($e->getMessage())
+                            ->send();
+                    }
+                }),
+
+            // Publicare pe Facebook
+            Actions\Action::make('publishToFacebook')
+                ->label('Publică pe Facebook')
+                ->icon('heroicon-o-share')
+                ->action(function () {
+                    try {
+                        $facebookService = app(FacebookService::class);
+                        
+                        if ($this->record->is_published_to_facebook) {
+                            Notification::make()
+                                ->warning()
+                                ->title('Atenție')
+                                ->body('Această poveste este deja publicată pe Facebook.')
+                                ->send();
+                            return;
+                        }
+
+                        if ($facebookService->publishStoryToFacebook($this->record)) {
+                            Notification::make()
+                                ->success()
+                                ->title('Publicat pe Facebook')
+                                ->body('Povestea a fost publicată cu succes pe Facebook.')
+                                ->send();
+                        } else {
+                            throw new \Exception('Nu s-a putut publica povestea pe Facebook.');
+                        }
+                    } catch (\Exception $e) {
+                        Log::error('Facebook publishing failed', [
+                            'story_id' => $this->record->id,
+                            'error' => $e->getMessage()
+                        ]);
+
+                        Notification::make()
+                            ->danger()
+                            ->title('Eroare la Publicare')
+                            ->body($e->getMessage())
+                            ->send();
+                    }
+                })
+                ->requiresConfirmation()
+                ->modalHeading('Publică pe Facebook')
+                ->modalDescription('Ești sigur că vrei să publici această poveste pe Facebook?')
+                ->modalSubmitActionLabel('Da, publică')
+                ->hidden(fn () => $this->record->is_published_to_facebook),
         ];
     }
 }

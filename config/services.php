@@ -14,6 +14,16 @@ return [
     |
     */
 
+    'facebook' => [
+        'client_id' => env('FACEBOOK_APP_ID'),
+        'client_secret' => env('FACEBOOK_APP_SECRET'),
+        'page_id' => env('FACEBOOK_PAGE_ID'),
+        'access_token' => env('FACEBOOK_ACCESS_TOKEN'),
+        'graph_version' => env('FACEBOOK_GRAPH_VERSION', 'v21.0'), // Aliniat cu SDK 21.0.1
+        'default_graph_version' => env('FACEBOOK_GRAPH_VERSION', 'v21.0'),
+        'beta_mode' => env('FACEBOOK_BETA_MODE', false),
+    ],
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],

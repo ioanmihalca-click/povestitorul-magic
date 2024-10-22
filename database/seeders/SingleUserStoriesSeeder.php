@@ -11,7 +11,7 @@ class SingleUserStoriesSeeder extends Seeder
     public function run()
     {
         
-        $user = User::find(1);
+        $user = User::find(3);
 
         if (!$user) {
             $this->command->error('Utilizatorul nu a fost găsit. Asigurați-vă că există un utilizator cu ID-ul 1.');

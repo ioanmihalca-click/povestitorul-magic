@@ -10,6 +10,8 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use App\Services\FacebookService;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Builder;
@@ -39,6 +41,13 @@ class StoryResource extends Resource
                 Tables\Columns\ImageColumn::make('image_url'),
                 Tables\Columns\IconColumn::make('is_published')
                     ->boolean(),
+                Tables\Columns\IconColumn::make('is_published_to_facebook')
+                    ->boolean()
+                    ->label('Pe Facebook'),
+                Tables\Columns\TextColumn::make('facebook_published_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -48,33 +57,38 @@ class StoryResource extends Resource
                 Tables\Filters\SelectFilter::make('genre')
                     ->options(\App\StoryGenre::class),
                 Tables\Filters\TernaryFilter::make('is_published')
-                    ->label('Published Status')
-                    ->trueLabel('Published')
-                    ->falseLabel('Not Published')
-                    ->placeholder('All Stories'),
+                    ->label('Status Blog')
+                    ->trueLabel('Publicat')
+                    ->falseLabel('Nepublicat')
+                    ->placeholder('Toate'),
+                Tables\Filters\TernaryFilter::make('is_published_to_facebook')
+                    ->label('Status Facebook')
+                    ->trueLabel('Publicat')
+                    ->falseLabel('Nepublicat')
+                    ->placeholder('Toate'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\DeleteAction::make()
                     ->requiresConfirmation(),
                    
-                    Tables\Actions\Action::make('publishToBlog')
-                    ->label('Publish to Blog')
+                Tables\Actions\Action::make('publishToBlog')
+                    ->label('Publică pe Blog')
                     ->icon('heroicon-o-globe-alt')
                     ->action(function (Story $record, Tables\Actions\Action $action) {
                         if ($record->publishToBlog()) {
                             Notification::make()
                                 ->success()
-                                ->title('Poveste publicata')
-                                ->body('Povestea a fost publicata cu succes')
+                                ->title('Poveste publicată')
+                                ->body('Povestea a fost publicată cu succes pe blog')
                                 ->send();
 
                             $action->success();
                         } else {
                             Notification::make()
                                 ->danger()
-                                ->title('Publiccarea nu a reusit')
-                                ->body('Povestea e deja publicata sau nu se poate publica')
+                                ->title('Publicarea nu a reușit')
+                                ->body('Povestea e deja publicată sau nu se poate publica')
                                 ->send();
 
                             $action->failure();
@@ -82,6 +96,54 @@ class StoryResource extends Resource
                     })
                     ->requiresConfirmation()
                     ->hidden(fn(Story $record) => $record->is_published),
+
+                Tables\Actions\Action::make('publishToFacebook')
+                    ->label('Publică pe Facebook')
+                    ->icon('heroicon-o-share')
+                    ->action(function (Story $record, Tables\Actions\Action $action) {
+                        try {
+                            $facebookService = app(FacebookService::class);
+                            
+                            if ($record->is_published_to_facebook) {
+                                Notification::make()
+                                    ->warning()
+                                    ->title('Atenție')
+                                    ->body('Povestea este deja publicată pe Facebook')
+                                    ->send();
+                                return;
+                            }
+
+                            if ($facebookService->publishStoryToFacebook($record)) {
+                                Notification::make()
+                                    ->success()
+                                    ->title('Publicat pe Facebook')
+                                    ->body('Povestea a fost publicată cu succes pe Facebook')
+                                    ->send();
+
+                                $action->success();
+                            } else {
+                                throw new \Exception('Nu s-a putut publica povestea pe Facebook');
+                            }
+                        } catch (\Exception $e) {
+                            Log::error('Facebook publishing error in table action', [
+                                'story_id' => $record->id,
+                                'error' => $e->getMessage()
+                            ]);
+
+                            Notification::make()
+                                ->danger()
+                                ->title('Eroare la publicare')
+                                ->body($e->getMessage())
+                                ->send();
+
+                            $action->failure();
+                        }
+                    })
+                    ->requiresConfirmation()
+                    ->modalHeading('Publică pe Facebook')
+                    ->modalDescription('Ești sigur că vrei să publici această poveste pe Facebook?')
+                    ->modalSubmitActionLabel('Da, publică')
+                    ->hidden(fn(Story $record) => $record->is_published_to_facebook),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -90,12 +152,12 @@ class StoryResource extends Resource
                         ->after(function () {
                             Notification::make()
                                 ->success()
-                                ->title('Povestile au fost sterse')
-                                ->body('Povestile selectate au fost sterse cu succes')
+                                ->title('Povești șterse')
+                                ->body('Poveștile selectate au fost șterse cu succes')
                                 ->send();
                         }),
-                        Tables\Actions\BulkAction::make('publishMultipleToBlog')
-                        ->label('Publish Selected to Blog')
+                    Tables\Actions\BulkAction::make('publishMultipleToBlog')
+                        ->label('Publică Selectate pe Blog')
                         ->icon('heroicon-o-globe-alt')
                         ->action(function ($records, Tables\Actions\BulkAction $action) {
                             $publishedCount = 0;
@@ -107,8 +169,8 @@ class StoryResource extends Resource
 
                             Notification::make()
                                 ->success()
-                                ->title('Povestile au fost publicate')
-                                ->body("{$publishedCount} povesti au fost publicate pe blog.")
+                                ->title('Povești publicate')
+                                ->body("{$publishedCount} povești au fost publicate pe blog.")
                                 ->send();
 
                             $action->success();
