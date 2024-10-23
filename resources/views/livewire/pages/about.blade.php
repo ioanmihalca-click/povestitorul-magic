@@ -23,10 +23,10 @@
         <h2 class="mb-4 text-2xl font-semibold text-indigo-600">Cum funcționează</h2>
         <p class="mb-4">Povestitorul Magic utilizează algoritmi avansați de inteligență artificială pentru a crea povești personalizate bazate pe preferințele copilului dumneavoastră. Iată cum funcționează:</p>
         <ol class="mb-4 ml-6 list-decimal">
-            <li class="mb-2">Alegeți vârsta copilului, genul poveștii și tema dorită.</li>
+            <li class="mb-2">Alegeți vârsta copilului, formatul poveștii (poveste cu text sau poveste audio), genul poveștii și tema dorită (predefinita sau personalizata).</li>
             <li class="mb-2">Algoritmii noștri generează o poveste unică, adaptată specificațiilor dumneavoastră.</li>
             <li class="mb-2">Utilizăm inteligența artificială pentru a crea ilustrații captivante care completează povestea.</li>
-            <li class="mb-2">Povestea este salvată în biblioteca dumneavoastră personală, gata pentru a fi citită oricând.</li>
+            <li class="mb-2">Povestea este salvată în biblioteca dumneavoastră personală, gata pentru a fi citită sau ascultată oricând.</li>
         </ol>
         <p class="mb-4">Fiecare poveste este unică (in funcție de tema personalizată), asigurând o experiență de lectură proaspătă și captivantă de fiecare dată.</p>
     </section>

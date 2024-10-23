@@ -18,11 +18,6 @@
                     <p class="mt-2 text-sm text-indigo-500">
                         Valoare totală credite: {{ number_format($userCreditValue, 2) }} RON
                     </p>
-
-                    {{-- <p class="mt-2 text-sm text-indigo-500">
-                        Costul unei povești este de 1 credit.
-                    </p> --}}
-
                 </div>
 
                 <template x-if="insufficientCredits()">
@@ -43,13 +38,12 @@
                         <i class="mr-2 fas fa-hat-wizard"></i>Ingredientele magice ale poveștii
                     </h2>
                     <div class="space-y-4">
-
                         <div class="flex items-start">
                             <div
                                 class="flex items-center justify-center flex-shrink-0 w-8 h-8 mt-1 mr-3 text-sm font-bold text-white bg-indigo-500 rounded-full">
                                 1</div>
                             <div>
-                                <h3 class="text-lg font-semibold text-indigo-700">Alege varsta copilului</h3>
+                                <h3 class="text-lg font-semibold text-indigo-700">Vârsta copilului</h3>
                                 <p class="text-sm text-indigo-600">Alege vârsta micuțului ascultător pentru a crea o
                                     poveste potrivită.</p>
                             </div>
@@ -60,7 +54,18 @@
                                 class="flex items-center justify-center flex-shrink-0 w-8 h-8 mt-1 mr-3 text-sm font-bold text-white bg-indigo-500 rounded-full">
                                 2</div>
                             <div>
-                                <h3 class="text-lg font-semibold text-indigo-700">Alege genul poveștii</h3>
+                                <h3 class="text-lg font-semibold text-indigo-700">Formatul poveștii</h3>
+                                <p class="text-sm text-indigo-600">Alege dacă dorești poveste cu text și ilustrație (1
+                                    credit) sau cu versiune audio inclusă (3 credite)</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div
+                                class="flex items-center justify-center flex-shrink-0 w-8 h-8 mt-1 mr-3 text-sm font-bold text-white bg-indigo-500 rounded-full">
+                                3</div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-indigo-700">Genul poveștii</h3>
                                 <p class="text-sm text-indigo-600">Selectează un gen magic (ex: "Aventură" sau "Basm")
                                 </p>
                             </div>
@@ -69,7 +74,7 @@
                         <div class="flex items-start">
                             <div
                                 class="flex items-center justify-center flex-shrink-0 w-8 h-8 mt-1 mr-3 text-sm font-bold text-white bg-indigo-500 rounded-full">
-                                3</div>
+                                4</div>
                             <div>
                                 <h3 class="text-lg font-semibold text-indigo-700">Alege tema poveștii</h3>
                                 <div class="space-y-2 text-sm">
@@ -83,16 +88,10 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="mt-4 text-center">
-                        <p class="text-sm font-medium text-indigo-700">
-                            <i class="mr-2 text-indigo-600 fas fa-book-open"></i>Hai să creăm o poveste magică!
-                        </p>
-                    </div>
                 </div>
 
-
                 <form wire:submit.prevent="generateStory" class="space-y-8">
+                    <!-- Secțiunea Vârsta -->
                     <div class="p-4 bg-yellow-100 shadow-inner rounded-2xl">
                         <label for="childAge" class="block mb-2 text-lg font-medium text-indigo-700">
                             <i class="mr-2 fas fa-birthday-cake"></i>Vârsta micului ascultător
@@ -104,6 +103,40 @@
                         @enderror
                     </div>
 
+                    <!-- Secțiunea Format Poveste -->
+                    <div class="p-4 bg-yellow-100 shadow-inner rounded-2xl">
+                        <label class="block mb-2 text-lg font-medium text-indigo-700">
+                            <i class="mr-2 fas fa-book"></i>Formatul poveștii
+                        </label>
+                        <div class="space-y-3">
+                            <label class="flex items-center p-3 space-x-3 bg-white border rounded-xl"
+                                :class="{ 'border-indigo-300': !
+                                    includeAudio, 'cursor-not-allowed opacity-50': insufficientCredits() }">
+                                <input type="radio" wire:model.defer="includeAudio" name="storyFormat" value="0"
+                                    :disabled="insufficientCredits()"
+                                    class="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
+                                <div class="flex flex-col">
+                                    <span class="font-semibold text-indigo-700">Poveste cu text și ilustrație</span>
+                                    <span class="text-sm text-indigo-600">Cost: 1 credit</span>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center p-3 space-x-3 bg-white border rounded-xl"
+                                :class="{ 'border-indigo-300': includeAudio, 'cursor-not-allowed opacity-50': insufficientCredits() }">
+                                <input type="radio" wire:model.defer="includeAudio" name="storyFormat" value="1"
+                                    :disabled="insufficientCredits()"
+                                    class="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
+                                <div class="flex flex-col">
+                                    <span class="font-semibold text-indigo-700">Poveste audio cu text și
+                                        ilustrație</span>
+                                    <span class="text-sm text-indigo-600">Cost: 3 credite</span>
+                                    <span class="text-xs text-indigo-500">Include lectură audio profesională</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Secțiunea Genuri -->
                     <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                         @foreach ($availableGenres as $genre => $details)
                             <div x-data="{ open: @entangle('selectedGenre').defer === '{{ $genre }}' }"
@@ -157,12 +190,15 @@
                     <div class="text-center">
                         <button type="submit"
                             class="px-8 py-3 text-xl font-bold text-white transition duration-300 transform rounded-full shadow-lg bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
-                            wire:loading.attr="disabled" wire:target="generateStory">
+                            wire:loading.attr="disabled" wire:target="generateStory"
+                            :disabled="insufficientCredits()">
                             <span wire:loading.remove wire:target="generateStory">
-                                <i class="mr-2 fas fa-book-open"></i>Creează Povestea Magică
+                                <i class="mr-2 fas fa-book-open"></i>
+                                Creează Povestea Magică
                             </span>
                             <span wire:loading wire:target="generateStory">
-                                <i class="mr-2 fas fa-spinner fa-spin"></i>Povestitorul Magic pregătește povestea...
+                                <i class="mr-2 fas fa-spinner fa-spin"></i>
+                                <span x-show="!includeAudio">Povestitorul Magic pregătește povestea...</span>
                             </span>
                         </button>
                     </div>
@@ -179,30 +215,55 @@
                 </div>
 
                 @if (session()->has('message'))
-                    <div class="p-4 text-green-700 bg-green-100 rounded-b-3xl">
+                    <div class="p-4 mt-4 text-green-700 bg-green-100 rounded-xl">
                         <i class="mr-2 fas fa-check-circle"></i>{{ session('message') }}
                     </div>
                 @endif
 
                 @error('generation')
-                    <div class="p-4 text-red-700 bg-red-100 rounded-b-3xl">
+                    <div class="p-4 mt-4 text-red-700 bg-red-100 rounded-xl">
                         <i class="mr-2 fas fa-exclamation-circle"></i>{{ $message }}
                     </div>
                 @enderror
 
                 @if ($generatedStory && $story)
-                    <div class="p-4 bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100">
+                    <div class="p-4 mt-8 bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 rounded-2xl">
                         <h2 class="mb-4 text-2xl font-bold text-center text-indigo-700">{{ $storyTitle }}</h2>
+
                         @if ($story->image_url)
                             <img src="{{ $story->image_url }}" alt="Ilustrație pentru {{ $storyTitle }}"
-                                class="mb-4 rounded-lg shadow-lg"
+                                class="object-cover w-full mb-4 rounded-lg shadow-lg max-h-96"
                                 onerror="this.onerror=null; this.src='/images/placeholder.webp'; this.alt='Imaginea nu a putut fi încărcată';">
                         @endif
+
+                        @if ($story->has_audio && $story->audio_url)
+                            <div class="p-4 mb-4 bg-white rounded-lg shadow-md">
+                                <h3 class="mb-2 text-lg font-semibold text-indigo-700">
+                                    <i class="mr-2 fas fa-headphones"></i>Ascultă povestea
+                                </h3>
+                                <audio controls controlsList="nodownload" class="w-full">
+                                    <source src="{{ $story->audio_url }}" type="audio/mpeg">
+                                    Browserul dumneavoastră nu suportă redarea audio.
+                                </audio>
+                            </div>
+                        @else
+                            <div class="p-4 mb-4 text-center rounded-lg shadow-sm bg-gray-50">
+                                <p class="text-gray-600">
+                                    <i class="mr-2 fas fa-volume-mute"></i>
+                                    Această poveste nu are variantă audio disponibilă
+                                </p>
+                            </div>
+                        @endif
+
                         <div class="p-6 prose text-indigo-900 bg-white shadow-inner max-w-none rounded-2xl">
                             {!! nl2br(e($generatedStory)) !!}
                         </div>
+
+
                     </div>
-                @endif
             </div>
+            @endif
         </div>
     </div>
+</div>
+</div>

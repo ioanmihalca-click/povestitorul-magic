@@ -13,6 +13,7 @@ use Livewire\Attributes\Title;
 use OpenAI\Laravel\Facades\OpenAI;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use App\Services\TextToSpeechService;
 use Anthropic\Laravel\Facades\Anthropic;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
@@ -29,6 +30,8 @@ class StoryGenerator extends Component
     public $userCreditValue;
     public $story;
     public $isGenerating = false;
+
+    public $includeAudio = false;
 
 
     public $availableGenres = [
@@ -114,13 +117,14 @@ class StoryGenerator extends Component
         ],
     ];
 
-    public function rules()
+   public function rules()
     {
         return [
             'childAge' => 'required|integer|min:1|max:18',
             'selectedGenre' => 'required|string',
             'selectedTheme' => 'required|string',
             'customTheme' => 'required_if:selectedTheme,custom|string|max:255',
+            'includeAudio' => 'boolean',
         ];
     }
 
@@ -157,63 +161,86 @@ class StoryGenerator extends Component
 
 
     public function generateStory()
-    {
-        try {
-            $this->isGenerating = true;
+{
+    try {
+        $this->isGenerating = true;
 
-            $this->validate();
-            Log::info('Validare trecută cu succes');
+        $this->validate();
+        Log::info('Validare trecută cu succes');
 
-            /** @var \App\Models\User $user */
-            $user = Auth::user();
-            $requiredCredits = 1;
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $requiredCredits = $this->includeAudio ? 3 : 1;
 
-            if (!$user->hasSufficientCredits($requiredCredits)) {
-                throw new \Exception('Nu aveți suficiente credite pentru a genera o poveste. Vă rugăm să achiziționați mai multe credite.');
-            }
-            Log::info('Verificare credite trecută cu succes');
-
-            $theme = $this->selectedTheme === 'custom' ? $this->customTheme : $this->selectedTheme;
-            Log::info('Temă selectată: ' . $theme);
-
-            $this->generateStoryContent($theme);
-            Log::info('Conținut poveste generat cu succes. Titlu: ' . $this->storyTitle);
-
-            $imageUrl = $this->generateStoryImage($theme);
-            Log::info('URL imagine generat cu succes: ' . $imageUrl);
-
-            if (empty($this->generatedStory)) {
-                throw new \Exception('Conținutul poveștii nu a fost generat.');
-            }
-
-            if (empty($imageUrl)) {
-                throw new \Exception('URL-ul imaginii nu a fost generat.');
-            }
-
-            if (!$user->deductCredits($requiredCredits)) {
-                throw new \Exception('A apărut o eroare la deducerea creditelor. Vă rugăm să încercați din nou.');
-            }
-            Log::info('Credite deduse cu succes');
-
-            $story = $this->saveStory(
-                $this->storyTitle,
-                $this->generatedStory,
-                $this->childAge,
-                $this->selectedGenre,
-                $theme,
-                $imageUrl
-            );
-
-            $this->dispatch('storyGenerated', storyId: $story->id);
-            $this->dispatch('creditsUpdated');
-            session()->flash('message', 'Povestea și imaginea au fost generate și salvate cu succes! S-a dedus 1 credit din contul dumneavoastră.');
-        } catch (\Exception $e) {
-            Log::error('Eroare în generateStory: ' . $e->getMessage());
-            $this->handleGenerationError($e);
-        } finally {
-            $this->isGenerating = false;
+        if (!$user->hasSufficientCredits($requiredCredits)) {
+            throw new \Exception("Nu aveți suficiente credite pentru a genera o poveste" . 
+                ($this->includeAudio ? " cu audio" : "") . 
+                ". Vă rugăm să achiziționați mai multe credite.");
         }
+        Log::info('Verificare credite trecută cu succes');
+
+        $theme = $this->selectedTheme === 'custom' ? $this->customTheme : $this->selectedTheme;
+        Log::info('Temă selectată: ' . $theme);
+
+        $this->generateStoryContent($theme);
+        Log::info('Conținut poveste generat cu succes. Titlu: ' . $this->storyTitle);
+
+        $imageUrl = $this->generateStoryImage($theme);
+        Log::info('URL imagine generat cu succes: ' . $imageUrl);
+
+        if (empty($this->generatedStory)) {
+            throw new \Exception('Conținutul poveștii nu a fost generat.');
+        }
+
+        if (empty($imageUrl)) {
+            throw new \Exception('URL-ul imaginii nu a fost generat.');
+        }
+
+        // Generate audio if requested
+        $audioUrl = null;
+        if ($this->includeAudio) {
+            $textToSpeech = app(TextToSpeechService::class);
+            $audioUrl = $textToSpeech->generateAudio($this->generatedStory);
+            
+            if (empty($audioUrl)) {
+                throw new \Exception('Nu s-a putut genera fișierul audio.');
+            }
+            Log::info('Audio generat cu succes: ' . $audioUrl);
+        }
+
+        if (!$user->deductCredits($requiredCredits)) {
+            throw new \Exception('A apărut o eroare la deducerea creditelor. Vă rugăm să încercați din nou.');
+        }
+        Log::info('Credite deduse cu succes');
+
+        $story = $this->saveStory(
+            $this->storyTitle,
+            $this->generatedStory,
+            $this->childAge,
+            $this->selectedGenre,
+            $theme,
+            $imageUrl,
+            $this->includeAudio,
+            $audioUrl
+        );
+
+        $this->dispatch('storyGenerated', storyId: $story->id);
+        $this->dispatch('creditsUpdated');
+        
+        $message = 'Povestea și imaginea au fost generate și salvate cu succes!';
+        if ($this->includeAudio) {
+            $message .= ' Nararea audio a fost de asemenea generată.';
+        }
+        $message .= " S-au dedus {$requiredCredits} credite din contul dumneavoastră.";
+        
+        session()->flash('message', $message);
+    } catch (\Exception $e) {
+        Log::error('Eroare în generateStory: ' . $e->getMessage());
+        $this->handleGenerationError($e);
+    } finally {
+        $this->isGenerating = false;
     }
+}
 
     private function generateStoryContent($theme)
     {
@@ -286,7 +313,7 @@ class StoryGenerator extends Component
         }
     }
 
-    private function saveStory($title, $content, $age, $genre, $theme, $imageUrl)
+    private function saveStory($title, $content, $age, $genre, $theme, $imageUrl, $hasAudio = false, $audioUrl = null)
     {
         try {
             $this->story = Story::create([
@@ -297,6 +324,8 @@ class StoryGenerator extends Component
                 'genre' => $genre,
                 'theme' => $theme,
                 'image_url' => $imageUrl,
+                'has_audio' => $hasAudio,
+                'audio_url' => $audioUrl,
             ]);
             Log::info('Poveste salvată cu succes. ID: ' . $this->story->id);
             return $this->story;
@@ -305,6 +334,7 @@ class StoryGenerator extends Component
             throw $e;
         }
     }
+
 
     private function handleGenerationError(\Exception $e)
     {

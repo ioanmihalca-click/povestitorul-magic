@@ -20,6 +20,26 @@
                         <span class="mr-4"><i class="mr-2 fas fa-child"></i>{{ $story->age }} ani</span>
                         <span><i class="mr-2 fas fa-tag"></i>{{ $story->theme }}</span>
                     </p>
+
+                    @if ($story->has_audio && $story->audio_url)
+                        <div class="p-4 mb-4 bg-white rounded-lg shadow-md">
+                            <h3 class="mb-2 text-lg font-semibold text-indigo-700">
+                                <i class="mr-2 fas fa-headphones"></i>Ascultă povestea
+                            </h3>
+                            <audio controls controlsList="nodownload" class="w-full">
+                                <source src="{{ $story->audio_url }}" type="audio/mpeg">
+                                Browserul dumneavoastră nu suportă redarea audio.
+                            </audio>
+                        </div>
+                    @else
+                        <div class="p-4 mb-4 text-center rounded-lg shadow-sm bg-gray-50">
+                            <p class="text-gray-600">
+                                <i class="mr-2 fas fa-volume-mute"></i>
+                                Această poveste nu are variantă audio disponibilă
+                            </p>
+                        </div>
+                    @endif
+
                     <div class="prose text-indigo-900 max-w-none">
                         {!! nl2br(e($story->content)) !!}
                     </div>

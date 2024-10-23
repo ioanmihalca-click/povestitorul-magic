@@ -20,6 +20,8 @@ class Story extends Model
         'genre',
         'theme',
         'image_url',
+        'has_audio',
+        'audio_url',
         'is_published',
         'facebook_post_id',
         'is_published_to_facebook',
@@ -29,6 +31,7 @@ class Story extends Model
     protected $casts = [
         'genre' => StoryGenre::class,
         'age' => 'integer',
+        'has_audio' => 'boolean',
         'is_published' => 'boolean',
         'is_published_to_facebook' => 'boolean',
         'facebook_published_at' => 'datetime',

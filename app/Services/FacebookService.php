@@ -173,7 +173,7 @@ class FacebookService
             "\n{$excerpt}",
             
             // Call to action și link - mutat imediat după content
-            "\n🪄 Citește întreaga poveste magică pe site-ul nostru!",
+            "\n🪄 Citește sau asculta întreaga poveste magică pe site-ul nostru!",
             "🔗 " . route('blog.show', $blogPost->slug),
             
             // Detalii despre poveste
@@ -183,7 +183,7 @@ class FacebookService
             "🎨 Temă: " . ($story->theme ?? 'diversă'),
             
             // Mesaj motivațional
-            "\n💫 Fiecare poveste este o nouă aventură în imaginație!",
+            "\n💫 Crează propria ta poveste personalizată pe site-ul nostru!",
             
             // Hashtag-uri
             "\n" . implode(' ', array_unique($hashtags))
