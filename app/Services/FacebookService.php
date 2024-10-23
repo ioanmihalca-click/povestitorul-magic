@@ -137,6 +137,7 @@ class FacebookService
             "#{$genreString}",
             '#Copii',
             '#Povești',
+            '#PoveștiAudio',
             '#CărțiPentruCopii',
             '#CitestePovesti',
             '#EducațieCopii'

@@ -189,7 +189,7 @@
 
                     <div class="text-center">
                         <button type="submit"
-                            class="px-8 py-3 text-xl font-bold text-white transition duration-300 transform rounded-full shadow-lg bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                            class="px-8 py-3 text-lg font-bold text-white transition duration-300 transform rounded-full shadow-lg md:text-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                             wire:loading.attr="disabled" wire:target="generateStory"
                             :disabled="insufficientCredits()">
                             <span wire:loading.remove wire:target="generateStory">

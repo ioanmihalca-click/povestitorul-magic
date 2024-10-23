@@ -72,7 +72,7 @@
                 <div class="relative z-10">
                     <img class="object-cover w-48 h-48 mx-auto mb-6 transition-transform duration-300 transform border-4 border-yellow-400 rounded-full shadow-lg hover:scale-105"
                         src="{{ asset('assets/fat-frumos.webp') }}" alt="Povestitorul Magic">
-                    <h1 class="mb-8 text-2xl font-bold leading-tight text-indigo-800 md:text-4xl">
+                    <h1 class="mb-8 text-3xl font-bold leading-tight text-indigo-800 md:text-4xl">
                         <span class="block mb-2">Bun venit în lumea</span>
                         <span
                             class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-indigo-600 to-pink-600 animate-gradient">
@@ -95,8 +95,7 @@
                             class="p-6 transition-all duration-300 transform bg-white shadow-md rounded-xl hover:scale-105 hover:shadow-xl">
                             <i class="mb-2 text-3xl text-purple-600 fas fa-image"></i>
                             <h3 class="text-lg font-semibold text-indigo-800">Ilustrații Unice</h3>
-                            <p class="text-gray-600">Fiecare poveste vine cu ilustrații magice generate prin inteligență
-                                artificială</p>
+                            <p class="text-gray-600">Fiecare poveste vine cu ilustrații magice</p>
                         </div>
 
                         <div

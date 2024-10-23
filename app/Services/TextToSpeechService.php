@@ -12,6 +12,13 @@ class TextToSpeechService
     public function generateAudio(string $text): ?string
     {
         try {
+
+             // Create temp directory if it doesn't exist
+             $tempDir = storage_path('app/temp');
+             if (!file_exists($tempDir)) {
+                 mkdir($tempDir, 0755, true);
+             }
+             
             // Generate audio using OpenAI TTS
             $response = OpenAI::audio()->speech([
                 'model' => 'tts-1',
