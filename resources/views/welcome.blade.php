@@ -73,7 +73,7 @@
                     <img class="object-cover w-48 h-48 mx-auto mb-6 transition-transform duration-300 transform border-4 border-yellow-400 rounded-full shadow-lg hover:scale-105"
                         src="{{ asset('assets/fat-frumos.webp') }}" alt="Povestitorul Magic">
                     <h1 class="mb-8 text-3xl font-bold leading-tight text-indigo-800 md:text-4xl">
-                        <span class="block mb-2">Bun venit în lumea</span>
+                        Bun venit în lumea
                         <span
                             class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-indigo-600 to-pink-600 animate-gradient">
                             Povestitorului Magic
