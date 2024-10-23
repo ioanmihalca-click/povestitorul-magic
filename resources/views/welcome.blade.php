@@ -80,33 +80,6 @@
                         </span>
                     </h1>
 
-                    <div class="grid max-w-3xl gap-6 mx-auto mb-8 md:grid-cols-3">
-
-
-                        <div
-                            class="p-6 transition-all duration-300 transform bg-white shadow-md rounded-xl hover:scale-105 hover:shadow-xl">
-                            <i class="mb-3 text-4xl text-indigo-600 fas fa-magic"></i>
-                            <h3 class="mb-2 text-lg font-semibold text-indigo-800">Povești Personalizate</h3>
-                            <p class="text-gray-600">Create special pentru copilul tău, adaptate vârstei și
-                                preferințelor sale</p>
-                        </div>
-
-                        <div
-                            class="p-6 transition-all duration-300 transform bg-white shadow-md rounded-xl hover:scale-105 hover:shadow-xl">
-                            <i class="mb-2 text-3xl text-purple-600 fas fa-image"></i>
-                            <h3 class="text-lg font-semibold text-indigo-800">Ilustrații Unice</h3>
-                            <p class="text-gray-600">Fiecare poveste vine cu ilustrații magice</p>
-                        </div>
-
-                        <div
-                            class="p-6 transition-all duration-300 transform bg-white shadow-md rounded-xl hover:scale-105 hover:shadow-xl">
-                            <i class="mb-2 text-3xl text-pink-600 fas fa-headphones"></i>
-                            <h3 class="text-lg font-semibold text-indigo-800">Poveste Audio</h3>
-                            <p class="text-gray-600">Opțional, ascultă povestea in format audio</p>
-                        </div>
-                    </div>
-
-
                     <div
                         class="max-w-3xl p-4 mx-auto mb-8 shadow-lg bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 rounded-xl">
                         <p class="text-lg text-indigo-900">
@@ -117,6 +90,46 @@
                         </p>
                     </div>
 
+       <div class="grid max-w-3xl gap-6 mx-auto mb-8 md:grid-cols-3">
+    <div class="p-4 transition-transform transform bg-white shadow-md rounded-xl hover:scale-105">
+        <div class="flex flex-col items-center">
+            <div class="mb-4 overflow-hidden rounded-lg">
+                <img src="{{ asset('assets/povesti-personalizate.webp') }}" 
+                     alt="Povești Personalizate" 
+                     class="object-cover w-full h-full transition-transform duration-300 hover:scale-110">
+            </div>
+            <i class="mb-2 text-3xl text-indigo-600 fas fa-magic"></i>
+            <h3 class="text-lg font-semibold text-indigo-800">Povești Personalizate</h3>
+            <p class="text-center text-gray-600">Create special pentru copilul tău, adaptate vârstei și preferințelor sale</p>
+        </div>
+    </div>
+
+    <div class="p-4 transition-transform transform bg-white shadow-md rounded-xl hover:scale-105">
+        <div class="flex flex-col items-center">
+            <div class="mb-4 overflow-hidden rounded-lg">
+                <img src="{{ asset('assets/ilustratii-unice.webp') }}" 
+                     alt="Ilustrații Unice" 
+                     class="object-cover w-full h-full transition-transform duration-300 hover:scale-110">
+            </div>
+            <i class="mb-2 text-3xl text-purple-600 fas fa-image"></i>
+            <h3 class="text-lg font-semibold text-indigo-800">Ilustrații Unice</h3>
+            <p class="text-center text-gray-600">Fiecare poveste vine cu ilustrații magice generate prin inteligență artificială</p>
+        </div>
+    </div>
+
+    <div class="p-4 transition-transform transform bg-white shadow-md rounded-xl hover:scale-105">
+        <div class="flex flex-col items-center">
+            <div class="mb-4 overflow-hidden rounded-lg">
+                <img src="{{ asset('assets/poveste-audio.webp') }}" 
+                     alt="Poveste Audio" 
+                     class="object-cover w-full h-full transition-transform duration-300 hover:scale-110">
+            </div>
+            <i class="mb-2 text-3xl text-pink-600 fas fa-headphones"></i>
+            <h3 class="text-lg font-semibold text-indigo-800">Poveste Audio</h3>
+            <p class="text-center text-gray-600">Opțional, ascultă povestea in format audio</p>
+        </div>
+    </div>
+</div>
 
                     <div class="flex items-center justify-center w-full mt-8">
                         <div
@@ -129,36 +142,23 @@
                 </div>
 
 
-
-                <!-- Elemente suplimentare -->
-                {{-- <div class="flex justify-center mt-12 space-x-8">
-                    <div class="text-center">
-                        <i class="mb-2 text-3xl text-purple-500 fas fa-magic"></i>
-                        <p class="text-sm text-gray-600">Povești audio si text</p>
-                    </div>
-                    <div class="text-center">
-                        <i class="mb-2 text-3xl text-green-500 fas fa-child"></i>
-                        <p class="text-sm text-gray-600">Personalizate pentru Copii</p>
-                    </div>
-                    <div class="text-center">
-                        <i class="mb-2 text-3xl text-blue-500 fas fa-book-reader"></i>
-                        <p class="text-sm text-gray-600">Ilustrații Interactive</p>
-                    </div>
-                </div> --}}
             </div>
 
-            <div class="mt-4 text-center">
-                <a href="{{ route('blog.index') }}" class="text-lg text-gray-700 underline hover:text-indigo-700">
-                    Viziteaza Blogul cu Povești
-                </a>
-            </div>
+            <div class="flex flex-col items-center gap-4 my-8 sm:flex-row sm:justify-center">
+    <a href="{{ route('blog.index') }}" 
+        class="flex items-center px-6 py-3 text-white transition-all duration-300 transform bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl hover:from-indigo-700 hover:to-purple-700 hover:scale-105 hover:shadow-lg group">
+        <i class="mr-2 text-lg fas fa-book-open"></i>
+        <span class="text-lg font-medium">Vizitează Blogul cu Povești</span>
+        <i class="ml-2 transition-transform duration-300 fas fa-arrow-right group-hover:translate-x-1"></i>
+    </a>
 
-            <div class="my-4 text-center">
-                <a href="{{ route('about') }}"
-                    class="px-4 py-2 text-base font-medium text-gray-700 hover:text-indigo-700">
-                    Află mai multe despre noi
-                </a>
-            </div>
+    <a href="{{ route('about') }}"
+        class="flex items-center px-6 py-3 text-indigo-700 transition-all duration-300 transform border-2 border-indigo-300 rounded-xl hover:border-indigo-500 hover:bg-indigo-50 hover:scale-105 hover:shadow-lg group">
+        <i class="mr-2 text-lg fas fa-magic"></i>
+        <span class="text-lg font-medium">Află mai multe despre noi</span>
+        <i class="ml-2 transition-transform duration-300 fas fa-arrow-right group-hover:translate-x-1"></i>
+    </a>
+</div>
 
 
 
