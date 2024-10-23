@@ -232,7 +232,7 @@
 
                         @if ($story->image_url)
                             <img src="{{ $story->image_url }}" alt="Ilustrație pentru {{ $storyTitle }}"
-                                class="object-cover w-full mb-4 rounded-lg shadow-lg max-h-96"
+                                class="object-cover w-full h-auto mb-4 rounded-lg shadow-lg"
                                 onerror="this.onerror=null; this.src='/images/placeholder.webp'; this.alt='Imaginea nu a putut fi încărcată';">
                         @endif
 
