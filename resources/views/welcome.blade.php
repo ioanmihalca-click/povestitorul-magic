@@ -90,46 +90,46 @@
                         </p>
                     </div>
 
-       <div class="grid max-w-3xl gap-6 mx-auto mb-8 md:grid-cols-3">
-    <div class="p-4 transition-transform transform bg-white shadow-md rounded-xl hover:scale-105">
-        <div class="flex flex-col items-center">
-            <div class="mb-4 overflow-hidden rounded-lg">
-                <img src="{{ asset('assets/povesti-personalizate.webp') }}" 
-                     alt="Povești Personalizate" 
-                     class="object-cover w-full h-full transition-transform duration-300 hover:scale-110">
-            </div>
-            <i class="mb-2 text-3xl text-indigo-600 fas fa-magic"></i>
-            <h3 class="text-lg font-semibold text-indigo-800">Povești Personalizate</h3>
-            <p class="text-center text-gray-600">Create special pentru copilul tău, adaptate vârstei și preferințelor sale</p>
-        </div>
-    </div>
+                    <div class="grid max-w-3xl gap-6 mx-auto mb-8 md:grid-cols-3">
+                        <div class="p-4 transition-transform transform bg-white shadow-md rounded-xl hover:scale-105">
+                            <div class="flex flex-col items-center">
+                                <div class="mb-4 overflow-hidden rounded-lg">
+                                    <img src="{{ asset('assets/povesti-personalizate.webp') }}"
+                                        alt="Povești Personalizate"
+                                        class="object-cover w-full h-full transition-transform duration-300 hover:scale-110">
+                                </div>
+                                <i class="mb-2 text-3xl text-indigo-600 fas fa-magic"></i>
+                                <h3 class="text-lg font-semibold text-indigo-800">Povești Personalizate</h3>
+                                <p class="text-center text-gray-600">Create special pentru copilul tău, adaptate vârstei
+                                    și preferințelor sale</p>
+                            </div>
+                        </div>
 
-    <div class="p-4 transition-transform transform bg-white shadow-md rounded-xl hover:scale-105">
-        <div class="flex flex-col items-center">
-            <div class="mb-4 overflow-hidden rounded-lg">
-                <img src="{{ asset('assets/ilustratii-unice.webp') }}" 
-                     alt="Ilustrații Unice" 
-                     class="object-cover w-full h-full transition-transform duration-300 hover:scale-110">
-            </div>
-            <i class="mb-2 text-3xl text-purple-600 fas fa-image"></i>
-            <h3 class="text-lg font-semibold text-indigo-800">Ilustrații Unice</h3>
-            <p class="text-center text-gray-600">Fiecare poveste vine cu ilustrații magice generate prin inteligență artificială</p>
-        </div>
-    </div>
+                        <div class="p-4 transition-transform transform bg-white shadow-md rounded-xl hover:scale-105">
+                            <div class="flex flex-col items-center">
+                                <div class="mb-4 overflow-hidden rounded-lg">
+                                    <img src="{{ asset('assets/ilustratii-unice.webp') }}" alt="Ilustrații Unice"
+                                        class="object-cover w-full h-full transition-transform duration-300 hover:scale-110">
+                                </div>
+                                <i class="mb-2 text-3xl text-purple-600 fas fa-image"></i>
+                                <h3 class="text-lg font-semibold text-indigo-800">Ilustrații Unice</h3>
+                                <p class="text-center text-gray-600">Fiecare poveste vine cu ilustrații magice generate
+                                    prin inteligență artificială</p>
+                            </div>
+                        </div>
 
-    <div class="p-4 transition-transform transform bg-white shadow-md rounded-xl hover:scale-105">
-        <div class="flex flex-col items-center">
-            <div class="mb-4 overflow-hidden rounded-lg">
-                <img src="{{ asset('assets/poveste-audio.webp') }}" 
-                     alt="Poveste Audio" 
-                     class="object-cover w-full h-full transition-transform duration-300 hover:scale-110">
-            </div>
-            <i class="mb-2 text-3xl text-pink-600 fas fa-headphones"></i>
-            <h3 class="text-lg font-semibold text-indigo-800">Poveste Audio</h3>
-            <p class="text-center text-gray-600">Opțional, ascultă povestea in format audio</p>
-        </div>
-    </div>
-</div>
+                        <div class="p-4 transition-transform transform bg-white shadow-md rounded-xl hover:scale-105">
+                            <div class="flex flex-col items-center">
+                                <div class="mb-4 overflow-hidden rounded-lg">
+                                    <img src="{{ asset('assets/poveste-audio.webp') }}" alt="Poveste Audio"
+                                        class="object-cover w-full h-full transition-transform duration-300 hover:scale-110">
+                                </div>
+                                <i class="mb-2 text-3xl text-pink-600 fas fa-headphones"></i>
+                                <h3 class="text-lg font-semibold text-indigo-800">Poveste Audio</h3>
+                                <p class="text-center text-gray-600">Opțional, ascultă povestea in format audio</p>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="flex items-center justify-center w-full mt-8">
                         <div
@@ -145,28 +145,33 @@
             </div>
 
             <div class="flex flex-col items-center gap-4 my-8 sm:flex-row sm:justify-center">
-    <a href="{{ route('blog.index') }}" 
-        class="flex items-center px-6 py-3 text-white transition-all duration-300 transform bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl hover:from-indigo-700 hover:to-purple-700 hover:scale-105 hover:shadow-lg group">
-        <i class="mr-2 text-lg fas fa-book-open"></i>
-        <span class="text-lg font-medium">Vizitează Blogul cu Povești</span>
-        <i class="ml-2 transition-transform duration-300 fas fa-arrow-right group-hover:translate-x-1"></i>
-    </a>
+                <a href="{{ route('blog.index') }}"
+                    class="flex items-center px-6 py-3 text-white transition-all duration-300 transform bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl hover:from-indigo-700 hover:to-purple-700 hover:scale-105 hover:shadow-lg group">
+                    <i class="mr-2 text-lg fas fa-book-open"></i>
+                    <span class="text-lg font-medium">Vizitează Blogul cu Povești</span>
+                    <i class="ml-2 transition-transform duration-300 fas fa-arrow-right group-hover:translate-x-1"></i>
+                </a>
 
-    <a href="{{ route('about') }}"
-        class="flex items-center px-6 py-3 text-indigo-700 transition-all duration-300 transform border-2 border-indigo-300 rounded-xl hover:border-indigo-500 hover:bg-indigo-50 hover:scale-105 hover:shadow-lg group">
-        <i class="mr-2 text-lg fas fa-magic"></i>
-        <span class="text-lg font-medium">Află mai multe despre noi</span>
-        <i class="ml-2 transition-transform duration-300 fas fa-arrow-right group-hover:translate-x-1"></i>
-    </a>
-</div>
+                <a href="{{ route('about') }}"
+                    class="flex items-center px-6 py-3 text-indigo-700 transition-all duration-300 transform border-2 border-indigo-300 rounded-xl hover:border-indigo-500 hover:bg-indigo-50 hover:scale-105 hover:shadow-lg group">
+                    <i class="mr-2 text-lg fas fa-magic"></i>
+                    <span class="text-lg font-medium">Află mai multe despre noi</span>
+                    <i class="ml-2 transition-transform duration-300 fas fa-arrow-right group-hover:translate-x-1"></i>
+                </a>
+            </div>
 
 
 
             <!-- Secțiunea cu povestea aleatorie -->
             @if ($randomStory)
                 <div class="p-4 mt-8 rounded-3xl">
-                    <h2 class="mb-6 text-2xl font-bold text-center text-indigo-800 md:text-3xl">O poveste aleatorie din
-                        Bibioteca Magică</h2>
+                    <h2 class="mb-6 text-2xl font-bold text-center text-indigo-800 md:text-3xl">
+                        @if ($randomStory->is_featured)
+                            Povestea Săptămânii
+                        @else
+                            O poveste aleatorie din Biblioteca Magică
+                        @endif
+                    </h2>
                     <div class="max-w-xl mx-auto overflow-hidden bg-white rounded-lg shadow-lg">
                         @if ($randomStory->image_url)
                             <img src="{{ $randomStory->image_url }}" alt="{{ $randomStory->title }}"

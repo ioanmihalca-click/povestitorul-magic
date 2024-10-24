@@ -25,7 +25,8 @@ class Story extends Model
         'is_published',
         'facebook_post_id',
         'is_published_to_facebook',
-        'facebook_published_at'
+        'facebook_published_at',
+        'is_featured'
     ];
 
     protected $casts = [
@@ -35,6 +36,7 @@ class Story extends Model
         'is_published' => 'boolean',
         'is_published_to_facebook' => 'boolean',
         'facebook_published_at' => 'datetime',
+        'is_featured' => 'boolean',
     ];
 
     public function publishToFacebook(): bool
@@ -104,4 +106,11 @@ class Story extends Model
 
         return false;
     }
+
+     // Adăugăm o metodă scope pentru featured stories
+     public function scopeFeatured($query)
+     {
+         return $query->where('is_featured', true);
+     }
+
 }

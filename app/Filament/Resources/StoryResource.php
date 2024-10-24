@@ -52,6 +52,10 @@ class StoryResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\IconColumn::make('is_featured')
+                    ->boolean()
+                    ->label('Featured')
+                    ->sortable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('genre')
@@ -71,7 +75,7 @@ class StoryResource extends Resource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\DeleteAction::make()
                     ->requiresConfirmation(),
-                   
+
                 Tables\Actions\Action::make('publishToBlog')
                     ->label('Publică pe Blog')
                     ->icon('heroicon-o-globe-alt')
@@ -103,7 +107,7 @@ class StoryResource extends Resource
                     ->action(function (Story $record, Tables\Actions\Action $action) {
                         try {
                             $facebookService = app(FacebookService::class);
-                            
+
                             if ($record->is_published_to_facebook) {
                                 Notification::make()
                                     ->warning()
@@ -144,6 +148,31 @@ class StoryResource extends Resource
                     ->modalDescription('Ești sigur că vrei să publici această poveste pe Facebook?')
                     ->modalSubmitActionLabel('Da, publică')
                     ->hidden(fn(Story $record) => $record->is_published_to_facebook),
+
+                Tables\Actions\Action::make('toggleFeatured')
+                    ->label('Set as Featured')
+                    ->icon('heroicon-o-star')
+                    ->action(function (Story $record) {
+                        // Dacă setăm această poveste ca featured, eliminăm featured de la celelalte
+                        if (!$record->is_featured) {
+                            Story::where('is_featured', true)->update(['is_featured' => false]);
+                        }
+                        $record->update(['is_featured' => !$record->is_featured]);
+
+                        Notification::make()
+                            ->success()
+                            ->title($record->is_featured ? 'Poveste setată ca featured' : 'Poveste eliminată din featured')
+                            ->send();
+                    })
+                    ->requiresConfirmation()
+                    ->modalHeading('Confirmare')
+                    ->modalDescription(
+                        fn(Story $record) =>
+                        $record->is_featured
+                            ? 'Ești sigur că vrei să elimini această poveste din featured?'
+                            : 'Ești sigur că vrei să setezi această poveste ca featured? Acest lucru va elimina marcajul featured de la orice altă poveste.'
+                    )
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -216,9 +245,9 @@ class StoryResource extends Resource
     }
 
     public static function canView(Model $record): bool
-{
-    return true;
-}
+    {
+        return true;
+    }
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()

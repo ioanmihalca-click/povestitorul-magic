@@ -15,8 +15,8 @@ use App\Livewire\Pages\TermsAndConditions;
 
 
 Route::get('/', function () {
-    $randomStory = Story::inRandomOrder()->first();
-    return view('welcome', compact('randomStory'));
+    $story = Story::featured()->first() ?? Story::inRandomOrder()->first();
+    return view('welcome', ['randomStory' => $story]); // păstrăm numele variabilei randomStory pentru compatibilitate
 });
 
 Route::view('profile', 'profile')
