@@ -275,9 +275,43 @@ class StoryGenerator extends Component
         }
     }
 
+    private function extractMainCharacter($story)
+{
+    try {
+        $prompt = "Analizează următoarea poveste și descrie personajul principal într-o singură propoziție, concentrându-te pe ce tip de personaj este (ex: 'un pui de elefant curios', 'o fetiță curajoasă', 'un bătrân înțelept'). Nu include numele proprii în descriere, chiar dacă apar în poveste. Răspunde doar cu descrierea personajului, fără alte explicații.
+
+Poveste:
+$story";
+
+        $response = Anthropic::messages()->create([
+            'model' => 'claude-3-5-sonnet-20240620',
+            'max_tokens' => 100,
+            'messages' => [
+                ['role' => 'user', 'content' => $prompt]
+            ],
+        ]);
+
+        return trim($response->content[0]->text);
+    } catch (\Exception $e) {
+        Log::error('Eroare la extragerea personajului principal: ' . $e->getMessage());
+        return null;
+    }
+}
+
     private function generateStoryImage($theme)
-    {
-        $imagePrompt = "O ilustrație pentru copii, reprezentând o scenă dintr-o poveste de genul {$this->selectedGenre}, cu tema {$theme}. Stilul vizual este modern de animație 3D, fără NICIUN text sau cuvinte vizibile în imagine, potrivit pentru un copil de {$this->childAge} ani, folosind culori vii și personaje prietenoase.";
+{
+    // Extragem personajul principal
+    $mainCharacter = $this->extractMainCharacter($this->generatedStory);
+    
+    // Construim un prompt îmbunătățit
+    $imagePrompt = "O ilustrație pentru copii în stil modern de animație 3D, centrată pe " . 
+        ($mainCharacter ? "$mainCharacter, " : "") . 
+        "într-o scenă din o poveste de genul {$this->selectedGenre}, cu tema {$theme}. " .
+         "IMPORTANT: NU adăuga alte personaje în afara celui descris. Personajul este prietenos " .
+        "Folosește culori vii. Ilustratia este potrivita pentru un copil de {$this->childAge} ani. " .
+        "Imaginea trebuie să fie caldă și primitoare, fără NICIUN text sau cuvinte vizibile.";
+
+
         $retries = 3;
         while ($retries > 0) {
             try {
