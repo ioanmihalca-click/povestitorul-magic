@@ -42,7 +42,12 @@ class StoryGenerator extends Component
                 'Aventurile unui pui de elefant',
                 'Viata in ferma',
                 'Calatoria unui stol de pasari migratoare',
-                'O zi din viata unui urs polar'
+                'O zi din viata unui urs polar',
+                'Un iepuraș în grădina de morcovi',
+                'Broasca țestoasă înțeleaptă',
+                'Veverița care adună nuci',
+                'Pinguinul care învață să înoate',
+                'Girafa cu gâtul scurt'
             ]
         ],
         'Aventură' => [
@@ -52,7 +57,12 @@ class StoryGenerator extends Component
                 'Vanatoare de comori',
                 'Explorarea unei insule misterioase',
                 'Misiune spatiala',
-                'Aventuri in padure'
+                'Aventuri in padure',
+                'Explorarea unei peșteri luminoase',
+                'Căutarea unui artefact pierdut',
+                'O expediție la Polul Nord',
+                'Descoperirea unui templu antic',
+                'Aventura în submarine'
             ]
         ],
         'Basm' => [
@@ -63,6 +73,11 @@ class StoryGenerator extends Component
                 'Petrea Voinicul',
                 'Praslea cel Voinic',
                 'Balaurul cel cu șapte capete',
+                'Fata Moșului cea Harnică',
+                'Căsuța din Pădure',
+                'Prințesa și Oglinda Fermecată',
+                'Tărâmul de Cleștar',
+                'Grădina Zânelor'
             ]
         ],
         'Comic' => [
@@ -72,7 +87,12 @@ class StoryGenerator extends Component
                 'O zi de vara amuzanta',
                 'Petrecerea animalelor din jungla',
                 'Inventiile trasnite ale profesorului Hababam',
-                'Concursul de farse'
+                'Concursul de farse',
+                'Circul Vesel',
+                'Bucătarul Care Face Prăjituri Zburătoare',
+                'Școala Pentru Clovni',
+                'Olimpiada de Râs',
+                'Robotul Care Face Glume'
             ]
         ],
         'Educativ' => [
@@ -82,7 +102,12 @@ class StoryGenerator extends Component
                 'Viata in ocean',
                 'Istoria dinozaurilor',
                 'Cum functioneaza corpul uman',
-                'Protejarea mediului inconjurator'
+                'Protejarea mediului inconjurator',
+                'Călătoria unei picături de apă',
+                'Viața unei albine harnice',
+                'Cum cresc plantele',
+                'Miracolul anotimpurilor',
+                'Aventura unui electron'
             ]
         ],
         'Fantezie' => [
@@ -92,7 +117,12 @@ class StoryGenerator extends Component
                 'Dragonii si cavalerii',
                 'Scoala de magie',
                 'Animale vorbitoare',
-                'Calatorii in timp'
+                'Calatorii in timp',
+                'Castelul din nori',
+                'Biblioteca magică',
+                'Poarta dintre lumi',
+                'Pădurea de cristal',
+                'Insula plutitoare'
             ]
         ],
         'Legende Romanesti' => [
@@ -102,7 +132,12 @@ class StoryGenerator extends Component
                 'Povestea Babei Dochia',
                 'Legenda Manastirii Curtea de Arges',
                 'Legenda lui Bucur Ciobanul',
-                'Legende cu haiduci (Iancu Jianu, Pintea Viteazul)'
+                'Legende cu haiduci (Iancu Jianu, Pintea Viteazul)',
+                'Povestea Sânzienelor',
+                'Legenda Cetății Neamțului',
+                'Povestea Lacului Roșu',
+                'Legenda Cascadei Bigăr',
+                'Povestea Munților Bucegi'
             ]
         ],
         'Povestiri din Biblie' => [
@@ -112,7 +147,12 @@ class StoryGenerator extends Component
                 'David și Goliat',
                 'Iosif și frații săi',
                 'Nașterea lui Isus',
-                'Daniel în groapa cu lei'
+                'Daniel în groapa cu lei',
+                'Arca lui Noe',
+                'Moise și Marea Roșie',
+                'Ionă și balena',
+                'Păstorul cel bun',
+                'Adam și Eva în grădina Eden'
             ]
         ],
     ];
@@ -307,7 +347,7 @@ $story";
     $imagePrompt = "O ilustrație pentru copii în stil modern de animație 3D, centrată pe " . 
         ($mainCharacter ? "$mainCharacter, " : "") . 
         "într-o scenă din o poveste de genul {$this->selectedGenre}, cu tema {$theme}. " .
-         "IMPORTANT: NU adăuga alte personaje în afara celui descris. Personajul este prietenos " .
+         "IMPORTANT: NU adăuga alte personaje în afara celui descris. Personajul este prietenos" .
         "Folosește culori vii. Ilustratia este potrivita pentru un copil de {$this->childAge} ani. " .
         "Imaginea trebuie să fie caldă și primitoare, fără NICIUN text sau cuvinte vizibile.";
 
